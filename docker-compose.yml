@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    image: dryft
+    ports:
+      - 80:80
+    volumes:
+      - .:/srv/app
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: dryft
+      MYSQL_USER: dryft
+      MYSQL_PASSWORD: ADeveloperPassword
+      MYSQL_ROOT_PASSWORD: ADeepRootedPassword
+    ports:
+      - 13306:3306
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
