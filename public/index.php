@@ -1,15 +1,21 @@
+<h1>Users</h1>
 <?php
 $db = new mysqli( 'db', 'dryft', 'ADeveloperPassword', 'dryft' );
-
-$results = $db->query( 'SELECT * FROM `users`;' );
+if ( ( $results = $db->query( 'SELECT * FROM `users`;' ) ) !== false ) {
 ?>
-<h1>Users</h1>
 <ul>
 <?php
-while ( $user = $results->fetch_object() ) {
+	while ( ( $user = $results->fetch_object() ) !== null ) {
 ?>
-    <li><?php echo $user->USER_ID, ': ', $user->username; ?></li>
+	<li><?php echo $user->USER_ID, ': ', $user->username; ?></li>
 <?php
-}
+	}
 ?>
 </ul>
+<?php
+}
+else {
+?>
+<p>Query failure: <?php echo $db->error; ?></p>
+<?php
+}
