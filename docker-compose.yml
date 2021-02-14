@@ -19,6 +19,8 @@ services:
       MYSQL_ROOT_PASSWORD: ADeepRootedPassword
     ports:
       - 13306:3306
+    volumes:
+      - ./_Docker/DatabaseBootstrap.sql:/docker-entrypoint-initdb.d/dryft.sql
   adminer:
     image: adminer
     restart: always
