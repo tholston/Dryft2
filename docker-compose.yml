@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: .docker/Dockerfile
+      dockerfile: _Docker/Dockerfile
     image: dryft
     ports:
       - 80:80
