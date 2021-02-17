@@ -1,21 +1,10 @@
-<h1>Users</h1>
 <?php
-$db = new mysqli( 'db', 'dryft', 'ADeveloperPassword', 'dryft' );
-if ( ( $results = $db->query( 'SELECT * FROM `users`;' ) ) !== false ) {
+/**
+ * index.php
+ *
+ * Initial page for users. Should redirect based on session status and user type.
+ */
+
+require_once( '../bootstrap.php' );
 ?>
-<ul>
-<?php
-	while ( ( $user = $results->fetch_object() ) !== null ) {
-?>
-	<li><?php echo $user->USER_ID, ': ', $user->username; ?></li>
-<?php
-	}
-?>
-</ul>
-<?php
-}
-else {
-?>
-<p>Query failure: <?php echo $db->error; ?></p>
-<?php
-}
+<h1>Hello World</h1>
