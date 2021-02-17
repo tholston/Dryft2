@@ -15,7 +15,7 @@ const PRODUCTION  = 'Prod';
 const DB_DEV_USER     = 'dryft';
 const DB_DEV_PASSWORD = 'ADeveloperPassword';
 const DB_DEV_HOST     = 'db';
-const DB_DEV_SCHEMA   = 'db';
+const DB_DEV_SCHEMA   = 'dryft';
 
 // User types
 const USER_TYPE_CLIENT = 'Client';
