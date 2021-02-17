@@ -7,7 +7,7 @@
 
 namespace DRyft;
 
-require_once( 'Constants.php' );
+require_once( 'constants.php' );
 require_once( 'DRyft/AutoLoader.php' );
 
 // set the autoloader to use the current directory
