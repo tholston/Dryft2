@@ -17,8 +17,6 @@ services:
       MYSQL_USER: dryft
       MYSQL_PASSWORD: ADeveloperPassword
       MYSQL_ROOT_PASSWORD: ADeepRootedPassword
-    ports:
-      - 13306:3306
     volumes:
       - ./_Docker/DatabaseBootstrap.sql:/docker-entrypoint-initdb.d/dryft.sql
   adminer:
