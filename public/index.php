@@ -6,5 +6,14 @@
  */
 
 require_once( '../bootstrap.php' );
-?>
-<h1>Hello World</h1>
+
+// try to load a user
+if ( array_key_exists( 'user', $_REQUEST ) ) {
+	$user = \DRyft\User::getUserByName( $_REQUEST['user'] );
+}
+if ( $user ) {
+	echo '<h1>Hello ', $user->username(), '</h1>';
+}
+else {
+	echo '<h1>Hello world</h1>';
+}
