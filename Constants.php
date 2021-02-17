@@ -18,6 +18,6 @@ const DB_DEV_HOST     = 'db';
 const DB_DEV_SCHEMA   = 'dryft';
 
 // User types
-const USER_TYPE_CLIENT = 'Client';
+const USER_TYPE_CLIENT      = 'Client';
 const USER_TYPE_COORDINATOR = 'Coordinator';
-const USER_TYPE_DRIVER = 'Driver';
+const USER_TYPE_DRIVER      = 'Driver';
