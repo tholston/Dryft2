@@ -18,8 +18,8 @@ $environment = DEVELOPMENT;
 
 // Setup the database configuration for the current environment
 if ( $environment == DEVELOPMENT ) {
+	Database\Connection::setHost(     DB_DEV_HOST     );
 	Database\Connection::setUser(     DB_DEV_USER     );
 	Database\Connection::setPassword( DB_DEV_PASSWORD );
 	Database\Connection::setSchema(   DB_DEV_SCHEMA   );
-	Database\Connection::setHost(     DB_DEV_HOST     );
 }
