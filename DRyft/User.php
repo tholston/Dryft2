@@ -122,6 +122,16 @@ class User {
 		return $this->username;
 	}
 
+	/**
+	 * Is the user a coordinator
+	 */
+	public function isCoordinator() {
+		if ( $this->type == USER_TYPE_COORDINATOR ) {
+			return true;
+		}
+
+		return false;
+	}
 
 	/**
 	 * Set a new password
