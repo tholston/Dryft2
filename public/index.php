@@ -13,6 +13,9 @@ if ( array_key_exists( 'user', $_REQUEST ) ) {
 }
 if ( $user ) {
 	echo '<h1>Hello ', $user->username(), '</h1>';
+	echo '<pre>';
+	print_r( $user );
+	echo '</pre>';
 }
 else {
 	echo '<h1>Hello world</h1>';
