@@ -109,6 +109,7 @@ class User {
 		$this->id         = $userId;
 		$this->username   = $userName;
 		$this->type       = $type;
+		$this->lastName   = $lastName;
 		$this->firstName  = $firstName;
 		$this->middleName = $middleName;
 	}
