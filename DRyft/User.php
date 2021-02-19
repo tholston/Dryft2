@@ -108,12 +108,13 @@ class User
 		int $userId = 0,
 		string $passwordHash = ''
 	) {
-		$this->id         = $userId;
-		$this->username   = $userName;
-		$this->type       = $type;
-		$this->lastName   = $lastName;
-		$this->firstName  = $firstName;
-		$this->middleName = $middleName;
+		$this->id           = $userId;
+		$this->username     = $userName;
+		$this->type         = $type;
+		$this->lastName     = $lastName;
+		$this->firstName    = $firstName;
+		$this->middleName   = $middleName;
+		$this->passwordHash = $passwordHash;
 	}
 
 
