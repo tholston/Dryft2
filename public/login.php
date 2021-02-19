@@ -51,13 +51,26 @@ if (array_key_exists('logout', $_REQUEST)) {
 	// redirect the user to the main page
 	header('Location: ' . $linker->urlPath());
 } elseif (array_key_exists('login', $_REQUEST)) {
-	echo '<h1>Unable to log in.</h1>';
+	$message = 'Unable to log in.';
 } else {
-	echo '<h1>Please login</h1>';
+	$message = 'Please login';
 }
+
+
+// now that actions that modify headers are complete, start the page template
+
+// add HTML head
+include '../head.html';
+
+// Output a page title and any other specific head elements
+echo '		<title>Please login | DRyft</title>' . PHP_EOL;
+
+// add page header
+include '../header.html';
 
 // Give the user the login form
 ?>
+<h1><?= $message ?></h1>
 <form method="POST" action="<?php echo $linker->urlPath(); ?>login.php">
 	<fieldset>
 		<legend>Username</legend>
@@ -72,3 +85,6 @@ if (array_key_exists('logout', $_REQUEST)) {
 <?php
 
 include '../testing_links.html';
+
+// add page footer
+include '../footer.html';
