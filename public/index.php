@@ -17,7 +17,7 @@ $user = DRyft\Session::getSession()->getUser();
 include '../head.html';
 
 // Output a page title and any other specific head elements
-echo '	<title>Welcome to DRyft</title>' . PHP_EOL;
+echo '		<title>Welcome to DRyft</title>' . PHP_EOL;
 
 // add page header
 include '../header.html';
