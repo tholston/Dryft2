@@ -23,3 +23,7 @@ By default DRyfter comes with a super-user:
 	<dt>Username</dt><dd>dryfter</dd>
 	<dt>Password</dt><dd>T0ky0DRyft!</dd>
 </dl>
+
+# Environment Notes
+
+Please note, in order to maintain stylistic integrity, it is recommended you use [Visual Studio Code](https://code.visualstudio.com) with the [PHP Intelephense extension](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client).
