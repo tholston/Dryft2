@@ -4,6 +4,8 @@
  * bootstrap.php
  *
  * Setup the environment elements required for operation.
+ *
+ * @author Errol Sayre
  */
 
 namespace DRyft;

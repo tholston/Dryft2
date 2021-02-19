@@ -13,6 +13,8 @@
  *   - start a session or
  *   - show an error
  * - show the login form
+ *
+ * @author Errol Sayre
  */
 
 require_once('../bootstrap.php');

@@ -4,6 +4,8 @@
  * index.php
  *
  * Initial page for users. Should redirect based on session status and user type.
+ *
+ * @author Errol Sayre
  */
 
 require_once('../bootstrap.php');

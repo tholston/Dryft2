@@ -2,6 +2,8 @@
 
 /**
  * Model user objects and provide storage/retrieval from the database.
+ *
+ * @author Errol Sayre
  */
 
 namespace DRyft;
