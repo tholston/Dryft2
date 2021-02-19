@@ -1,11 +1,13 @@
 <?php
+
 /**
  * Model user objects and provide storage/retrieval from the database.
  */
 
 namespace DRyft;
 
-class User {
+class User
+{
 
 	/**
 	 * User identification number
@@ -106,12 +108,13 @@ class User {
 		int $userId = 0,
 		string $passwordHash = ''
 	) {
-		$this->id         = $userId;
-		$this->username   = $userName;
-		$this->type       = $type;
-		$this->lastName   = $lastName;
-		$this->firstName  = $firstName;
-		$this->middleName = $middleName;
+		$this->id           = $userId;
+		$this->username     = $userName;
+		$this->type         = $type;
+		$this->lastName     = $lastName;
+		$this->firstName    = $firstName;
+		$this->middleName   = $middleName;
+		$this->passwordHash = $passwordHash;
 	}
 
 
@@ -119,15 +122,17 @@ class User {
 	 * Get the username
 	 * @return string
 	 */
-	public function username() {
+	public function username()
+	{
 		return $this->username;
 	}
 
 	/**
 	 * Is the user a coordinator
 	 */
-	public function isCoordinator() {
-		if ( $this->type == USER_TYPE_COORDINATOR ) {
+	public function isCoordinator()
+	{
+		if ($this->type == USER_TYPE_COORDINATOR) {
 			return true;
 		}
 
@@ -139,8 +144,9 @@ class User {
 	 *
 	 * @param string $password
 	 */
-	public function setPassword( string $password ) {
-		$this->passwordHash = password_hash( $password, PASSWORD_DEFAULT );
+	public function setPassword(string $password)
+	{
+		$this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
 	}
 
 	/**
@@ -149,8 +155,9 @@ class User {
 	 * @param string $password
 	 * @return boolean
 	 */
-	public function validatePassword( string $password ) {
-		return password_verify( $password, $this->passwordHash );
+	public function validatePassword(string $password)
+	{
+		return password_verify($password, $this->passwordHash);
 	}
 
 
@@ -160,7 +167,8 @@ class User {
 	 *
 	 * @return boolean
 	 */
-	public function save() {
+	public function save()
+	{
 		return false;
 	}
 
@@ -172,35 +180,35 @@ class User {
 	 * @param string $username
 	 * @return mixed
 	 */
-	public function getUserByName( string $username ) {
+	public function getUserByName(string $username)
+	{
 
 		// Grab a copy of the database connection
 		$db = Database\Connection::getConnection();
 
 		$select = 'SELECT * FROM `users` WHERE `username` = "'
-			. $db->escape_string( $username ) . '";'
-		;
+			. $db->escape_string($username) . '";';
 
 		// confirm the query worked
-		if ( ( $result = $db->query( $select ) ) === false ) {
+		if (($result = $db->query($select)) === false) {
 			// TODO: replace a simple error with an exception
 			return null;
 		}
 
 		// confirm the result set size
-		if ( $result->num_rows != 1 ) {
+		if ($result->num_rows != 1) {
 			// TODO: replace a simple error with an exception
 			return null;
 		}
 
 		// confirm the result object
-		if ( ( $data = $result->fetch_object( ) ) === null ) {
+		if (($data = $result->fetch_object()) === null) {
 			// TODO: replace a simple error with an exception
 			return null;
 		}
 
 		// convert the resulting object
-		return self::objectForRow( $data );
+		return self::objectForRow($data);
 	}
 
 	/**
@@ -209,7 +217,8 @@ class User {
 	 * @param object
 	 * @return User
 	 */
-	public function objectForRow( $data ) {
+	public function objectForRow($data)
+	{
 
 		// Create the appropriate subclass based on the user type
 		return new User(
