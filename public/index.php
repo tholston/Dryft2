@@ -26,14 +26,9 @@ if (!$user) {
 	echo '<h1>Nothing to see here</h1>';
 } else {
 	echo '<h1>Welcome ' . $user->username() . '</h1>';
-	echo '<pre>';
-	print_r($user);
-	echo '</pre>';
 }
 
 include '../testing_links.html';
-
-echo DRyft\Linker::urlPath();
 
 // add page footer
 include '../footer.html';
