@@ -15,3 +15,11 @@ After starting the container(s), you can access the application and database adm
 
 * [Application](http://localhost)
 * [Adminer (DB)](http://localhost:8080)
+
+# User Configuration
+
+By default DRyfter comes with a super-user:
+<dl>
+	<dt>Username</dt><dd>dryfter</dd>
+	<dt>Password</dt><dd>T0ky0DRyft!</dd>
+</dl>
