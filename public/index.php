@@ -12,6 +12,11 @@ require_once('../bootstrap.php');
 
 // determine if we have a user
 $user = DRyft\Session::getSession()->getUser();
+
+// TODO add HTML head
+
+// TODO add page header
+
 if (!$user) {
 	echo '<h1>Nothing to see here</h1>';
 } else {
@@ -24,3 +29,5 @@ if (!$user) {
 include '../testing_links.html';
 
 echo DRyft\Linker::urlPath();
+
+// TODO add page footer
