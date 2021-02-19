@@ -1,11 +1,12 @@
 <?php
+
 /**
  * login.php
  *
  * Handle user authentication
  */
 
-require_once( '../bootstrap.php' );
+require_once('../bootstrap.php');
 
 // try to load a user
 $user = DRyft\Session::getSession()->getUser();
