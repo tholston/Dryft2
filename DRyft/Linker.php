@@ -4,6 +4,8 @@
  * Linker.php
  *
  * Class to recognize environment and establish the proper URL for our application.
+ *
+ * @author Errol Sayre
  */
 
 namespace DRyft;
