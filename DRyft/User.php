@@ -141,6 +141,15 @@ class User
 		return false;
 	}
 
+	public function isClient()
+	{
+		if ($this->type == USER_TYPE_CLIENT) {
+			return true;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Set a new password
 	 *
