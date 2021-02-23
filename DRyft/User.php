@@ -124,9 +124,24 @@ class User
 	 * Get the username
 	 * @return string
 	 */
+	public function firstName()
+	{
+		return $this->firstName;
+	}
+
+	public function lastName()
+	{
+		return $this->lastName;
+	}
+
 	public function username()
 	{
 		return $this->username;
+	}
+
+	public function homeAddress()
+	{
+		return $this->homeAddress;
 	}
 
 	/**
