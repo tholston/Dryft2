@@ -54,7 +54,7 @@ if (!$user || !$user->isCoordinator()) {
 	if ($action == ACTION_EDIT) {
 		// display the edit form for the selected user
 		// ensure the user
-		echo '<h1>Edit ' . $selectedUser->firstName . ' (' . $selectedUser->id() . ')</h1>';
+		echo '<h1>Edit ' . $selectedUser->firstName . ' ' . $selectedUser->lastName . ' (' . $selectedUser->id() . ')</h1>';
 	} elseif ($action == ACTION_UPDATE) {
 		// load updates for the user from the request
 		echo '<h1>WILL IT UPDATE?</h1>';
