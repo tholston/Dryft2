@@ -37,3 +37,13 @@ const CLAY_DB_SCHEMA   = '';
 const USER_TYPE_CLIENT      = 'Client';
 const USER_TYPE_COORDINATOR = 'Coordinator';
 const USER_TYPE_DRIVER      = 'Driver';
+
+// Common URL parameters
+const PARAM_ACTION  = 'action';
+const ACTION_NEW    = 'new';
+const ACTION_CREATE = 'create';
+const ACTION_EDIT   = 'edit';
+const ACTION_UPDATE = 'update';
+const ACTION_ERROR  = 'error';
+const PARAM_ID      = 'id';
+const PARAM_USER    = 'user';
