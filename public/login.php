@@ -30,7 +30,7 @@ if (
 	$user = \DRyft\User::getUserByName($_REQUEST['user']);
 
 	// try to validate the provided password
-	if ($user->validatePassword($_REQUEST['password'])) {
+	if ($user instanceof \DRyft\User && $user->validatePassword($_REQUEST['password'])) {
 
 		// setup the session
 		DRyft\Session::getSession()->setupSession($user);
