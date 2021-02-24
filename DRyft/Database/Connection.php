@@ -105,7 +105,7 @@ class Connection extends \MySQLi
 	 *
 	 * @return Connection
 	 */
-	public function getConnection()
+	public static function getConnection()
 	{
 
 		// create the singleton if not already
