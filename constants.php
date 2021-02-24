@@ -28,10 +28,10 @@ const DB_PROD_SCHEMA   = 'gamestonk562';
 // Clay Working Copy items
 const CLAY_ENVIRONMENT = 'Clay';
 const CLAY_USER        = 'cabellou';
-const CLAY_DB_USER     = '';
-const CLAY_DB_PASSWORD = '';
+const CLAY_DB_USER     = 'cabellou';
+const CLAY_DB_PASSWORD = 'cabelloudb';
 const CLAY_DB_HOST     = DB_PROD_HOST;
-const CLAY_DB_SCHEMA   = '';
+const CLAY_DB_SCHEMA   = 'cabellou';
 
 // User types
 const USER_TYPE_CLIENT      = 'Client';
