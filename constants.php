@@ -8,8 +8,9 @@
 namespace DRyft;
 
 // Environments
-const DEVELOPMENT = 'Dev';
-const PRODUCTION  = 'Prod';
+const DEVELOPMENT  = 'Dev';
+const PRODUCTION   = 'Prod';
+const HOST_TURING  = 'turing';
 
 // DB elements
 const DB_DEV_USER     = 'dryft';
