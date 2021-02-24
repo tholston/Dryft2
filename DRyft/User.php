@@ -230,19 +230,19 @@ class User
 		// confirm the query worked
 		if (($result = $db->query($select)) === false) {
 			// TODO: replace a simple error with an exception
-			return null;
+			throw new Database\Exception('DB Query Failed: ' . $db->error);
 		}
 
 		// confirm the result set size
 		if ($result->num_rows != 1) {
 			// TODO: replace a simple error with an exception
-			return null;
+			throw new Database\Exception('Single Lookup Failed: returned ' . $result->num_rows . ' rows.');
 		}
 
 		// confirm the result object
 		if (($data = $result->fetch_object()) === null) {
 			// TODO: replace a simple error with an exception
-			return null;
+			throw new Database\Exception('Result Fetch Failed: This error shouldn’t have happened.');
 		}
 
 		// convert the resulting object
