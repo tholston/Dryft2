@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Connection.php
  *
@@ -7,7 +8,8 @@
 
 namespace DRyft\Database;
 
-class Connection extends \MySQLi {
+class Connection extends \MySQLi
+{
 
 	/**
 	 * hostname
@@ -49,7 +51,8 @@ class Connection extends \MySQLi {
 	/**
 	 * Constructor
 	 */
-	protected function __construct() {
+	protected function __construct()
+	{
 		// Pass our configured data onto the MySQLi class.
 		parent::__construct(
 			self::$hostname,
@@ -62,7 +65,8 @@ class Connection extends \MySQLi {
 	/**
 	 * Set the hostname
 	 */
-	public function setHost( $host ) {
+	public static function setHost($host)
+	{
 		self::$hostname = $host;
 		// TODO: close/invalidate any open connections
 	}
@@ -70,7 +74,8 @@ class Connection extends \MySQLi {
 	/**
 	 * Set the username
 	 */
-	public function setUser( $user ) {
+	public static function setUser($user)
+	{
 		self::$username = $user;
 		// TODO: close/invalidate any open connections
 	}
@@ -78,7 +83,8 @@ class Connection extends \MySQLi {
 	/**
 	 * Set the password
 	 */
-	public function setPassword( $password ) {
+	public static function setPassword($password)
+	{
 		self::$password = $password;
 		// TODO: close/invalidate any open connections
 	}
@@ -86,7 +92,8 @@ class Connection extends \MySQLi {
 	/**
 	 * Set the database schema
 	 */
-	public function setSchema( $schema ) {
+	public static function setSchema($schema)
+	{
 		self::$database = $schema;
 		// TODO: close/invalidate any open connections
 	}
@@ -98,10 +105,11 @@ class Connection extends \MySQLi {
 	 *
 	 * @return Connection
 	 */
-	public function getConnection() {
+	public function getConnection()
+	{
 
 		// create the singleton if not already
-		if ( self::$connection == null ) {
+		if (self::$connection == null) {
 			self::$connection = new Connection();
 		}
 		return self::$connection;
