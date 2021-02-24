@@ -121,6 +121,14 @@ class User
 
 
 	/**
+	 * Get the user id
+	 * @return int
+	 */
+	public function id()
+	{
+		return $this->id;
+	}
+	/**
 	 * Get the username
 	 * @return string
 	 */
@@ -191,22 +199,50 @@ class User
 		$select = 'SELECT * FROM `users` WHERE `username` = "'
 			. $db->escape_string($username) . '";';
 
+		return self::loadUserByQuery($select);
+	}
+
+	/**
+	 * Load a user by id
+	 *
+	 * @param int $userId
+	 * @return mixed
+	 */
+	public static function getUserById(int $userId)
+	{
+		// secure the query by forcing an integer value
+		return self::loadUserByQuery(
+			'SELECT * FROM `users` WHERE `USER_ID` = ' . intval($userId) . ';'
+		);
+	}
+
+	/**
+	 * Execute a single select
+	 *
+	 * @param string $query
+	 * @return User
+	 */
+	protected static function loadUserByQuery(string $select)
+	{
+		// Grab a copy of the database connection
+		$db = Database\Connection::getConnection();
+
 		// confirm the query worked
 		if (($result = $db->query($select)) === false) {
 			// TODO: replace a simple error with an exception
-			return null;
+			throw new Database\Exception('DB Query Failed: ' . $db->error);
 		}
 
 		// confirm the result set size
 		if ($result->num_rows != 1) {
 			// TODO: replace a simple error with an exception
-			return null;
+			throw new Database\Exception('Single Lookup Failed: returned ' . $result->num_rows . ' rows.');
 		}
 
 		// confirm the result object
 		if (($data = $result->fetch_object()) === null) {
 			// TODO: replace a simple error with an exception
-			return null;
+			throw new Database\Exception('Result Fetch Failed: This error shouldn’t have happened.');
 		}
 
 		// convert the resulting object
@@ -219,7 +255,7 @@ class User
 	 * @param object
 	 * @return User
 	 */
-	public function objectForRow($data)
+	public static function objectForRow($data)
 	{
 
 		// Create the appropriate subclass based on the user type
