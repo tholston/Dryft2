@@ -97,8 +97,6 @@ if (!$user || !$user->isCoordinator()) {
 	}
 }
 
-include '../testing_links.html';
-
 ?>
 <h2>User Test Links</h2>
 <ul>
