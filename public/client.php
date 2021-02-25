@@ -80,6 +80,11 @@ elseif(array_key_exists('passwordEdit', $_REQUEST)){
 	</form>';
 
 }
+elseif(array_key_exists('request', $_REQUEST)){
+	header('Location: ' . $linker->urlPath() . 'ride.php');
+	die();
+}
+
 else {
 	//the following updates user stuff before returning to main client page
 
