@@ -5,6 +5,8 @@
  *
  * Handle user CRUD.
  *
+ * The forms on this viewtroller are based on the ["Checkout" example](https://getbootstrap.com/docs/5.0/examples/checkout/) from Bootstrap.
+ *
  * @author Errol Sayre
  */
 
