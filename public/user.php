@@ -98,7 +98,7 @@ if (!$user || !$user->isCoordinator()) {
 	} else {
 		// Present a list of the users in the system
 		$users = User::getUsers();
-?>
+	?>
 		<h1>Existing users</h1>
 		<table class="table table-striped">
 			<thead>
@@ -111,9 +111,7 @@ if (!$user || !$user->isCoordinator()) {
 				</tr>
 			</thead>
 			<tbody>
-				<?php
-				foreach ($users as $item) {
-				?>
+				<?php foreach ($users as $item) { ?>
 					<tr>
 						<td><?= $item->id() ?></td>
 						<td><?= $item->firstName ?></td>
@@ -123,9 +121,7 @@ if (!$user || !$user->isCoordinator()) {
 							<form method="POST" action="user.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
 						</td>
 					</tr>
-				<?php
-				}
-				?>
+				<?php } ?>
 			</tbody>
 		</table>
 <?php
