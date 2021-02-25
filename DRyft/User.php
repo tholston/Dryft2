@@ -211,7 +211,7 @@ class User
 	 * @param string $username
 	 * @return mixed
 	 */
-	public function getUserByName(string $username)
+	public static function getUserByName(string $username)
 	{
 
 		// Grab a copy of the database connection
