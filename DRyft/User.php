@@ -138,6 +138,30 @@ class User
 	}
 
 	/**
+	 * Is the user a driver
+	 */
+	public function isDriver()
+	{
+		if ($this->type == USER_TYPE_DRIVER) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Is the user a client
+	 */
+	public function isClient()
+	{
+		if ($this->type == USER_TYPE_CLIENT) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Is the user a coordinator
 	 */
 	public function isCoordinator()
