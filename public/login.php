@@ -96,7 +96,5 @@ if ($error) {
 </form>
 <?php
 
-include '../testing_links.html';
-
 // add page footer
 include '../footer.html';

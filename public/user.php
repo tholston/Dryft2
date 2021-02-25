@@ -24,15 +24,17 @@ include '../head.html';
 // Output a page title and any other specific head elements
 echo '		<title>Please login | DRyft</title>' . PHP_EOL;
 
-// add page header
-include '../header.html';
+// add page header based on the user's access level
 
 // determine if the user has access to this "viewtroller"
 if (!$user || !$user->isCoordinator()) {
 
+	include '../header.html';
 	// throw an error and exit
 	echo '<h1>Access Denied</h1>';
 } else {
+
+	include '../header-coordinator.html';
 
 	// determine which action we're here to accomplish
 	$action = $_REQUEST[PARAM_ACTION];
@@ -96,18 +98,6 @@ if (!$user || !$user->isCoordinator()) {
 <?php
 	}
 }
-
-include '../testing_links.html';
-
-?>
-<h2>User Test Links</h2>
-<ul>
-	<li><a href="user.php?<?= PARAM_ACTION ?>=<?= ACTION_NEW ?>">Create New</a></li>
-	<li><a href="user.php?<?= PARAM_ACTION ?>=<?= ACTION_CREATE ?>">Create Submit</a></li>
-	<li><a href="user.php?<?= PARAM_ID ?>=1&<?= PARAM_ACTION ?>=<?= ACTION_EDIT ?>">Edit 1</a> <a href="user.php?<?= PARAM_ID ?>=2&<?= PARAM_ACTION ?>=<?= ACTION_EDIT ?>">Edit 2</a></li>
-	<li><a href="user.php?<?= PARAM_ID ?>=2&<?= PARAM_ACTION ?>=<?= ACTION_UPDATE ?>">Edit 2 Submit</a></li>
-</ul>
-<?php
 
 // add page footer
 include '../footer.html';
