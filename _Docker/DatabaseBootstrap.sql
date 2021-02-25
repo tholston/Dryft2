@@ -93,9 +93,3 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `name_first`, `name_middle`, `home_address`, `mailing_address`) VALUES
 (1,	'dryfter',	'Coordinator',	'$2y$10$pO0E.UugyXzgeKHnhuEevu5wIhiXJBal/2DMJ2Z6TwIZRZbL3.A8m',	'Coordinator',	'DRyft',	'',	0,	0);
-
-INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `name_first`, `name_middle`, `home_address`, `mailing_address`) VALUES
-(2,	'driverTest', 'Driver',	'$2y$10$egM0NpoIHRq/sLL41tF2auPOXQjryCZQv.jl4yMOT711LKPXF5FKG',	'Driver','DRyft',	'',	0,	0);
-
-INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `name_first`, `name_middle`, `home_address`, `mailing_address`) VALUES
-(3, 'clientTest', 'Client', '$2y$10$egM0NpoIHRq/sLL41tF2auPOXQjryCZQv.jl4yMOT711LKPXF5FKG', 'Client', 'DRyft','',    0,    0);
