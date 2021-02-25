@@ -82,13 +82,13 @@ if (!$user || !$user->isCoordinator()) {
 			</thead>
 			<tbody>
 				<?php
-				foreach ($users as $user) {
+				foreach ($users as $item) {
 				?>
 					<tr>
-						<td><?= $user->id() ?></td>
-						<td><?= $user->firstName ?></td>
-						<td><?= $user->lastName ?></td>
-						<td><?= $user->username() ?></td>
+						<td><?= $item->id() ?></td>
+						<td><?= $item->firstName ?></td>
+						<td><?= $item->lastName ?></td>
+						<td><?= $item->username() ?></td>
 					</tr>
 				<?php
 				}
