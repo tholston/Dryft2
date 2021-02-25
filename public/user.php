@@ -66,7 +66,34 @@ if (!$user || !$user->isCoordinator()) {
 		echo '<h1>Create a new user</h1>';
 	} else {
 		// Present a list of the users in the system
-		echo '<h1>Existing users</h1>';
+		$users = User::getUsers();
+?>
+		<h1>Existing users</h1>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Username</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				foreach ($users as $user) {
+				?>
+					<tr>
+						<td><?= $user->id() ?></td>
+						<td><?= $user->firstName ?></td>
+						<td><?= $user->lastName ?></td>
+						<td><?= $user->username() ?></td>
+					</tr>
+				<?php
+				}
+				?>
+			</tbody>
+		</table>
+<?php
 	}
 }
 
