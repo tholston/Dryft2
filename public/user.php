@@ -55,8 +55,37 @@ if (!$user || !$user->isCoordinator()) {
 
 	if ($action == ACTION_EDIT) {
 		// display the edit form for the selected user
-		// ensure the user
-		echo '<h1>Edit ' . $selectedUser->firstName . ' ' . $selectedUser->lastName . ' (' . $selectedUser->id() . ')</h1>';
+?>
+		<h1>Edit <?= $selectedUser->firstName ?> <?= $selectedUser->lastName ?> (<?= $selectedUser->id() ?>)</h1>
+		<form method="POST" action="user.php?id=<?= $selectedUser->id() ?>&action=update" class="needs-validation" novalidate>
+			<div class="row g-3">
+				<div class="col-sm-6">
+					<label for="userType" class="form-label">User Type</label>
+					<select class="form-select" id="userType" required="true">
+						<option value="">Choose...</option>
+						<option <?= $selectedUser->isCoordinator() ? "selected" : "" ?>>Coordinator</option>
+						<option <?= $selectedUser->isDriver() ? " selected" : "" ?>>Driver</option>
+						<option <?= $selectedUser->isClient() ? " selected" : "" ?>>Client</option>
+					</select>
+					<div class="invalid-feedback">Please select a valid country.</div>
+				</div>
+				<div class="col-sm-6">
+					<label for="firstName" class="form-label">First name</label>
+					<input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+					<div class="invalid-feedback">Valid first name is required.</div>
+				</div>
+				<div class="col-sm-6">
+					<label for="lastName" class="form-label">Last name</label>
+					<input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+					<div class="invalid-feedback">Valid last name is required.</div>
+				</div>
+			</div>
+			<hr class="my-4">
+			<button class="w-100 btn btn-primary btn-lg" type="submit">Update user</button>
+		</form>
+		<script src="js/form-validation.js"></script>
+
+	<?php
 	} elseif ($action == ACTION_UPDATE) {
 		// load updates for the user from the request
 		echo '<h1>WILL IT UPDATE?</h1>';
@@ -78,6 +107,7 @@ if (!$user || !$user->isCoordinator()) {
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>Username</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -89,6 +119,9 @@ if (!$user || !$user->isCoordinator()) {
 						<td><?= $item->firstName ?></td>
 						<td><?= $item->lastName ?></td>
 						<td><?= $item->username() ?></td>
+						<td>
+							<form method="POST" action="user.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
+						</td>
 					</tr>
 				<?php
 				}
