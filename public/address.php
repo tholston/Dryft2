@@ -41,6 +41,7 @@
     }
 ?>
 
+<!-- This table will print out the information for the coordinator to view and alter any locations stored within the database. -->
 <table>
     <thead>
         <tr>
@@ -138,16 +139,32 @@
         mysqli_query($db, $query);
     }
 
+    /* planned to move functions into an externaladdress.php file so they may be included without printed earlier full table */
+
     //function for external access by other sections of code.
-    function externalaccess($id, $decedit){
-        if($decedit == 0){
-            //if the person simply wishes to access the information
+    //Prints out the information of a location based on the passed location_id.
+    function externalaccessPrint($id){
+        $query = "SELECT * FROM locations WHERE LOCATION_ID='$id'";
+        $result = mysqli_query($db, $query);
+        echo "<table><thead><tr>";
+        echo "<th>latitude</th><th>longitude</th><th>nickname</th><th>line 1</th><th>line 2</th><th>City</th><th>State</th><th>Zip Code</th><th>Edit</th>";
+        echo "</tr></thead><tbody>";
+        while ($row = mysqli_fetch_array($results)){
+            echo "<tr>";
+            echo "<td>" . $row['latitude'] . "</td>";
+            echo "<td>" . $row['longitude'] . "</td>";
+            echo "<td>" . $row['nickname'] . "</td>";
+            echo "<td>" . $row['line1'] . "</td>";
+            echo "<td>" . $row['line2'] . "</td>";
+            echo "<td>" . $row['city'] . "</td>";
+            echo "<td>" . $row['state'] . "</td>";
+            echo "<td>" . $row['zip'] . "</td>";
+            echo "<td> EDIT </td>"; //will be used to call externalaccessUpdate, tbd how
+            echo "</tr>";
         }
-        if($decedit == 1){
-            //if the person accesses information with intent to edit
-        }
-        if($decedit != 0 && $decedit != 1){
-            //navigate back to location
-        }
+    }
+
+    function externalaccessUpdate($id){
+        //will update file information outside of this address.php file/
     }
 ?>
