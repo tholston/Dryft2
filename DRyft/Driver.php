@@ -2,7 +2,7 @@
 
 /**
  * Model driver-specific objects and provide storage/retrieval from the database.
- *
+ * 
  * @author Clay Bellou
  */
 
@@ -53,6 +53,17 @@ class Driver extends User
     public function isAvailable()
     {
         return ($this->isAvailable == "Yes");
+    }
+
+    /**
+     * Toggle is_available for the given driver
+     * @param int $DRIVER_ID (Same as $USER_ID)
+     */
+    public static function toggleIsAvailable(int $DRIVER_ID)
+    {
+        $isAvailable = false;
+        $isAvailable = Driver::getDriverById($DRIVER_ID)->isAvailable();
+        Driver::setIsAvailable($DRIVER_ID, !$isAvailable);
     }
 
     /**
@@ -114,7 +125,7 @@ class Driver extends User
     {
         // collect them all
         return self::loadDriversByQuery(
-            'SELECT * FROM `users`,`driver_attributes` WHERE USER_ID=DRIVER_ID AND `type`=Driver AND is_available="Yes" ORDER BY name_last, name_first, name_middle, USER_ID;'
+            'SELECT * FROM `users`,`driver_attributes` WHERE USER_ID=DRIVER_ID AND `type`="Driver" AND is_available="Yes" ORDER BY name_last, name_first, name_middle, USER_ID;'
         );
     }
 
@@ -145,6 +156,31 @@ class Driver extends User
 
         // convert the resulting object
         return $users;
+    }
+
+    /**
+     * Load a Driver by id
+     *
+     * @param int $driverId (Same as $userId)
+     * @return mixed
+     */
+    public static function getDriverById(int $driverId)
+    {
+        // secure the query by forcing an integer value
+        $drivers = self::loadDriversByQuery(
+            'SELECT * FROM `users`,`driver_attributes` WHERE USER_ID=DRIVER_ID AND `type`="Driver" AND `USER_ID` = ' . intval($driverId) . ';'
+        );
+        // confirm the result set size
+        $count = count($drivers);
+        if ($count > 1) {
+            // We must have just one result
+            throw new Database\Exception('Single Lookup Failed: returned ' . count($drivers) . ' rows.');
+        } elseif (!$count) {
+            // No results found
+            throw new Database\Exception('Single Lookup Failed: no match found.');
+        }
+        //Return first driver it finds.
+        return array_shift($drivers);
     }
 
     /**
