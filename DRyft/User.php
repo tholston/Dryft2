@@ -121,6 +121,24 @@ class User
 
 
 	/**
+	 * Get the firstName
+	 * @return string
+	 */
+	public function firstName()
+	{
+		return $this->firstName;
+	}
+
+	/**
+	 * Get the lastName
+	 * @return string
+	 */
+	public function lastName()
+	{
+		return $this->lastName;
+	}
+
+	/**
 	 * Get the user id
 	 * @return int
 	 */
@@ -135,6 +153,15 @@ class User
 	public function username()
 	{
 		return $this->username;
+	}
+
+	/**
+	 * Get the homeAddress
+	 * @return string
+	 */
+	public function homeAddress()
+	{
+		return $this->homeAddress;
 	}
 
 	/**
