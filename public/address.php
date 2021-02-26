@@ -145,7 +145,7 @@
     //Prints out the information of a location based on the passed location_id.
     function externalaccessPrint($id){
         $query = "SELECT * FROM locations WHERE LOCATION_ID='$id'";
-        $result = mysqli_query($db, $query);
+        $results = mysqli_query($db, $query);
         echo "<table><thead><tr>";
         echo "<th>latitude</th><th>longitude</th><th>nickname</th><th>line 1</th><th>line 2</th><th>City</th><th>State</th><th>Zip Code</th><th>Edit</th>";
         echo "</tr></thead><tbody>";
