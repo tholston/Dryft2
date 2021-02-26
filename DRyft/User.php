@@ -196,28 +196,7 @@ class User
 		if ($this->type == USER_TYPE_COORDINATOR) {
 			return true;
 		}
-		return false;
-	}
-	
-	/**
-	 * Is the user a Client
-	 */
-	public function isClient()
-	{
-		if ($this->type == USER_TYPE_CLIENT) {
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Is the user a Driver
-	 */
-	public function isDriver()
-	{
-		if ($this->type == USER_TYPE_DRIVER) {
-			return true;
-		}
+
 		return false;
 	}
 
