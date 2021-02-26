@@ -139,6 +139,14 @@ class User
 	}
 
 	/**
+	 * Get the user id
+	 * @return int
+	 */
+	public function id()
+	{
+		return $this->id;
+	}
+	/**
 	 * Get the username
 	 * @return string
 	 */
@@ -157,11 +165,11 @@ class User
 	}
 
 	/**
-	 * Is the user a coordinator
+	 * Is the user a driver
 	 */
-	public function isCoordinator()
+	public function isDriver()
 	{
-		if ($this->type == USER_TYPE_COORDINATOR) {
+		if ($this->type == USER_TYPE_DRIVER) {
 			return true;
 		}
 
@@ -174,6 +182,18 @@ class User
 	public function isClient()
 	{
 		if ($this->type == USER_TYPE_CLIENT) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Is the user a coordinator
+	 */
+	public function isCoordinator()
+	{
+		if ($this->type == USER_TYPE_COORDINATOR) {
 			return true;
 		}
 
@@ -221,7 +241,7 @@ class User
 	 * @param string $username
 	 * @return mixed
 	 */
-	public function getUserByName(string $username)
+	public static function getUserByName(string $username)
 	{
 
 		// Grab a copy of the database connection
@@ -230,26 +250,88 @@ class User
 		$select = 'SELECT * FROM `users` WHERE `username` = "'
 			. $db->escape_string($username) . '";';
 
+		return self::loadUserByQuery($select);
+	}
+
+	/**
+	 * Load a user by id
+	 *
+	 * @param int $userId
+	 * @return mixed
+	 */
+	public static function getUserById(int $userId)
+	{
+		// secure the query by forcing an integer value
+		return self::loadUserByQuery(
+			'SELECT * FROM `users` WHERE `USER_ID` = ' . intval($userId) . ';'
+		);
+	}
+
+	/**
+	 * Load all users from the database
+	 *
+	 * @return array
+	 */
+	public static function getUsers()
+	{
+		// collect them all
+		return self::loadUsersByQuery(
+			'SELECT * FROM `users` ORDER BY name_last, name_first, name_middle, USER_ID;'
+		);
+	}
+
+	/**
+	 * Execute a single select
+	 *
+	 * @param string $query
+	 * @return User
+	 */
+	protected static function loadUserByQuery(string $select)
+	{
+		// use the multi-select to load matching users
+		$users = self::loadUsersByQuery($select);
+
+		// confirm the result set size
+		$count = count($users);
+		if ($count > 1) {
+			// We must have just one result
+			throw new Database\Exception('Single Lookup Failed: returned ' . count($users) . ' rows.');
+		} elseif (!$count) {
+			// No results found
+			throw new Database\Exception('Single Lookup Failed: no match found.');
+		}
+
+		// pop off the single result
+		return array_shift($users);
+	}
+
+	/**
+	 * Load multiple users from a query
+	 *
+	 * @param string $query
+	 * @return array
+	 */
+	protected static function loadUsersByQuery(string $select)
+	{
+		// Setup a dummy return value
+		$users = [];
+
+		// Grab a copy of the database connection
+		$db = Database\Connection::getConnection();
+
 		// confirm the query worked
 		if (($result = $db->query($select)) === false) {
 			// TODO: replace a simple error with an exception
-			return null;
+			throw new Database\Exception('DB Query Failed: ' . $db->error);
 		}
 
-		// confirm the result set size
-		if ($result->num_rows != 1) {
-			// TODO: replace a simple error with an exception
-			return null;
-		}
-
-		// confirm the result object
-		if (($data = $result->fetch_object()) === null) {
-			// TODO: replace a simple error with an exception
-			return null;
+		// load and convert each result object
+		while (($data = $result->fetch_object()) !== null) {
+			$users[] = self::objectForRow($data);
 		}
 
 		// convert the resulting object
-		return self::objectForRow($data);
+		return $users;
 	}
 
 	/**
@@ -258,7 +340,7 @@ class User
 	 * @param object
 	 * @return User
 	 */
-	public function objectForRow($data)
+	public static function objectForRow($data)
 	{
 
 		// Create the appropriate subclass based on the user type
