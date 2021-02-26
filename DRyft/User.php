@@ -138,6 +138,30 @@ class User
 	}
 
 	/**
+	 * Is the user a driver
+	 */
+	public function isDriver()
+	{
+		if ($this->type == USER_TYPE_DRIVER) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Is the user a client
+	 */
+	public function isClient()
+	{
+		if ($this->type == USER_TYPE_CLIENT) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Is the user a coordinator
 	 */
 	public function isCoordinator()
@@ -190,7 +214,7 @@ class User
 	 * @param string $username
 	 * @return mixed
 	 */
-	public function getUserByName(string $username)
+	public static function getUserByName(string $username)
 	{
 
 		// Grab a copy of the database connection
@@ -217,6 +241,19 @@ class User
 	}
 
 	/**
+	 * Load all users from the database
+	 *
+	 * @return array
+	 */
+	public static function getUsers()
+	{
+		// collect them all
+		return self::loadUsersByQuery(
+			'SELECT * FROM `users` ORDER BY name_last, name_first, name_middle, USER_ID;'
+		);
+	}
+
+	/**
 	 * Execute a single select
 	 *
 	 * @param string $query
@@ -224,6 +261,34 @@ class User
 	 */
 	protected static function loadUserByQuery(string $select)
 	{
+		// use the multi-select to load matching users
+		$users = self::loadUsersByQuery($select);
+
+		// confirm the result set size
+		$count = count($users);
+		if ($count > 1) {
+			// We must have just one result
+			throw new Database\Exception('Single Lookup Failed: returned ' . count($users) . ' rows.');
+		} elseif (!$count) {
+			// No results found
+			throw new Database\Exception('Single Lookup Failed: no match found.');
+		}
+
+		// pop off the single result
+		return array_shift($users);
+	}
+
+	/**
+	 * Load multiple users from a query
+	 *
+	 * @param string $query
+	 * @return array
+	 */
+	protected static function loadUsersByQuery(string $select)
+	{
+		// Setup a dummy return value
+		$users = [];
+
 		// Grab a copy of the database connection
 		$db = Database\Connection::getConnection();
 
@@ -233,20 +298,13 @@ class User
 			throw new Database\Exception('DB Query Failed: ' . $db->error);
 		}
 
-		// confirm the result set size
-		if ($result->num_rows != 1) {
-			// TODO: replace a simple error with an exception
-			throw new Database\Exception('Single Lookup Failed: returned ' . $result->num_rows . ' rows.');
-		}
-
-		// confirm the result object
-		if (($data = $result->fetch_object()) === null) {
-			// TODO: replace a simple error with an exception
-			throw new Database\Exception('Result Fetch Failed: This error shouldn’t have happened.');
+		// load and convert each result object
+		while (($data = $result->fetch_object()) !== null) {
+			$users[] = self::objectForRow($data);
 		}
 
 		// convert the resulting object
-		return self::objectForRow($data);
+		return $users;
 	}
 
 	/**

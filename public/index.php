@@ -28,7 +28,5 @@ if (!$user) {
 	echo '<h1>Welcome ' . $user->username() . '</h1>';
 }
 
-include '../testing_links.html';
-
 // add page footer
 include '../footer.html';

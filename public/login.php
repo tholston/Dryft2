@@ -17,33 +17,40 @@
  * @author Errol Sayre
  */
 
+namespace DRyft;
+
 require_once('../bootstrap.php');
 
 // determine if there is a session
-$user = DRyft\Session::getSession()->getUser();
+$user = Session::getSession()->getUser();
 
 // determine if a username has been submitted
 if (
 	array_key_exists('user', $_REQUEST) &&
 	array_key_exists('password', $_REQUEST)
 ) {
-	$user = \DRyft\User::getUserByName($_REQUEST['user']);
-
 	// try to validate the provided password
-	if ($user instanceof \DRyft\User && $user->validatePassword($_REQUEST['password'])) {
+	try {
+		$user = User::getUserByName($_REQUEST['user']);
+		if ($user->validatePassword($_REQUEST['password'])) {
 
-		// setup the session
-		DRyft\Session::getSession()->setupSession($user);
-	} else {
+			// setup the session
+			Session::getSession()->setupSession($user);
+		} else {
+			$error = 'Unable to login: incorrect password.';
+			unset($user);
+		}
+	} catch (Database\Exception $e) {
+		$error = 'Unable to locate user: ' . $e->getMessage();
 		unset($user);
 	}
 }
 
 // Setup a shortcut to our application path
-$linker = new DRyft\Linker;
+$linker = new Linker;
 
 if (array_key_exists('logout', $_REQUEST)) {
-	DRyft\Session::destroy();
+	Session::destroy();
 	$message = 'Logged out successfully.';
 } elseif ($user) {
 
@@ -71,6 +78,11 @@ include '../header.html';
 // Give the user the login form
 ?>
 <h1><?= $message ?></h1>
+<?php
+if ($error) {
+	echo '<p class="error">' . $error . '</p>';
+}
+?>
 <form method="POST" action="<?php echo $linker->urlPath(); ?>login.php">
 	<fieldset>
 		<legend>Username</legend>
@@ -83,8 +95,6 @@ include '../header.html';
 	<input type="submit" name="login" value="Login">
 </form>
 <?php
-
-include '../testing_links.html';
 
 // add page footer
 include '../footer.html';
