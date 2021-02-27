@@ -31,10 +31,12 @@ $searchuserid = $user->id();
             $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage='0.0'";
             $results = mysqli_query($db, $search);
             while($row = mysqli_fetch_array($results)){
+                echo "<tr>";
                 echo "<td>" . $row['pickup'] . "</td>";
                 echo "<td>" . $row['dropoff'] . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
+                echo "</tr>";
             }
         ?>
         </tbody>
@@ -64,6 +66,7 @@ $searchuserid = $user->id();
             $search = "SELECT * FROM rides WHERE driver='0'";
             $results = mysqli_query($db, $search);
             while($row = mysqli_fetch_array($results)){
+                echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
                 echo "<td>" . $row['pickup'] . "</td>";
@@ -71,6 +74,7 @@ $searchuserid = $user->id();
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
+                echo "</tr>";
             }
         ?>
         </tbody>
@@ -95,6 +99,7 @@ $searchuserid = $user->id();
             $search = "SELECT * FROM rides WHERE mileage='0.0'";
             $results = mysqli_query($db, $search);
             while($row = mysqli_fetch_array($results)){
+                echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
                 echo "<td>" . $row['pickup'] . "</td>";
@@ -102,6 +107,7 @@ $searchuserid = $user->id();
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
+                echo "</tr>";
             }
         ?>
         </tbody>
