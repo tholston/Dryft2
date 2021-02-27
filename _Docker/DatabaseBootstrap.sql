@@ -92,4 +92,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `name_first`, `name_middle`, `home_address`, `mailing_address`) VALUES
-(1,	'dryfter',	'Coordinator',	'$2y$10$pO0E.UugyXzgeKHnhuEevu5wIhiXJBal/2DMJ2Z6TwIZRZbL3.A8m',	'Coordinator',	'DRyft',	'',	0,	0);
+(0,	'dryfter',	'Coordinator',	'$2y$10$pO0E.UugyXzgeKHnhuEevu5wIhiXJBal/2DMJ2Z6TwIZRZbL3.A8m',	'Coordinator',	'DRyft',	'',	0,	0);

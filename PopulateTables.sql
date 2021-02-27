@@ -10,7 +10,6 @@ INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `nam
 (3, 'clientTest', 'Client', '$2y$10$egM0NpoIHRq/sLL41tF2auPOXQjryCZQv.jl4yMOT711LKPXF5FKG', 'Client', 'DRyft','',    0,    0);
 
 
-
 --Multiple payments to driverTest
 INSERT INTO `driver_payments` (`PAYMENT_ID`, `DRIVER_ID`, `mileage`, `rate`, `amount`, `status`) VALUES
 (0, 2, 10, 15.50, 150, "Paid");
@@ -36,6 +35,11 @@ INSERT INTO `rides` (`RIDE_ID`, `client`, `driver`, `pickup`, `dropoff`, `depart
 --Payment 2 (ride 2)
 INSERT INTO `rides` (`RIDE_ID`, `client`, `driver`, `pickup`, `dropoff`, `departure`,`arrival`,`mileage`) VALUES
 (4, 3, 2, 0, 0, '1000-01-01 00:00:00', '1000-01-01 21:00:00', 5);
+--Unassigned rides
+INSERT INTO `rides` (`RIDE_ID`, `client`, `driver`, `pickup`, `dropoff`, `departure`,`arrival`,`mileage`) VALUES
+(5, 3, 0, 0, 0, '1000-01-01 00:00:00', '1000-01-01 21:00:00', 12);
+INSERT INTO `rides` (`RIDE_ID`, `client`, `driver`, `pickup`, `dropoff`, `departure`,`arrival`,`mileage`) VALUES
+(6, 3, 0, 0, 0, '2000-01-01 00:00:00', '2000-01-01 21:00:00', 17);
 
 -- Entries into payment_rides to connect Example payments and rides.
 INSERT INTO `payment_rides` (`PAYMENT_ID`, `RIDE_ID`) VALUES
