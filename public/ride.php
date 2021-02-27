@@ -45,29 +45,64 @@ $searchuserid = $user->id();
 
     <form method='post' action>{
         <input type="hidden" name="userref" value="<?php echo $searchuserid; ?>">
-        <label for="PickNickn">Location Nickname: </label>
-        <input type="text" name="PickNickn"><br>
-        <input type="text" name="PickLinone"><br>
-        <input type="text" name="PickLintwo"><br>
-        <input type="text" name="PickCit"><br>
-        <input type="text" name="PickStat"><br>
-        <input type="text" name="PickZip"><br>
 
-        <input type="text" name="DropNickn"><br>
-        <input type="text" name="DropLinone"><br>
-        <input type="text" name="DropLintwo"><br>
-        <input type="text" name="DropCit"><br>
-        <input type="text" name="DropStat"><br>
-        <input type="text" name="DropZip"><br>
+        <div>
+            <h5>Pick-up Location Information:</h5>
+            <label for="PickNickn">Address Nickname: </label>
+            <input type="text" name="PickNickn"><br>
+            <label for="PickLinone">Address Line 1: </label>
+            <input type="text" name="PickLinone"><br>
+            <label for="PickLintwo">Address Line 2: </label>
+            <input type="text" name="PickLintwo"><br>
+            <label for="PickCit">Address City: </label>
+            <input type="text" name="PickCit"><br>
+            <label for="PickStat">Address State: </label>
+            <input type="text" name="PickStat"><br>
+            <label for="PickZip">Address Zip Code: </label>
+            <input type="text" name="PickZip"><br>
+        </div>
 
-        <input type="text" name="DeptYear"><br>
-        <input type="text" name="DeptMonth"><br>
-        <input type="text" name="DeptDay"><br>
-        <input type="text" name="DeptHour"><br>
-        <input type="text" name="DeptMinute"><br>
+        <div>
+            <h5>Drop-off Location Information:</h5>
+            <label for="DropNickn">Address Nickname: </label>
+            <input type="text" name="DropNickn"><br>
+            <label for="DropLinone">Address Line 1: </label>
+            <input type="text" name="DropLinone"><br>
+            <label for="DropLintwo">Address Line 2: </label>
+            <input type="text" name="DropLintwo"><br>
+            <label for="DropCit">Address City: </label>
+            <input type="text" name="DropCit"><br>
+            <label for="DropStat">Address State: </label>
+            <input type="text" name="DropStat"><br>
+            <label for="DropZip">Address Zip Code: </label>
+            <input type="text" name="DropZip"><br>
+        </div>
 
-        <input type="text" name="ArriHour"><br>
-        <input type="text" name="ArriMinute"><br>
+        <div>
+            <h5>Pick-up Time Information:</h5>
+            <label for="DeptYear">Appointment Depature - Year: </label>
+            <input type="text" name="DeptYear"><br>
+            <label for="DeptMonth">Appointment Depature - Month: </label>
+            <input type="text" name="DeptMonth"><br>
+            <label for="DeptDay">Appointment Depature - Day: </label>
+            <input type="text" name="DeptDay"><br>
+            <label for="DeptHour">Appointment Depature - Hour (12-hour based): </label>
+            <input type="text" name="DeptHour"><br>
+            <label for="DeptMinute">Appointment Depature - Minute: </label>
+            <input type="text" name="DeptMinute"><br>
+            <label for="DeptAMP">Appointment (AM / PM): </label>
+            <input type="text" name="DeptAMP"><br>
+        </div>
+
+        <div>
+            <h5>Drop-off Time Information:</h5>
+            <label for="ArriHour">Appointment Expected Arrival - Hour: </label>
+            <input type="text" name="ArriHour"><br>
+            <label for="ArriMinute">Appointment Expected Arrival - Minute: </label>
+            <input type="text" name="ArriMinute"><br>
+            <label for="ArriAMP">Appointment (AM / PM): </label>
+            <input type="text" name="ArriAMP"><br>
+        </div>
 
         <button type="submit" name="ridereq" class="btn">Submit Request</button>
     }
