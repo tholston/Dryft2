@@ -160,7 +160,4 @@ else {
 
 
 
-
-
-include '../testing_links.html';
 include '../footer.html';
