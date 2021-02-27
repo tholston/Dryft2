@@ -45,6 +45,31 @@ $searchuserid = $user->id();
 
     <form method='post' action>{
         <input type="hidden" name="userref" value="<?php echo $searchuserid; ?>">
+        <label for="PickNickn">Location Nickname: </label>
+        <input type="text" name="PickNickn"><br>
+        <input type="text" name="PickLinone"><br>
+        <input type="text" name="PickLintwo"><br>
+        <input type="text" name="PickCit"><br>
+        <input type="text" name="PickStat"><br>
+        <input type="text" name="PickZip"><br>
+
+        <input type="text" name="DropNickn"><br>
+        <input type="text" name="DropLinone"><br>
+        <input type="text" name="DropLintwo"><br>
+        <input type="text" name="DropCit"><br>
+        <input type="text" name="DropStat"><br>
+        <input type="text" name="DropZip"><br>
+
+        <input type="text" name="DeptYear"><br>
+        <input type="text" name="DeptMonth"><br>
+        <input type="text" name="DeptDay"><br>
+        <input type="text" name="DeptHour"><br>
+        <input type="text" name="DeptMinute"><br>
+
+        <input type="text" name="ArriHour"><br>
+        <input type="text" name="ArriMinute"><br>
+
+        <button type="submit" name="ridereq" class="btn">Submit Request</button>
     }
 <?php } ?>
 <?php if($user->isCoordinator()){ ?>
