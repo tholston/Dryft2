@@ -7,6 +7,9 @@
  *
  * @author Noah South
  */
+
+    namespace DRyft;
+    require_once("../bootstrap.php");
     $db = \Database\Connection::getConnection();
     $edit_state = false;
 
