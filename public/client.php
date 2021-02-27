@@ -62,26 +62,41 @@ elseif(array_key_exists('info', $_REQUEST)){
 }
 elseif(array_key_exists('history', $_REQUEST)){
 	//displays past rides a client has taken TODO>+++++++++++++++
-	echo '
-	<table style="width:100%" >
-	<tr>
-		<th>Pickup</th>
-		<th>Dropoff</th> 
-		<th>Departure</th>
-		<th>Arrival</th>
-		<th>Driver</th>
-	</tr>
-	<tr>
-		<td>Jill</td>
-		<td>Smith</td> 
-		<td>50</td>
-	</tr>
-	<tr>
-		<td>Eve</td>
-		<td>Jackson</td> 
-		<td>94</td>
-	</tr>
-</table>';
+
+	$clientRides = DRyft\Ride::getRidesByClient($user->id());
+
+	?>
+    <br />
+    <br />
+    <h1>Ride History</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Pickup ID</th>
+                <th>Dropoff ID</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Miles</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($clientRides as $item) {
+                $clientUser = User::getUserById($item->clientID());
+                $clientName = "{$clientUser->firstName()} {$clientUser->lastName()}";
+            ?>
+                <tr>
+                    <td><?= $item->id() ?></td>
+                    <td><?= $item->pickupLocationID() ?></td>
+                    <td><?= $item->dropoffLocationID() ?></td>
+                    <td><?= $item->departureTime() ?></td>
+                    <td><?= $item->arrivalTime() ?></td>
+                    <td><?= $item->mileage() ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+<?php
 }
 elseif(array_key_exists('nameEdit', $_REQUEST)){
 	//displays form to update name and goes back to information page
