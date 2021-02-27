@@ -1,14 +1,13 @@
 <?php
 
 /**
- * Model driver-specific objects and provide storage/retrieval from the database.
+ * Model Ride-specific objects and provide storage/retrieval from the database.
  * 
  * @author Clay Bellou
  */
 
 namespace DRyft;
 
-//  RIDE_ID | client | driver | pickup | dropoff | departure           | arrival             | mileage
 
 class Ride
 {
@@ -68,15 +67,16 @@ class Ride
         $this->driverID             = $driverID;
         $this->pickupLocationID     = $pickupLocationID;
         $this->dropoffLocationID    = $dropoffLocationID;
-        $this->departureTime        = $departureTime;
-        $this->arrivalTime          = $arrivalTime;
-        $this->mileage              = $mileage;
+        $this->departureTime        = strval($departureTime);
+        $this->arrivalTime          = strval($arrivalTime);
+        $this->mileage              = floatval($mileage);
     }
 
     /**
+     * Just named id() to keep with the same format of User object
      * @return int
      */
-    public function rideID()
+    public function id()
     {
         return $this->rideID;
     }
@@ -144,6 +144,21 @@ class Ride
     }
 
     /**
+     * Load all rides from the database
+     *
+     * @param int driverID (Same as userID)
+     * @return array of Ride objects
+     */
+    public static function getRidesByDriver($driverID)
+    {
+        // SELECT * FROM `rides` WHERE driver=2 ORDER BY RIDE_ID DESC;
+        $driverIDInt = intval($driverID);
+        return self::loadRidesByQuery(
+            "SELECT * FROM `rides` WHERE driver={$driverIDInt} ORDER BY RIDE_ID DESC;"
+        );
+    }
+
+    /**
      * Load multiple Rides from a query
      *
      * @param string $query
@@ -193,7 +208,7 @@ class Ride
             // No results found
             throw new Database\Exception('Single Ride Lookup Failed: no match found.');
         }
-        //Return first driver it finds.
+        //Return first ride it finds.
         return array_shift($rides);
     }
 
@@ -201,20 +216,20 @@ class Ride
      * Convert a MySQL row object to a Ride object
      * 
      * @param object
-     * @return Driver
+     * @return Ride
      */
     public static function objectForRow($data)
     {
         // Create the appropriate subclass based on the user type
         return new Ride(
-            $data->rideID,
-            $data->clientID,
-            $data->driverID,
-            $data->pickupLocationID,
-            $data->dropoffLocationID,
-            $data->departureTime,
-            $data->arrivalTime,
-            $data->mileage
+            $data->RIDE_ID,
+            $data->client,
+            $data->driver,
+            $data->pickup,
+            $data->dropoff,
+            strval($data->departure),
+            strval($data->arrival),
+            floatval($data->mileage)
         );
     }
 }

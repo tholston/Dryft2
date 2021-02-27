@@ -50,7 +50,6 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     if ($action == "toggleavailable") {
         Driver::toggleIsAvailable($selectedUser->id());
         echo "<p> Toggled Available status for driver {$selectedUser->id()}</p>";
-        header('Location: driver.php');
     }
     $availableDrivers = Driver::getAvailableDrivers();
     $drivers = Driver::getDrivers();
@@ -130,7 +129,7 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
             <?php } ?>
         </tbody>
     </table>
-<?php
+    <?php
 
 }
 
@@ -139,6 +138,83 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 elseif ($user->isDriver()) {
     echo '<h1>Driver Page.</h1>';
+    //Handle setting driver availability.
+    $action = $_REQUEST[PARAM_ACTION];
+    // determine if a user has been provided
+    $selectedUser = null;
+
+    if ($action == "activatedriver") {
+        Driver::setIsAvailable($user->id(), true);
+        //echo "<p> You are now set as Available to do drives!</p>";
+    } elseif ($action == "deactivatedriver") {
+        Driver::setIsAvailable($user->id(), false);
+        //echo "<p> You are now set as no longer available to do drives.</p>";
+    }
+
+    //Determine if driver is currently already Available or not.
+    $driver = Driver::getDriverById($user->id());
+    $isAvailable = false;
+    if ($driver->isAvailable()) {
+        $isAvailable = true;
+    }
+    //Display a different button depending if they are already set as Available or not.
+    if ($isAvailable) {
+    ?>
+        <h3> You are currently <span style="color:green">Available</span> to do drives! </h3>
+        <p> Press the button below to mark yourself as unavailable when you can no longer do drives.</p>
+        <form method="POST" action="driver.php?action=deactivatedriver">
+            <button type="submit" class="btn btn-sm btn-primary">Become Unavailable (Clock out)</button>
+        </form>
+
+    <?php
+    } else {
+    ?>
+        <h3> You are currently <span style="color:red">Not Available</span> to do drives! </h3>
+        <p> Whenever you are ready, Press the button below to mark yourself as available!</p>
+        <form method="POST" action="driver.php?action=activatedriver">
+            <button type="submit" class="btn btn-sm btn-primary">Become Available (Clock in)</button>
+        </form>
+    <?php
+    }
+
+    $driversRides = Ride::getRidesByDriver($user->id());
+    ?>
+    <br />
+    <br />
+    <h1>Drive History.</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client ID</th>
+                <th>Client Name</th>
+                <th>Pickup ID</th>
+                <th>Dropoff ID</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Miles</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($driversRides as $item) {
+                $clientUser = User::getUserById($item->clientID());
+                $clientName = "{$clientUser->firstName()} {$clientUser->lastName()}";
+            ?>
+                <tr>
+                    <td><?= $item->id() ?></td>
+                    <td><?= $item->clientID() ?></td>
+                    <td><?= $clientName ?></td>
+                    <td><?= $item->pickupLocationID() ?></td>
+                    <td><?= $item->dropoffLocationID() ?></td>
+                    <td><?= $item->departureTime() ?></td>
+                    <td><?= $item->arrivalTime() ?></td>
+                    <td><?= $item->mileage() ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+<?php
+
 }
 
 
