@@ -216,7 +216,7 @@ class Payment
     }
 
     /**
-     * Creates entry in payment_rides to link the finished ride to a driver's payment.
+     * Creates entry in payment_rides to link the finished ride to a driver's payment. (Get's the driver from the rideID itself!)
      * Automatically grabs the first unpaid payment it finds, or creates a new one if none exist.
      * Also calculates the new milage and amount (ASSUMES OLD TOTALS WERE CORRECT. It does NOT re-calculate from ALL rides).
      * Uses rate * milage to calculate amount (though that can be changed)
