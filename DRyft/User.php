@@ -102,9 +102,9 @@ class User
 	 * @return DRyft\User
 	 */
 	public function __construct(
-		string $userName,
-		string $lastName,
-		string $firstName,
+		string $userName = '',
+		string $lastName = '',
+		string $firstName = '',
 		string $middleName = '',
 		string $type = 'Client',
 		int $userId = 0,
@@ -120,23 +120,6 @@ class User
 	}
 
 
-	/**
-	 * Get the firstName
-	 * @return string
-	 */
-	public function firstName()
-	{
-		return $this->firstName;
-	}
-
-	/**
-	 * Get the lastName
-	 * @return string
-	 */
-	public function lastName()
-	{
-		return $this->lastName;
-	}
 
 	/**
 	 * Get the user id
