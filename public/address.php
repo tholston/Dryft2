@@ -11,6 +11,9 @@
     namespace DRyft;
     require_once("../bootstrap.php");
     $db = Database\Connection::getConnection();
+    $user = Session::getSession()->getUser();
+    include '../head.html';
+    include '../header.html';
     $edit_state = false;
 
     if (isset($_GET['edit'])){
@@ -46,72 +49,74 @@
 ?>
 
 <!-- This table will print out the information for the coordinator to view and alter any locations stored within the database. -->
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>latitude</th>
-            <th>longitude</th>
-            <th>nickname</th>
-            <th>line 1</th>
-            <th>line 2</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip Code</th>
-            <th colspan="2">CRUD ACTION</th>
-        </tr>
-    </thead>
-    <tbody>
+<?php if ($user->isCoordinator){ ?>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>latitude</th>
+                <th>longitude</th>
+                <th>nickname</th>
+                <th>line 1</th>
+                <th>line 2</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip Code</th>
+                <th colspan="2">CRUD ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
         <?php
             $query = "SELECT * FROM locations;";
             $results = mysqli_query($db, $query);
             while ($row = mysqli_fetch_array($results)){
-        ?>
-            <tr>
-                <td><?php echo $row['LOCATION_ID'];?></td>
-                <td><?php echo $row['latitude'];?></td>
-                <td><?php echo $row['longitude'];?></td>
-                <td><?php echo $row['nickname'];?></td>
-                <td><?php echo $row['line1'];?></td>
-                <td><?php echo $row['line2'];?></td>
-                <td><?php echo $row['city'];?></td>
-                <td><?php echo $row['state'];?></td>
-                <td><?php echo $row['zip'];?></td>
-                <td><a href="address.php?edit=<?php echo $row['LOCATION_ID'] ?>">EDIT</a></td>
-                <td><a href="#">DELETE</a></td>
-            </tr>
-        <?php } ?>
-    </tbody>
-</table>
+            ?>
+                <tr>
+                    <td><?php echo $row['LOCATION_ID'];?></td>
+                    <td><?php echo $row['latitude'];?></td>
+                    <td><?php echo $row['longitude'];?></td>
+                    <td><?php echo $row['nickname'];?></td>
+                    <td><?php echo $row['line1'];?></td>
+                    <td><?php echo $row['line2'];?></td>
+                    <td><?php echo $row['city'];?></td>
+                    <td><?php echo $row['state'];?></td>
+                    <td><?php echo $row['zip'];?></td>
+                    <td><a href="address.php?edit=<?php echo $row['LOCATION_ID'] ?>">EDIT</a></td>
+                    <td><a href="#">DELETE</a></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
 
-<div>
-    <h3>Create Entry</h3>
-    <form method="post" action="addressexternal.php">
-        <input type="hidden" id="id" name="id" value="<?php echo $id; ?>">
-        <label for="Lati">Latitude: </label>
-        <input type="text" id="Lati" name="Lati" value="<?php echo $Lati; ?>" required><br>
-        <label for="Longi">Longitude: </label>
-        <input type="text" id="Longi" name="Longi" value="<?php echo $Longi; ?>" required><br>
-        <label for="Nickn">Nickname: </label>
-        <input type="text" id="Nickn" name="Nickn" value="<?php echo $Nickn; ?>" required><br>
-        <label for="Linone">Line 1: </label>
-        <input type="text" id="Linone" name="Linone" value="<?php echo $Linone; ?>" required><br>
-        <label for="Lintwo">Line 2: </label>
-        <input type="text" id="Lintwo" name="Lintwo" value="<?php echo $Lintwo; ?>" required><br>
-        <label for="Cit">City: </label>
-        <input type="text" id="Cit" name="Cit" value="<?php echo $Cit; ?>" required><br>
-        <label for="Stat">State: </label>
-        <input type="text" id="Stat" name="Stat" value="<?php echo $Stat; ?>" required><br>
-        <label for="Zipc">Zipcode: </label>
-        <input type="text" id="Zipc" name="Zipc" value="<?php echo $Zipc; ?>" required><br>
-        <?php if ($edit_state == false): ?>
-            <button type="submit" name="addLoc" class="btn">Add Entry</button>
-        <?php else: ?>
-            <button type="submit" name="alter" class="btn">Update Entry</button>
-            <button name="unselect" class="btn"><a href="address.php?edit=<?php echo NULL ?>">Unselect</a></button>
-        <?php endif ?>
-    </form>
-</div>
+    <div>
+        <h3>Create Entry</h3>
+        <form method="post" action="addressexternal.php">
+            <input type="hidden" id="id" name="id" value="<?php echo $id; ?>">
+            <label for="Lati">Latitude: </label>
+            <input type="text" id="Lati" name="Lati" value="<?php echo $Lati; ?>" required><br>
+            <label for="Longi">Longitude: </label>
+            <input type="text" id="Longi" name="Longi" value="<?php echo $Longi; ?>" required><br>
+            <label for="Nickn">Nickname: </label>
+            <input type="text" id="Nickn" name="Nickn" value="<?php echo $Nickn; ?>" required><br>
+            <label for="Linone">Line 1: </label>
+            <input type="text" id="Linone" name="Linone" value="<?php echo $Linone; ?>" required><br>
+            <label for="Lintwo">Line 2: </label>
+            <input type="text" id="Lintwo" name="Lintwo" value="<?php echo $Lintwo; ?>" required><br>
+            <label for="Cit">City: </label>
+            <input type="text" id="Cit" name="Cit" value="<?php echo $Cit; ?>" required><br>
+            <label for="Stat">State: </label>
+            <input type="text" id="Stat" name="Stat" value="<?php echo $Stat; ?>" required><br>
+            <label for="Zipc">Zipcode: </label>
+            <input type="text" id="Zipc" name="Zipc" value="<?php echo $Zipc; ?>" required><br>
+            <?php if ($edit_state == false): ?>
+                <button type="submit" name="addLoc" class="btn">Add Entry</button>
+            <?php else: ?>
+                <button type="submit" name="alter" class="btn">Update Entry</button>
+                <button name="unselect" class="btn"><a href="address.php?edit=<?php echo NULL ?>">Unselect</a></button>
+            <?php endif ?>
+        </form>
+    </div>
+<?php } ?>
 
 <?php
     

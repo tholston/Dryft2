@@ -12,6 +12,8 @@ namespace DRyft;
 require_once("../bootstrap.php");
 $db = Database\Connection::getConnection();
 $user = Session::getSession()->getUser();
+include '../head.html';
+include '../header.html';
 $searchuserid = $user->id();
 ?>
 
