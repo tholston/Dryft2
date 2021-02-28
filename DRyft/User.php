@@ -68,6 +68,18 @@ class User
 	public $middleName;
 
 	/**
+	 * Email address
+	 * @type string
+	 */
+	public $email;
+
+	/**
+	 * Phone number
+	 * @type string
+	 */
+	public $phone;
+
+	/**
 	 * Home address
 	 *
 	 * Home address instance.
