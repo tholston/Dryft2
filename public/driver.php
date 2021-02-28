@@ -18,7 +18,6 @@
 namespace DRyft;
 
 require_once('../bootstrap.php');
-//require_once('../DRyft/User.php');
 
 $user = Session::getSession()->getUser();
 include '../head.html';
@@ -47,90 +46,123 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
             $action = ACTION_ERROR;
         }
     }
-    if ($action == "toggleavailable") {
-        Driver::toggleIsAvailable($selectedUser->id());
-        echo "<p> Toggled Available status for driver {$selectedUser->id()}</p>";
-    }
-    $availableDrivers = Driver::getAvailableDrivers();
-    $drivers = Driver::getDrivers();
 
+    if ($action == "edit") {
+        //Display edit page, so coordinator can edit the driver-specific attributes about a Driver type user.
+        //Currently only changes the rate.
+        $driver = null;
+        if (array_key_exists(PARAM_ID, $_REQUEST)) {
+            try {
+                $driver = Driver::getDriverById(intval($_REQUEST[PARAM_ID]));
+            } catch (Database\Exception $e) {
+                // if no user was found display the error and drop out with a dummy action
+                echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[PARAM_ID]) . '</h1>';
+                echo '<p>' . $e->getMessage() . '</p>';
+                $action = ACTION_ERROR;
+            }
+            echo "<h1> Edit Rate for {$driver->firstName()} {$driver->lastName()} (id={$driver->id()})</h1>"
 ?>
+            <form method="post" action="driver.php?id=<?= $driver->id() ?>&action=setrate">
+                <label for="rate">Rate: </label>
+                <input type="text" id="rate" name="rate" value="<?= $driver->rate() ?>" required>
+                <button type="submit" class="btn btn-sm btn-primary">Click to confirm new Rate for Driver</button>
+            </form>
+        <?php
+        } else {
+            echo '<h1>Error, id was not set in request!</h1>';
+        }
+    } else {
+        //Display normal coordinator page
+        if ($action == "toggleavailable") {
+            Driver::toggleIsAvailable($selectedUser->id());
+            echo "<p> Toggled Available status for driver {$selectedUser->id()}</p>";
+        } elseif ($action == "setrate") {
+            //Sent from the edit page, will change the rate for the target driver.
+            $targetDriverID = $selectedUser->id();
+            $newRate = floatval($_POST["rate"]);
+            Driver::setRate($targetDriverID, $newRate);
+            echo "<p> Set new rate of {$newRate} for driver {$selectedUser->id()}</p>";
+        }
+        $availableDrivers = Driver::getAvailableDrivers();
+        $drivers = Driver::getDrivers();
 
-    <br />
-    <br />
-    <h1>Available Drivers</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Username</th>
-                <th>Rate</th>
-                <th>Actions</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($availableDrivers as $item) {
-            ?>
+        ?>
+
+        <br />
+        <br />
+        <h1>Available Drivers</h1>
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td><?= $item->id() ?></td>
-                    <td><?= $item->firstName ?> <?= $item->lastName ?></td>
-                    <td><?= $item->username() ?></td>
-                    <td><?= $item->rate() ?></td>
-                    <td>
-                        <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=toggleavailable"><button type="submit" class="btn btn-sm btn-primary">Toggle Available</button></form>
-                    </td>
-                    <td>
-                        <form method="POST" action="user.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
-                    </td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Rate</th>
+                    <th>Actions</th>
+                    <th></th>
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($availableDrivers as $item) {
+                ?>
+                    <tr>
+                        <td><?= $item->id() ?></td>
+                        <td><?= $item->firstName ?> <?= $item->lastName ?></td>
+                        <td><?= $item->username() ?></td>
+                        <td><?= $item->rate() ?></td>
+                        <td>
+                            <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=toggleavailable"><button type="submit" class="btn btn-sm btn-primary">Toggle Available</button></form>
+                        </td>
+                        <td>
+                            <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
 
 
-    <br />
-    <br />
-    <h1>All Drivers</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Username</th>
-                <th>Rate</th>
-                <th>Available?</th>
-                <th>Actions</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($drivers as $item) {
-                $availible = "No";
-                $bgColor = "color:red";
-                if ($item->isAvailable()) {
-                    $availible = "Yes";
-                    $bgColor = "color:green";
-                } ?>
+        <br />
+        <br />
+        <h1>All Drivers</h1>
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td><?= $item->id() ?></td>
-                    <td><?= $item->firstName ?> <?= $item->lastName ?></td>
-                    <td><?= $item->username() ?></td>
-                    <td><?= $item->rate() ?></td>
-                    <td style="<?= $bgColor ?>"><?= $availible ?></td>
-                    <td>
-                        <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=toggleavailable"><button type="submit" class="btn btn-sm btn-primary">Toggle Available</button></form>
-                    </td>
-                    <td>
-                        <form method="POST" action="user.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
-                    </td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Rate</th>
+                    <th>Available?</th>
+                    <th>Actions</th>
+                    <th></th>
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($drivers as $item) {
+                    $availible = "No";
+                    $bgColor = "color:red";
+                    if ($item->isAvailable()) {
+                        $availible = "Yes";
+                        $bgColor = "color:green";
+                    } ?>
+                    <tr>
+                        <td><?= $item->id() ?></td>
+                        <td><?= $item->firstName ?> <?= $item->lastName ?></td>
+                        <td><?= $item->username() ?></td>
+                        <td><?= $item->rate() ?></td>
+                        <td style="<?= $bgColor ?>"><?= $availible ?></td>
+                        <td>
+                            <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=toggleavailable"><button type="submit" class="btn btn-sm btn-primary">Toggle Available</button></form>
+                        </td>
+                        <td>
+                            <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
     <?php
-
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,10 +177,12 @@ elseif ($user->isDriver()) {
 
     if ($action == "activatedriver") {
         Driver::setIsAvailable($user->id(), true);
-        //echo "<p> You are now set as Available to do drives!</p>";
+        header('Location: driver.php');
+        die();
     } elseif ($action == "deactivatedriver") {
         Driver::setIsAvailable($user->id(), false);
-        //echo "<p> You are now set as no longer available to do drives.</p>";
+        header('Location: driver.php');
+        die();
     }
 
     //Determine if driver is currently already Available or not.
@@ -164,6 +198,7 @@ elseif ($user->isDriver()) {
         <p> Press the button below to mark yourself as unavailable when you can no longer do drives.</p>
         <form method="POST" action="driver.php?action=deactivatedriver">
             <button type="submit" class="btn btn-sm btn-primary">Become Unavailable (Clock out)</button>
+            <input style="float:right" type="submit" name="request" class="button" value="View All Payments" formaction="payments.php" />
         </form>
 
     <?php
@@ -173,10 +208,57 @@ elseif ($user->isDriver()) {
         <p> Whenever you are ready, Press the button below to mark yourself as available!</p>
         <form method="POST" action="driver.php?action=activatedriver">
             <button type="submit" class="btn btn-sm btn-primary">Become Available (Clock in)</button>
+            <input style="float:right" type="submit" name="request" class="button" value="View All Payments" formaction="payments.php" />
         </form>
     <?php
     }
 
+    ?>
+
+
+
+    <?php
+    //Show all currently unassigned rides
+    //TODO possibly allow drivers to claim later, or tell them to email/text/message Coordinator.
+    $unassignedRides = Ride::getUnassignedRides();
+    ?>
+    <br />
+    <br />
+    <h1>Unassigned rides.</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client ID</th>
+                <th>Client Name</th>
+                <th>Pickup ID</th>
+                <th>Dropoff ID</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Miles</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($unassignedRides as $item) {
+                $clientUser = User::getUserById($item->clientID());
+                $clientName = "{$clientUser->firstName()} {$clientUser->lastName()}";
+            ?>
+                <tr>
+                    <td><?= $item->id() ?></td>
+                    <td><?= $item->clientID() ?></td>
+                    <td><?= $clientName ?></td>
+                    <td><?= $item->pickupLocationID() ?></td>
+                    <td><?= $item->dropoffLocationID() ?></td>
+                    <td><?= $item->departureTime() ?></td>
+                    <td><?= $item->arrivalTime() ?></td>
+                    <td><?= $item->mileage() ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    <?php
+
+    //Display full ride history of the Driver viewing the page.
     $driversRides = Ride::getRidesByDriver($user->id());
     ?>
     <br />
