@@ -22,7 +22,7 @@ $searchuserid = $user->id();
     /* validates user client status to display ride creation form */
     if($user->isClient()){ 
 ?>
-    <h3>Current Ride Requests for <?php echo $user->firstname() . $user->lastname(); ?></h3>
+    <h3>Current Ride Requests for <?php echo $user->firstName . $user->lastName; ?></h3>
     <table>
         <thead>
             <tr>
