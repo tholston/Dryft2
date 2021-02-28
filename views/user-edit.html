@@ -20,6 +20,11 @@
 								<div class="invalid-feedback">Valid username is required. Please note only alphanumeric values are permitted.</div>
 							</div>
 						</div>
+						<div class="col-sm-4">
+							<label for="password" class="form-label">Password</label>
+							<input type="text" class="form-control" id="password" placeholder="" value="" pattern=".{8,}">
+							<div class="invalid-feedback">Password is not required, only provide if changing. Must be at least eight characters.</div>
+						</div>
 					</div>
 					<hr class="my-4">
 					<div class="row g-3">
@@ -29,9 +34,42 @@
 							<div class="invalid-feedback">First name is required.</div>
 						</div>
 						<div class="col-sm-4">
+							<label for="middleName" class="form-label">Middle name</label>
+							<input type="text" class="form-control" id="middleName" placeholder="" value="<?= $selectedUser->middleName ?>">
+						</div>
+						<div class="col-sm-4">
 							<label for="lastName" class="form-label">Last name</label>
 							<input type="text" class="form-control" id="lastName" placeholder="" value="<?= $selectedUser->lastName ?>" required="">
 							<div class="invalid-feedback">Last name is required.</div>
+						</div>
+					</div>
+					<hr class="my-4">
+					<div class="row g-3">
+						<div class="col-sm-4">
+							<label for="email" class="form-label">Email</label>
+							<input type="text" class="form-control" id="email" placeholder="" value="<?= $selectedUser->email ?>" required="" pattern="\w+@\w+\.\w{2,3}">
+							<div class="invalid-feedback">Email address is required.</div>
+						</div>
+						<div class="col-sm-4">
+							<label for="phone" class="form-label">Phone</label>
+							<input type="text" class="form-control" id="phone" placeholder="123-456-7890" value="<?= $selectedUser->phone ?>" pattern="\d{3}-\d{3}-\d{4}">
+						</div>
+					</div>
+					<hr class="my-4">
+					<div class="row g-3">
+						<div class="col-sm-5">
+							<label for="homeAddress" class="form-label">Home Address</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="homeAddress" placeholder="" value="<?= $selectedUser->homeAddress() ?>">
+								<a class="btn btn-secondary" href="address.php?id=<? $selectedUser->homeAddress()->id() ?>&action=edit">Edit</a>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<label for="mailingAddress" class="form-label">Mailing Address</label>
+							<div class="input-group has-validation">
+								<input type="text" class="form-control" id="mailingAddress" placeholder="" value="<?= $selectedUser->mailingAddress() ?>">
+								<a class="btn btn-secondary" href="address.php?id=<? $selectedUser->mailingAddress()->id() ?>&action=edit">Edit</a>
+							</div>
 						</div>
 					</div>
 					<hr class="my-4">
