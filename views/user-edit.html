@@ -57,14 +57,14 @@
 					</div>
 					<hr class="my-4">
 					<div class="row g-3">
-						<div class="col-sm-5">
+						<div class="col-sm-6">
 							<label for="homeAddress" class="form-label">Home Address</label>
 							<div class="input-group">
 								<input type="text" class="form-control" id="homeAddress" placeholder="" value="<?= $selectedUser->homeAddress() ?>">
 								<a class="btn btn-secondary" href="address.php?id=<? $selectedUser->homeAddress()->id() ?>&action=edit">Edit</a>
 							</div>
 						</div>
-						<div class="col-sm-5">
+						<div class="col-sm-6">
 							<label for="mailingAddress" class="form-label">Mailing Address</label>
 							<div class="input-group has-validation">
 								<input type="text" class="form-control" id="mailingAddress" placeholder="" value="<?= $selectedUser->mailingAddress() ?>">
