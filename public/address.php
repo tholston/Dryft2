@@ -49,7 +49,7 @@
 ?>
 
 <!-- This table will print out the information for the coordinator to view and alter any locations stored within the database. -->
-<?php if ($user->isCoordinator){ ?>
+<?php if ($user->isCoordinator()){ ?>
     <table>
         <thead>
             <tr>
