@@ -151,15 +151,6 @@ class User
 	}
 
 	/**
-	 * Get the homeAddress
-	 * @return string
-	 */
-	public function homeAddress()
-	{
-		return $this->homeAddress;
-	}
-
-	/**
 	 * Is the user a driver
 	 */
 	public function isDriver()
@@ -214,6 +205,40 @@ class User
 	public function validatePassword(string $password)
 	{
 		return password_verify($password, $this->passwordHash);
+	}
+
+	/**
+	 * Lazy-init the home address
+	 *
+	 * @return DRyft\Address
+	 */
+	public function homeAddress()
+	{
+		if (!$this->homeAddress instanceof Address) {
+			try {
+				$this->homeAddress = Address::getAddressForId(intval($this->homeAddress));
+			} catch (Database\Exception $e) {
+				$this->homeAddress = new Address();
+			}
+		}
+		return $this->homeAddress;
+	}
+
+	/**
+	 * Lazy-init the mailing address
+	 *
+	 * @return DRyft\Address
+	 */
+	public function mailingAddress()
+	{
+		if (!$this->mailingAddress instanceof Address) {
+			try {
+				$this->mailingAddress = Address::getAddressForId(intval($this->mailingAddress));
+			} catch (Database\Exception $e) {
+				$this->mailingAddress = new Address();
+			}
+		}
+		return $this->mailingAddress;
 	}
 
 
