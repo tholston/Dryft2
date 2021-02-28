@@ -11,7 +11,7 @@ CREATE TABLE `driver_attributes` (
   `rate` decimal(5,2) unsigned NOT NULL DEFAULT 0.00,
   `is_available` enum('Yes','No') NOT NULL DEFAULT 'No',
   PRIMARY KEY (`DRIVER_ID`),
-  CONSTRAINT `driver_attributes_ibfk_1` FOREIGN KEY (`DRIVER_ID`) REFERENCES `users` (`USER_ID`) ON DELETE NO ACTION
+  CONSTRAINT `driver_attributes_ibfk_2` FOREIGN KEY (`DRIVER_ID`) REFERENCES `users` (`USER_ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 
