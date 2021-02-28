@@ -32,8 +32,8 @@ CREATE TABLE `driver_payments` (
 DROP TABLE IF EXISTS `locations`;
 CREATE TABLE `locations` (
   `LOCATION_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `latitude` decimal(9,6) NOT NULL,
-  `longitude` decimal(9,6) NOT NULL,
+  `latitude` decimal(9,6) DEFAULT NULL,
+  `longitude` decimal(9,6) DEFAULT NULL,
   `nickname` varchar(60) NOT NULL,
   `line1` varchar(60) NOT NULL,
   `line2` varchar(60) NOT NULL,
@@ -59,7 +59,7 @@ DROP TABLE IF EXISTS `rides`;
 CREATE TABLE `rides` (
   `RIDE_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `client` int(10) unsigned NOT NULL,
-  `driver` int(10) unsigned NOT NULL,
+  `driver` int(10) unsigned DEFAULT NULL,
   `pickup` int(10) unsigned NOT NULL,
   `dropoff` int(10) unsigned NOT NULL,
   `departure` datetime NOT NULL,
@@ -83,13 +83,15 @@ CREATE TABLE `users` (
   `username` varchar(40) NOT NULL,
   `type` enum('Coordinator','Driver','Client') NOT NULL DEFAULT 'Client',
   `pw_hash` varchar(255) NOT NULL,
-  `name_last` varchar(40) NOT NULL,
-  `name_first` varchar(40) NOT NULL,
-  `name_middle` varchar(40) NOT NULL,
-  `home_address` int(10) unsigned NOT NULL,
-  `mailing_address` int(10) unsigned NOT NULL,
+  `name_last` varchar(40) DEFAULT NULL,
+  `name_first` varchar(40) DEFAULT NULL,
+  `name_middle` varchar(40) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `home_address` int(10) unsigned DEFAULT NULL,
+  `mailing_address` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
-INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `name_first`, `name_middle`, `home_address`, `mailing_address`) VALUES
-(0,	'dryfter',	'Coordinator',	'$2y$10$pO0E.UugyXzgeKHnhuEevu5wIhiXJBal/2DMJ2Z6TwIZRZbL3.A8m',	'Coordinator',	'DRyft',	'',	0,	0);
+INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `name_first`, `name_middle`, `email`, `phone`, `home_address`, `mailing_address`) VALUES
+(1,	'dryfter',	'Coordinator',	'$2y$10$pO0E.UugyXzgeKHnhuEevu5wIhiXJBal/2DMJ2Z6TwIZRZbL3.A8m',	'Coordinator',	'DRyft',	'',	'',	NULL,	0,	0);
