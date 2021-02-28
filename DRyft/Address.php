@@ -27,7 +27,7 @@ class Address
 		string $linone = '',
 		string $lintwo = '',
 		string $cit = '',
-		string $stat = 'Client',
+		string $stat = '',
 		string $zipc = ''
 	) {
 		$this->id           = $locaid;
@@ -73,19 +73,24 @@ class Address
 	{
 		// TODO: assemble the properties to the address
 		return $this->line1 . ', ' . $this->city . ', ' . $this->state . ', ' . $this->zip;
-		return '123 Main Street, City, ST 12345';
+		//return '123 Main Street, City, ST 12345';
 	}
 
 	public function save()
 	{
 		// insert/update the record in the database
 		// TODO: build this out
+		$db = Database\Connection::getConnection();
+
 		return false;
 	}
 
 	public static function getAddressForId(int $addressId)
 	{
 		// TODO: build this out
-		return new Address();
+		$db = Database\Connection::getConnection();
+
+		$select = "SELECT * FROM locations WHERE LOCATION_ID='$addressID'";
+		return mysqli_query($db, $select);
 	}
 }

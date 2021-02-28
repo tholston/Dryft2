@@ -110,6 +110,64 @@ $searchuserid = $user->id();
     </form>
 <?php } ?>
 <?php if($user->isCoordinator()){ ?>
+
+    <?php
+        $select_state_accept = false;
+        $select_state_finish = false;
+
+        if (isset($_GET['assign'])){
+            $Aid = $_GET['assign'];
+            $select_state_accept = true;
+            $Aselect = "SELECT * FROM rides WHERE RIDE_ID='$Aid'";
+            $Arec = mysqli_query($db, $Aselect);
+            $Arecord = mysqli_fetch_array($Arec);
+            $Aclient = $Arecord['client'];
+            $Adriver = $Arecord['driver'];
+            $Apickup = $Arecord['pickup'];
+            $Adropoff = $Arecord['pickup'];
+            $Adeparture = $Arecord['departure'];
+            $Aarrival = $Arecord['arrival'];
+            $Amileage = $Arecord['mileage'];
+        }
+        else{
+            $select_state_accept = false;
+            $Aid = NULL;
+            $Aclient = NULL;
+            $Adriver = NULL;
+            $Apickup = NULL;
+            $Adropoff = NULL;
+            $Adeparture = NULL;
+            $Aarrival = NULL;
+            $Amileage = NULL;
+        }
+
+        if (isset($_GET['finish'])){
+            $Bid = $_GET['finish'];
+            $select_state_finish = true;
+            $Bselect = "SELECT * FROM rides WHERE RIDE_ID='$Bid'";
+            $Brec = mysqli_query($db, $Bselect);
+            $Brecord = mysqli_fetch_array($Brec);
+            $Bclient = $Brecord['client'];
+            $Bdriver = $Brecord['driver'];
+            $Bpickup = $Brecord['pickup'];
+            $Bdropoff = $Brecord['pickup'];
+            $Bdeparture = $Brecord['departure'];
+            $Barrival = $Brecord['arrival'];
+            $Bmileage = $Brecord['mileage'];
+        }
+        else{
+            $select_state_accept = false;
+            $Bid = NULL;
+            $Bclient = NULL;
+            $Bdriver = NULL;
+            $Bpickup = NULL;
+            $Bdropoff = NULL;
+            $Bdeparture = NULL;
+            $Barrival = NULL;
+            $Bmileage = NULL;
+        }
+    ?>
+
     <h3>Unaccepted Ride Requests</h3>
     <table>
         <thead>
@@ -121,6 +179,7 @@ $searchuserid = $user->id();
                 <th>Departure Time</th>
                 <th>Arrival Time</th>
                 <th>Mileage</th>
+                <th colspan="2">Assign Driver</th>
             </tr>
         </thead>
         <tbody>
@@ -130,18 +189,30 @@ $searchuserid = $user->id();
             while($row = mysqli_fetch_array($results)){
                 echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
-                echo "<td>" . $row['driver'] . "</td>";
+                if($select_state_accept == true && $Aid == $row['RIDE_ID']){
+                    echo "<td><form action='ride.php'>";
+                    echo "<input type='number' name='driveassign'>";
+                    echo "<input type='hidden' name='id' value='" . $row['RIDE_ID'] . "'>";
+                    echo "<button type='submit' name='driverassignment' class='btn'>Accept</button>";
+                    echo "</form></td>";
+                }
+                else{
+                    echo "<td>" . $row['driver'] . "</td>";
+                }
                 echo "<td>" . $row['pickup'] . "</td>";
                 echo "<td>" . $row['dropoff'] . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
+                echo "<td><a href='ride.php?assign=" . $row['RIDE_ID'] . "'>Select</a></td>";
+                if ($select_state_accept == true && $Aid == $row['RIDE_ID']){
+                    echo "<td><a href='ride.php?assign=" . NULL . "'>Deselect</a></td>";
+                }          
                 echo "</tr>";
             }
         ?>
         </tbody>
     </table>
-    <br>
     
     <h3>Accepted - Unfinished</h3>
     <table>
@@ -154,11 +225,12 @@ $searchuserid = $user->id();
                 <th>Departure Time</th>
                 <th>Arrival Time</th>
                 <th>Mileage</th>
+                <th colspan="2">Finish Drive</th>
             </tr>
         </thead>
         <tbody>
         <?php
-            $search = "SELECT * FROM rides WHERE mileage='0.0'";
+            $search = "SELECT * FROM rides WHERE mileage='0.0' AND driver!='0'";
             $results = mysqli_query($db, $search);
             while($row = mysqli_fetch_array($results)){
                 echo "<tr>";
@@ -168,10 +240,45 @@ $searchuserid = $user->id();
                 echo "<td>" . $row['dropoff'] . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
-                echo "<td>" . $row['mileage'] . "</td>";
+                if($select_state_finish == true && $Bid == $row['RIDE_ID']){
+                    echo "<td><form action='ride.php'>";
+                    echo "<input type='number' step='0.001' name='mileageassign'>";
+                    echo "<input type='hidden' name='id' value='" . $row['RIDE_ID'] . "'>";
+                    echo "<button type='submit' name='mileageassignment' class='btn'>Accept</button>";
+                    echo "</form></td>";
+                }
+                else{
+                    echo "<td>" . $row['mileage'] . "</td>";
+                }
+                echo "<td><a href='ride.php?finish=" . $row['RIDE_ID'] . "'>Select</a></td>";
+                if ($select_state_accept == true && $Aid == $row['RIDE_ID']){
+                    echo "<td><a href='ride.php?finish=" . NULL . "'>Deselect</a></td>";
+                } 
                 echo "</tr>";
             }
         ?>
         </tbody>
     </table>
 <?php } ?>
+
+<?php
+    if (isset($_POST['driverassignment'])){
+        $PID = $_POST['id'];
+        $PDriver = $_POST['driveassign'];
+
+        $query = "UPDATE rides SET driver='$PDriver' WHERE RIDE_ID='$PID'";
+        mysqli_query($db, $query);
+        header('Location: /ride.php');
+        exit();
+    }
+
+    if (isset($_POST['mileageassignment'])){
+        $PID = $_POST['id'];
+        $PMileage = $_POST['mileageassign'];
+
+        $query = "UPDATE rides SET mileage='$PMileage' WHERE RIDE_ID='$PID'";
+        mysqli_query($db, $query);
+        header('Location: /ride.php');
+        exit();
+    }
+?>
