@@ -124,7 +124,7 @@ class Payment
      * @param int driverID (Same as userID)
      * @return array of Payment objects
      */
-    public static function getPaymentsByDriver($driverID)
+    public static function getPaymentsByDriver(int $driverID)
     {
         return self::loadPaymentsByQuery(
             "SELECT * FROM `driver_payments` WHERE DRIVER_ID={$driverID} ORDER BY `status` DESC;"
@@ -147,7 +147,7 @@ class Payment
      * @param int driverID (Same as userID)
      * @return array of Payment objects
      */
-    public static function getPaidPaymentsByDriver($driverID)
+    public static function getPaidPaymentsByDriver(int $driverID)
     {
         return self::loadPaymentsByQuery("SELECT * FROM driver_payments WHERE DRIVER_ID={$driverID} AND `status`='Paid' ORDER BY PAYMENT_ID DESC;");
     }
@@ -159,7 +159,7 @@ class Payment
      * @param int driverID (Same as userID)
      * @return array of Payment objects
      */
-    public static function getUnpaidPaymentsByDriver($driverID)
+    public static function getUnpaidPaymentsByDriver(int $driverID)
     {
         return self::loadPaymentsByQuery("SELECT * FROM driver_payments WHERE DRIVER_ID={$driverID} AND `status`='Unpaid';");
     }
@@ -196,10 +196,10 @@ class Payment
     /**
      * Creates a new payment entry for the given driverID
      * 
-     * @param int driverID (Same as userID)
+     * @param int $driverID (Same as userID)
      * @return boolean True if it succeded, false if it failed.
      */
-    public static function addNewPaymentForDriver($driverID)
+    public static function addNewPaymentForDriver(int $driverID)
     {
         $driver = Driver::getDriverById($driverID);
         $db = Database\Connection::getConnection();
@@ -212,6 +212,52 @@ class Payment
             return false;
         } else {
             return true;
+        }
+    }
+
+    /**
+     * Creates entry in payment_rides to link the finished ride to a driver's payment.
+     * Automatically grabs the first unpaid payment it finds, or creates a new one if none exist.
+     * Also calculates the new milage and amount (ASSUMES OLD TOTALS WERE CORRECT. It does NOT re-calculate from ALL rides).
+     * Uses rate * milage to calculate amount (though that can be changed)
+     * 
+     * @param int $rideID
+     * 
+     */
+    public static function addFinishedRideToPayment(int $rideID)
+    {
+        $db = Database\Connection::getConnection();
+
+        $ride = Ride::getRideById($rideID);
+        $rideID = $ride->id();
+        $driverID = $ride->driverID();
+        $payments = self::getUnpaidPaymentsByDriver($driverID);
+        $payment = null;
+        if (count($payments) <= 0) {
+            $success = self::addNewPaymentForDriver($driverID);
+            if ($success) {
+                $payment = array_shift(self::getUnpaidPaymentsByDriver($driverID));
+            }
+        } else {
+            $payment = array_shift($payments);
+        }
+        $paymentID = $payment->id();
+        // INSERT INTO `payment_rides` (`PAYMENT_ID`, `RIDE_ID`) VALUES (3, 5);
+        $query = "INSERT INTO `payment_rides` (`PAYMENT_ID`, `RIDE_ID`) VALUES ({$paymentID}, {$rideID});";
+        // confirm the query worked
+        if (($result = $db->query($query)) === false) {
+            // TODO: replace a simple error with an exception
+            throw new Database\Exception('DB Adding new payment_ride Query Failed: ' . $db->error);
+        }
+
+        $newMileage = floatval($ride->mileage() + $payment->mileage());
+        $newAmount = floatval($payment->rate() * $newMileage);
+        // UPDATE `driver_payments` SET mileage=30, amount=299 WHERE PAYMENT_ID=0;
+        $query2 = "UPDATE `driver_payments` SET mileage={$newMileage}, amount={$newAmount} WHERE PAYMENT_ID={$paymentID}";
+        // confirm the query worked
+        if (($result = $db->query($query2)) === false) {
+            // TODO: replace a simple error with an exception
+            throw new Database\Exception('DB Updating calculations in driver_payments based on new ride Query Failed: ' . $db->error);
         }
     }
 
