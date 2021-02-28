@@ -21,14 +21,17 @@ require_once('../bootstrap.php');
 
 $user = Session::getSession()->getUser();
 include '../head.html';
-include '../header.html';
+if ($user->isCoordinator()) {
+    include '../header-coordinator.html';
+} else {
+    include '../header.html';
+}
 
 if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     // throw an error and exit
     echo '<h1>Access Denied "You pillow" </h1>';
     //TODO some redirect to somewhere here.
 } elseif ($user->isCoordinator()) {
-    include '../header-coordinator.html';
     // Present a list of the users in the system
     echo '<h1>Coordinator Page.</h1>';
 
@@ -298,11 +301,6 @@ elseif ($user->isDriver()) {
 <?php
 
 }
-
-
-include '../testing_links.html';
-
-
 
 // add page footer
 include '../footer.html';
