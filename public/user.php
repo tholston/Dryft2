@@ -24,7 +24,7 @@ $user = Session::getSession()->getUser();
 include '../head.html';
 
 // Output a page title and any other specific head elements
-echo '		<title>Please login | DRyft</title>' . PHP_EOL;
+echo '		<title>Users | DRyft</title>' . PHP_EOL;
 
 // add page header based on the user's access level
 
