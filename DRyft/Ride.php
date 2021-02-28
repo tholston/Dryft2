@@ -159,12 +159,23 @@ class Ride
     }
 
     /**
+     * Load all rides that are not yet assigned to a driver.
+     * (This is indicated by a driver=0 in DB)
+     *
+     * @return array of Ride objects
+     */
+    public static function getUnassignedRides()
+    {
+        return self::loadRidesByQuery("SELECT * FROM rides WHERE driver='0'");
+    }
+
+    /**
      * Load multiple Rides from a query
      *
      * @param string $query
      * @return array of Ride objects
      */
-    protected static function loadRidesByQuery(string $select)
+    public static function loadRidesByQuery(string $select)
     {
         // Setup a dummy return value
         $rides = [];
