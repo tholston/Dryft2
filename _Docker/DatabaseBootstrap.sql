@@ -25,7 +25,7 @@ CREATE TABLE `driver_payments` (
   `status` enum('Paid','Unpaid') NOT NULL,
   PRIMARY KEY (`PAYMENT_ID`),
   KEY `DRIVER_ID` (`DRIVER_ID`),
-  CONSTRAINT `driver_payments_ibfk_1` FOREIGN KEY (`DRIVER_ID`) REFERENCES `driver_attributes` (`DRIVER_ID`) ON DELETE NO ACTION
+  CONSTRAINT `driver_payments_ibfk_1` FOREIGN KEY (`DRIVER_ID`) REFERENCES `driver_attributes` (`DRIVER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 
