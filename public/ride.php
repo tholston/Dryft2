@@ -10,8 +10,8 @@
 
 namespace DRyft;
 require_once("../bootstrap.php");
-$db = \Database\Connection::getConnection();
-$user = DRyft\Session::getSession()->getUser();
+$db = Database\Connection::getConnection();
+$user = Session::getSession()->getUser();
 $searchuserid = $user->id();
 ?>
 
@@ -43,7 +43,7 @@ $searchuserid = $user->id();
     </table>
     <br>
 
-    <form method='post' action>{
+    <form method='post' action>
         <input type="hidden" name="userref" value="<?php echo $searchuserid; ?>">
 
         <div>
@@ -105,7 +105,7 @@ $searchuserid = $user->id();
         </div>
 
         <button type="submit" name="ridereq" class="btn">Submit Request</button>
-    }
+    </form>
 <?php } ?>
 <?php if($user->isCoordinator()){ ?>
     <h3>Unaccepted Ride Requests</h3>
