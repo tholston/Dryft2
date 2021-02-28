@@ -83,13 +83,14 @@ CREATE TABLE `users` (
   `username` varchar(40) NOT NULL,
   `type` enum('Coordinator','Driver','Client') NOT NULL DEFAULT 'Client',
   `pw_hash` varchar(255) NOT NULL,
-  `name_last` varchar(40) NOT NULL,
-  `name_first` varchar(40) NOT NULL,
-  `name_middle` varchar(40) NOT NULL,
+  `name_last` varchar(40) DEFAULT NULL,
+  `name_first` varchar(40) DEFAULT NULL,
+  `name_middle` varchar(40) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `home_address` int(10) unsigned DEFAULT NULL,
   `mailing_address` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
-INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `name_first`, `name_middle`, `home_address`, `mailing_address`) VALUES
-(1,	'dryfter',	'Coordinator',	'$2y$10$pO0E.UugyXzgeKHnhuEevu5wIhiXJBal/2DMJ2Z6TwIZRZbL3.A8m',	'Coordinator',	'DRyft',	'',	0,	0);
+INSERT INTO `users` (`USER_ID`, `username`, `type`, `pw_hash`, `name_last`, `name_first`, `name_middle`, `email`, `home_address`, `mailing_address`) VALUES
+(1,	'dryfter',	'Coordinator',	'$2y$10$pO0E.UugyXzgeKHnhuEevu5wIhiXJBal/2DMJ2Z6TwIZRZbL3.A8m',	'Coordinator',	'DRyft',	'',	'',	0,	0);
