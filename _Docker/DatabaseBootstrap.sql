@@ -11,7 +11,7 @@ CREATE TABLE `driver_attributes` (
   `rate` decimal(5,2) unsigned NOT NULL DEFAULT 0.00,
   `is_available` enum('Yes','No') NOT NULL DEFAULT 'No',
   PRIMARY KEY (`DRIVER_ID`),
-  CONSTRAINT `driver_attributes_ibfk_1` FOREIGN KEY (`DRIVER_ID`) REFERENCES `users` (`USER_ID`) ON DELETE NO ACTION
+  CONSTRAINT `driver_attributes_ibfk_2` FOREIGN KEY (`DRIVER_ID`) REFERENCES `users` (`USER_ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 
@@ -25,7 +25,7 @@ CREATE TABLE `driver_payments` (
   `status` enum('Paid','Unpaid') NOT NULL,
   PRIMARY KEY (`PAYMENT_ID`),
   KEY `DRIVER_ID` (`DRIVER_ID`),
-  CONSTRAINT `driver_payments_ibfk_1` FOREIGN KEY (`DRIVER_ID`) REFERENCES `driver_attributes` (`DRIVER_ID`) ON DELETE NO ACTION
+  CONSTRAINT `driver_payments_ibfk_1` FOREIGN KEY (`DRIVER_ID`) REFERENCES `driver_attributes` (`DRIVER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 
@@ -70,10 +70,9 @@ CREATE TABLE `rides` (
   KEY `driver` (`driver`),
   KEY `pickup` (`pickup`),
   KEY `dropoff` (`dropoff`),
-  CONSTRAINT `rides_ibfk_1` FOREIGN KEY (`client`) REFERENCES `users` (`USER_ID`) ON DELETE NO ACTION,
-  CONSTRAINT `rides_ibfk_2` FOREIGN KEY (`driver`) REFERENCES `users` (`USER_ID`) ON DELETE NO ACTION,
-  CONSTRAINT `rides_ibfk_3` FOREIGN KEY (`pickup`) REFERENCES `locations` (`LOCATION_ID`) ON DELETE NO ACTION,
-  CONSTRAINT `rides_ibfk_4` FOREIGN KEY (`dropoff`) REFERENCES `locations` (`LOCATION_ID`) ON DELETE NO ACTION
+  CONSTRAINT `rides_ibfk_1` FOREIGN KEY (`pickup`) REFERENCES `locations` (`LOCATION_ID`),
+  CONSTRAINT `rides_ibfk_2` FOREIGN KEY (`client`) REFERENCES `users` (`USER_ID`),
+  CONSTRAINT `rides_ibfk_3` FOREIGN KEY (`dropoff`) REFERENCES `locations` (`LOCATION_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 
