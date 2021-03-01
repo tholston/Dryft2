@@ -37,17 +37,17 @@ class Ride
      */
     protected $dropoffLocationID;
     /**
-     * Dropoff location identification number from locations table
+     * DATETIME of departure
      * @type string
      */
     protected $departureTime;
     /**
-     * Dropoff location identification number from locations table
+     * DATETIME of arrival
      * @type string
      */
     protected $arrivalTime;
     /**
-     * Dropoff location identification number from locations table
+     * Total miles of the Ride
      * @type float
      */
     protected $mileage;
@@ -144,7 +144,7 @@ class Ride
     }
 
     /**
-     * Load all rides from the database
+     * Load all rides from the database for the given driver
      *
      * @param int driverID (Same as userID)
      * @return array of Ride objects
@@ -168,12 +168,37 @@ class Ride
     }
 
     /**
+     * Get's all rides for specified PaymentID
+     *
+     * @param int paymentID
+     * @return array of Ride objects
+     */
+    public static function getRidesForPayment($paymentID)
+    {
+        //SELECT * FROM `rides`,`payment_rides` WHERE PAYMENT_ID=1 AND rides.RIDE_ID=payment_rides.RIDE_ID ORDER BY rides.RIDE_ID;
+        return self::loadRidesByQuery(
+            "SELECT * FROM `rides`,`payment_rides` WHERE PAYMENT_ID={$paymentID} AND rides.RIDE_ID=payment_rides.RIDE_ID ORDER BY rides.RIDE_ID;"
+        );
+    }
+
+    /**
+     * Load all rides that are not yet assigned to a driver.
+     * (This is indicated by a driver=0 in DB)
+     *
+     * @return array of Ride objects
+     */
+    public static function getUnassignedRides()
+    {
+        return self::loadRidesByQuery("SELECT * FROM rides WHERE driver='0'");
+    }
+
+    /**
      * Load multiple Rides from a query
      *
      * @param string $query
      * @return array of Ride objects
      */
-    protected static function loadRidesByQuery(string $select)
+    public static function loadRidesByQuery(string $select)
     {
         // Setup a dummy return value
         $rides = [];

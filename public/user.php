@@ -18,13 +18,76 @@ require_once('../bootstrap.php');
 // Require a coordinator user session
 $user = Session::getSession()->getUser();
 
+// determine which action we're here to accomplish
+$action = $_REQUEST[PARAM_ACTION];
+
+// Determine if a user has been specified
+$selectedUser = null;
+if (array_key_exists(PARAM_ID, $_REQUEST)) {
+	try {
+		$selectedUser = User::getUserById(intval($_REQUEST[PARAM_ID]));
+	} catch (Database\Exception $e) {
+
+		// if no user was found display the error and drop out with a dummy action
+		$headerLabel = 'Unable to locate user for id: ' . intval($_REQUEST[PARAM_ID]);
+		$error = $e->getMessage();
+		$action = ACTION_ERROR;
+	}
+}
+
+// Setup a linker to create well-known URLs
+$linker = new Linker();
+
+// Handle actions that require redirection before output begins
+if ($action == ACTION_NEW_ADDRESS) {
+
+	// ensure we have a selected user
+	if (!$selectedUser instanceof User) {
+		$headerLabel = 'Address Create';
+		$error = 'No user selected. A valid user is required to create a new address.';
+		$action = ACTION_ERROR;
+	} else {
+		// default to home address
+		$type = ADDRESS_TYPE_HOME;
+		$address = $selectedUser->homeAddress();
+		if (array_key_exists(PARAM_TYPE, $_REQUEST)) {
+			$type = $_REQUEST[PARAM_TYPE];
+			if ($type == ADDRESS_TYPE_MAILING) {
+				$address = $selectedUser->mailingAddress();
+			}
+		}
+
+		// Regardless of the outcome, use the error view
+		$action = ACTION_ERROR;
+
+		// Specify a nickname for this address
+		$address->nickname = ucfirst($type);
+		// save it to the database to establish a location id
+		try {
+
+			$address->save();
+			// update the user to save this id to its record
+			$user->save();
+
+			// redirect the user to the edit page for the location
+			$location = $linker->urlPath() . 'address.php?edit=' . $address->id();
+			header('Location: ' . $location);
+			$headerLabel = 'Redirect to create address';
+			$error = 'Would redirect to: ' . $location;
+		} catch (Database\Exception $e) {
+			$headerLabel = '<h1>User Address Create Failed</h1>';
+			$error = $e->getMessage();
+		}
+	}
+}
+
 // now that actions that modify headers are complete, start the page template
 
 // add HTML head
 include '../head.html';
 
 // Output a page title and any other specific head elements
-echo '		<title>Please login | DRyft</title>' . PHP_EOL;
+echo '		<title>Users | DRyft</title>' . PHP_EOL;
 
 // add page header based on the user's access level
 
@@ -38,56 +101,17 @@ if (!$user || !$user->isCoordinator()) {
 
 	include '../header-coordinator.html';
 
-	// determine which action we're here to accomplish
-	$action = $_REQUEST[PARAM_ACTION];
-
-	// determine if a user has been provided
-	$selectedUser = null;
-	if (array_key_exists(PARAM_ID, $_REQUEST)) {
-		try {
-			$selectedUser = User::getUserById(intval($_REQUEST[PARAM_ID]));
-		} catch (Database\Exception $e) {
-
-			// if no user was found display the error and drop out with a dummy action
-			echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[PARAM_ID]) . '</h1>';
-			echo '<p>' . $e->getMessage() . '</p>';
-			$action = ACTION_ERROR;
-		}
-	}
-
 	if ($action == ACTION_EDIT) {
-		// display the edit form for the selected user
-?>
-		<h1>Edit <?= $selectedUser->firstName ?> <?= $selectedUser->lastName ?> (<?= $selectedUser->id() ?>)</h1>
-		<form method="POST" action="user.php?id=<?= $selectedUser->id() ?>&action=update" class="needs-validation" novalidate>
-			<div class="row g-3">
-				<div class="col-sm-6">
-					<label for="userType" class="form-label">User Type</label>
-					<select class="form-select" id="userType" required="true">
-						<option value="">Choose...</option>
-						<option <?= $selectedUser->isCoordinator() ? "selected" : "" ?>>Coordinator</option>
-						<option <?= $selectedUser->isDriver() ? " selected" : "" ?>>Driver</option>
-						<option <?= $selectedUser->isClient() ? " selected" : "" ?>>Client</option>
-					</select>
-					<div class="invalid-feedback">Please select a valid country.</div>
-				</div>
-				<div class="col-sm-6">
-					<label for="firstName" class="form-label">First name</label>
-					<input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
-					<div class="invalid-feedback">Valid first name is required.</div>
-				</div>
-				<div class="col-sm-6">
-					<label for="lastName" class="form-label">Last name</label>
-					<input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
-					<div class="invalid-feedback">Valid last name is required.</div>
-				</div>
-			</div>
-			<hr class="my-4">
-			<button class="w-100 btn btn-primary btn-lg" type="submit">Update user</button>
-		</form>
-		<script src="js/form-validation.js"></script>
 
-	<?php
+		// display the edit form for the selected user
+		// setup the submit action
+		$selectedAction = ACTION_UPDATE;
+		// setup the header label
+		$headerLabel = 'Edit ' . $selectedUser->firstName . ' ' . $selectedUser->lastName . ' (' . $selectedUser->id() . ')';
+		// setup the submit label
+		$submitLabel = 'Update user';
+		// include the form snippet
+		include '../views/user-edit.html';
 	} elseif ($action == ACTION_UPDATE) {
 		// load updates for the user from the request
 		echo '<h1>WILL IT UPDATE?</h1>';
@@ -95,38 +119,28 @@ if (!$user || !$user->isCoordinator()) {
 		// load data to create a new user
 		echo '<h1>WILL IT CREATE?</h1>';
 	} elseif ($action == ACTION_NEW) {
+
 		// display the edit form for an empty user
-		echo '<h1>Create a new user</h1>';
+		$selectedUser = new User();
+
+		// setup the submit action
+		$selectedAction = ACTION_CREATE;
+		// setup the header label
+		$headerLabel = 'Create new user';
+		// setup the submit label
+		$submitLabel = 'Create user';
+		// include the form snippet
+		include '../views/user-edit.html';
+	} elseif ($action == ACTION_ERROR) {
+
+		echo '<h1>', $headerLabel, '</h1>';
+		echo '<p class="error">', $error, '</p>';
 	} else {
 		// Present a list of the users in the system
 		$users = User::getUsers();
-	?>
-		<h1>Existing users</h1>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Username</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($users as $item) { ?>
-					<tr>
-						<td><?= $item->id() ?></td>
-						<td><?= $item->firstName ?></td>
-						<td><?= $item->lastName ?></td>
-						<td><?= $item->username() ?></td>
-						<td>
-							<form method="POST" action="user.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
-						</td>
-					</tr>
-				<?php } ?>
-			</tbody>
-		</table>
-<?php
+
+		// include the user list snippet
+		include '../views/user-list.html';
 	}
 }
 

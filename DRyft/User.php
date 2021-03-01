@@ -68,6 +68,18 @@ class User
 	public $middleName;
 
 	/**
+	 * Email address
+	 * @type string
+	 */
+	public $email;
+
+	/**
+	 * Phone number
+	 * @type string
+	 */
+	public $phone;
+
+	/**
 	 * Home address
 	 *
 	 * Home address instance.
@@ -102,9 +114,9 @@ class User
 	 * @return DRyft\User
 	 */
 	public function __construct(
-		string $userName,
-		string $lastName,
-		string $firstName,
+		string $userName = '',
+		string $lastName = '',
+		string $firstName = '',
 		string $middleName = '',
 		string $type = 'Client',
 		int $userId = 0,
@@ -120,23 +132,6 @@ class User
 	}
 
 
-	/**
-	 * Get the firstName
-	 * @return string
-	 */
-	public function firstName()
-	{
-		return $this->firstName;
-	}
-
-	/**
-	 * Get the lastName
-	 * @return string
-	 */
-	public function lastName()
-	{
-		return $this->lastName;
-	}
 
 	/**
 	 * Get the user id
@@ -153,15 +148,6 @@ class User
 	public function username()
 	{
 		return $this->username;
-	}
-
-	/**
-	 * Get the homeAddress
-	 * @return string
-	 */
-	public function homeAddress()
-	{
-		return $this->homeAddress;
 	}
 
 	/**
@@ -219,6 +205,40 @@ class User
 	public function validatePassword(string $password)
 	{
 		return password_verify($password, $this->passwordHash);
+	}
+
+	/**
+	 * Lazy-init the home address
+	 *
+	 * @return DRyft\Address
+	 */
+	public function homeAddress()
+	{
+		if (!$this->homeAddress instanceof Address) {
+			try {
+				$this->homeAddress = Address::getAddressById(intval($this->homeAddress));
+			} catch (Database\Exception $e) {
+				$this->homeAddress = new Address();
+			}
+		}
+		return $this->homeAddress;
+	}
+
+	/**
+	 * Lazy-init the mailing address
+	 *
+	 * @return DRyft\Address
+	 */
+	public function mailingAddress()
+	{
+		if (!$this->mailingAddress instanceof Address) {
+			try {
+				$this->mailingAddress = Address::getAddressById(intval($this->mailingAddress));
+			} catch (Database\Exception $e) {
+				$this->mailingAddress = new Address();
+			}
+		}
+		return $this->mailingAddress;
 	}
 
 
@@ -344,7 +364,7 @@ class User
 	{
 
 		// Create the appropriate subclass based on the user type
-		return new User(
+		$user = new User(
 			$data->username,
 			$data->name_last,
 			$data->name_first,
@@ -353,5 +373,11 @@ class User
 			$data->USER_ID,
 			$data->pw_hash
 		);
+
+		// temporarily set the instance variables for address objects to the location ids
+		$user->homeAddress = $data->home_address;
+		$user->mailingAddress = $data->mailing_address;
+
+		return $user;
 	}
 }

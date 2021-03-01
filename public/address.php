@@ -7,14 +7,18 @@
  *
  * @author Noah South
  */
-    $db = \Database\Connection::getConnection();
+
+    namespace DRyft;
+    require_once("../bootstrap.php");
+    $db = Database\Connection::getConnection();
     $edit_state = false;
 
     if (isset($_GET['edit'])){
         $id = $_GET['edit'];
         if($id != NULL){
             $edit_state = true;
-            $rec = mysqli_query($db, "SELECT * FROM locations WHERE id=$id");
+            $find = "SELECT * FROM locations WHERE LOCATION_ID='$id'";
+            $rec = mysqli_query($db, $find);
             $record = mysqli_fetch_array($rec);
             $id = $record['LOCATION_ID'];
             $Lati = $record['latitude'];
@@ -82,7 +86,7 @@
 
 <div>
     <h3>Create Entry</h3>
-    <form method="post" action>
+    <form method="post" action="addressexternal.php">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>">
         <label for="Lati">Latitude: </label>
         <input type="text" id="Lati" name="Lati" value="<?php echo $Lati; ?>" required><br>
@@ -101,44 +105,16 @@
         <label for="Zipc">Zipcode: </label>
         <input type="text" id="Zipc" name="Zipc" value="<?php echo $Zipc; ?>" required><br>
         <?php if ($edit_state == false): ?>
-            <button type="submit" name="addLoc" class="btn">Add</button>
+            <button type="submit" name="addLoc" class="btn">Add Entry</button>
         <?php else: ?>
-            <button type="submit" name="alter" class="btn">Update</button>
+            <button type="submit" name="alter" class="btn">Update Entry</button>
             <button name="unselect" class="btn"><a href="address.php?edit=<?php echo NULL ?>">Unselect</a></button>
         <?php endif ?>
     </form>
 </div>
 
 <?php
-    if (isset($_POST['addLoc'])){
-        $PLati = mysqli_real_escape_string($_POST['Lati']);
-        $PLongi = mysqli_real_escape_string($_POST['Longi']);
-        $PNick = mysqli_real_escape_string($_POST['Nickn']);
-        $PLinone = mysqli_real_escape_string($_POST['Linone']);
-        $PLintwo = mysqli_real_escape_string($_POST['Lintwo']);
-        $PCit = mysqli_real_escape_string($_POST['Cit']);
-        $PStat = mysqli_real_escape_string($_POST['Stat']);
-        $PZipc = mysqli_real_escape_string($_POST['Zipc']);
-
-        $query = "INSERT INTO locations(latitude, longitude, nickname, line1, line2, city, state, zip) VALUES($PLati, $PLongi, $PNick, $PLinone, $PLintwo, $PCit, $PStat, $PZipc)";
-        mysqli_query($db, $query);
-    }
-
-    if (isset($_POST['alter'])){
-        $PID = mysqli_real_escape_string($_POST['id']);
-        $PLati = mysqli_real_escape_string($_POST['Lati']);
-        $PLongi = mysqli_real_escape_string($_POST['Longi']);
-        $PNick = mysqli_real_escape_string($_POST['Nickn']);
-        $PLinone = mysqli_real_escape_string($_POST['Linone']);
-        $PLintwo = mysqli_real_escape_string($_POST['Lintwo']);
-        $PCit = mysqli_real_escape_string($_POST['Cit']);
-        $PStat = mysqli_real_escape_string($_POST['Stat']);
-        $PZipc = mysqli_real_escape_string($_POST['Zipc']);
-
-        $query = "UPDATE locations SET latitude='$PLati', longitude='$PLongi', nickname='$PNick', line1='$PLinone', line2='$PLintwo', city='$PCit', state='$PStat', zip='$PZipc' WHERE LOCATION_ID='$PID'";
-        mysqli_query($db, $query);
-    }
-
+    
     /* planned to move functions into an externaladdress.php file so they may be included without printed earlier full table */
 
     //function for external access by other sections of code.
