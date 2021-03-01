@@ -50,8 +50,6 @@ elseif(array_key_exists('info', $_REQUEST)){
                 class="button" value="Edit"/></h2>
 		<?php echo '<h2>Username: ' . $user->username();?>
 		<?php echo '<h2>Home Address: ' . $user->homeAddress();?>
-		<input type="submit" name="addressEdit"
-                class="button" value="Edit"/></h2>
 		<h2>Password
         <input type="submit" name="passwordEdit"
                 class="button" value="Edit"/></h2>
