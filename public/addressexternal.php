@@ -35,4 +35,36 @@
         header('Location: /address.php');
         exit();
     }
+
+    if (isset($_GET['delete'])){
+        $DeleteID = $_GET['delete'];
+        $safetycheck = "SELECT * FROM users WHERE home_address='$DeleteID' OR mailing_address='$DeleteID'";
+        $safetyresult = mysqli_query($db, $safetycheck);
+        if(mysqli_num_rows($safetyresult) > 0){
+            header('Location: /address.php?error="ThisIsAUsersAddress_CannotModify');
+            exit();
+        }
+
+        $safetycheck = "SELECT * FROM rides WHERE pickup='$DeleteID' OR dropoff='$DeleteID'";
+        $safetyresult = mysqli_query($db, $safetycheck);
+        while ($row = mysqli_fetch_array($safetyresult)){
+            if($row['pickup'] == $DeleteID){
+                $safetyupdate = "UPDATE rides SET pickup='0' WHERE RIDE_ID='$DeleteID'";
+                mysqli_query($db, $safetyupdate);
+                header('Location: /address.php');
+                exit();
+            }
+            if($row['dropoff'] == $DeleteID){
+                $safetyupdate = "UPDATE rides SET dropoff='0' WHERE RIDE_ID='$DeleteID'";
+                mysqli_query($db, $safetyupdate);
+                header('Location: /address.php');
+                exit();
+            }
+        }
+
+        $delquery = "DELETE FROM locations WHERE LOCATION_ID='$DeleteID'";
+        mysqli_query($db, $delquery);
+        header('Location: /address.php');
+        exit();
+    }
 ?>
