@@ -116,7 +116,7 @@
             <label for="Linone">Line 1: </label>
             <input type="text" id="Linone" name="Linone" maxlength='60' value="<?php echo $Linone; ?>" required><br>
             <label for="Lintwo">Line 2: </label>
-            <input type="text" id="Lintwo" name="Lintwo" maxlength='60' value="<?php echo $Lintwo; ?>" required><br>
+            <input type="text" id="Lintwo" name="Lintwo" maxlength='60' value="<?php echo $Lintwo; ?>"><br>
             <label for="Cit">City: </label>
             <input type="text" id="Cit" name="Cit" maxlength='60' value="<?php echo $Cit; ?>" required><br>
             <label for="Stat">State: </label>
@@ -184,7 +184,7 @@
             <label for="Linone">Line 1: </label>
             <input type="text" id="Linone" name="Linone" maxlength='60' value="<?php echo $Linone; ?>" required><br>
             <label for="Lintwo">Line 2: </label>
-            <input type="text" id="Lintwo" name="Lintwo" maxlength='60' value="<?php echo $Lintwo; ?>" required><br>
+            <input type="text" id="Lintwo" name="Lintwo" maxlength='60' value="<?php echo $Lintwo; ?>"><br>
             <label for="Cit">City: </label>
             <input type="text" id="Cit" name="Cit" maxlength='60' value="<?php echo $Cit; ?>" required><br>
             <label for="Stat">State: </label>
