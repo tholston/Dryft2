@@ -14,13 +14,13 @@ $db = Database\Connection::getConnection();
 $user = Session::getSession()->getUser();
 include '../head.html';
 include '../header.html';
+$searchuserid = $user->id();
 ?>
 
 
 <?php 
     /* validates user client status to display ride creation form */
     if($user->isClient()){
-    $searchuserid = $user->id();
 ?>
     <h3>Current Ride Requests for <?php echo $user->firstName . $user->lastName; ?></h3>
     <table class='table table-striped'>
@@ -48,70 +48,6 @@ include '../header.html';
         </tbody>
     </table>
     <br>
-
-    <form method='post' action='ridefunction.php'>
-        <input type="hidden" name="userref" value="<?php echo $searchuserid; ?>">
-
-        <div>
-            <h5>Pick-up Location Information:</h5>
-            <label for="PickNickn">Address Nickname: </label>
-            <input type="text" name="PickNickn" maxlength='60'><br>
-            <label for="PickLinone">Address Line 1: </label>
-            <input type="text" name="PickLinone" maxlength='60'><br>
-            <label for="PickLintwo">Address Line 2: </label>
-            <input type="text" name="PickLintwo" maxlength='60'><br>
-            <label for="PickCit">Address City: </label>
-            <input type="text" name="PickCit" maxlength='60'><br>
-            <label for="PickStat">Address State: </label>
-            <input type="text" name="PickStat" maxlength='2'><br>
-            <label for="PickZip">Address Zip Code: </label>
-            <input type="text" name="PickZip" maxlength='10'><br>
-        </div>
-
-        <div>
-            <h5>Drop-off Location Information:</h5>
-            <label for="DropNickn">Address Nickname: </label>
-            <input type="text" name="DropNickn" maxlength='60'><br>
-            <label for="DropLinone">Address Line 1: </label>
-            <input type="text" name="DropLinone" maxlength='60'><br>
-            <label for="DropLintwo">Address Line 2: </label>
-            <input type="text" name="DropLintwo" maxlength='60'><br>
-            <label for="DropCit">Address City: </label>
-            <input type="text" name="DropCit" maxlength='60'><br>
-            <label for="DropStat">Address State: </label>
-            <input type="text" name="DropStat" maxlength='2'><br>
-            <label for="DropZip">Address Zip Code: </label>
-            <input type="text" name="DropZip" maxlength='10'><br>
-        </div>
-
-        <div>
-            <h5>Pick-up Time Information:</h5>
-            <label for="DeptYear">Appointment Depature - Year: </label>
-            <input type="number" name="DeptYear" maxlength='4'><br>
-            <label for="DeptMonth">Appointment Depature - Month (January = 1 & December = 12): </label>
-            <input type="number" name="DeptMonth" maxlength='2'><br>
-            <label for="DeptDay">Appointment Depature - Day: </label>
-            <input type="number" name="DeptDay" maxlength='2'><br>
-            <label for="DeptHour">Appointment Depature - Hour (12-hour based): </label>
-            <input type="number" name="DeptHour" maxlength='2'><br>
-            <label for="DeptMinute">Appointment Depature - Minute: </label>
-            <input type="number" name="DeptMinute" maxlength='2'><br>
-            <label for="DeptAMP">Appointment (AM / PM): </label>
-            <input type="text" name="DeptAMP" maxlength='2'><br>
-        </div>
-
-        <div>
-            <h5>Drop-off Time Information:</h5>
-            <label for="ArriHour">Appointment Expected Arrival - Hour (12-hour based): </label>
-            <input type="text" name="ArriHour" maxlength='2'><br>
-            <label for="ArriMinute">Appointment Expected Arrival - Minute: </label>
-            <input type="text" name="ArriMinute" maxlength='2'><br>
-            <label for="ArriAMP">Appointment (AM / PM): </label>
-            <input type="text" name="ArriAMP" maxlength='2'><br>
-        </div>
-
-        <button type="submit" name="ridereq" class="btn btn-sm btn-primary">Submit Request</button>
-    </form>
 <?php } ?>
 <?php if($user->isCoordinator()){ ?>
 
@@ -216,6 +152,7 @@ include '../header.html';
         <button type='submit' class="btn btn-sm btn-primary"><a href='ride.php?assign=<?php echo NULL ?>'>Deselect Entry</a></button>
     </form>
     
+    <br><br>
     <h3>Accepted - Unfinished</h3>
     <table class='table table-striped'>
         <thead>
@@ -261,4 +198,72 @@ include '../header.html';
         ?>
         </tbody>
     </table>
+<?php } ?>
+
+<?php if ($user->isCoordinator() || $user->isClient()){ ?>
+    <br><br>
+    <h6>Create a Ride Request</h6>
+    <form method='post' action='ridefunction.php'>
+        <input type="hidden" name="userref" value="<?php echo $searchuserid; ?>">
+
+        <div>
+            <h5>Pick-up Location Information:</h5>
+            <label for="PickNickn">Address Nickname: </label>
+            <input type="text" name="PickNickn" maxlength='60'><br>
+            <label for="PickLinone">Address Line 1: </label>
+            <input type="text" name="PickLinone" maxlength='60'><br>
+            <label for="PickLintwo">Address Line 2: </label>
+            <input type="text" name="PickLintwo" maxlength='60'><br>
+            <label for="PickCit">Address City: </label>
+            <input type="text" name="PickCit" maxlength='60'><br>
+            <label for="PickStat">Address State: </label>
+            <input type="text" name="PickStat" maxlength='2'><br>
+            <label for="PickZip">Address Zip Code: </label>
+            <input type="text" name="PickZip" maxlength='10'><br>
+        </div>
+
+        <div>
+            <h5>Drop-off Location Information:</h5>
+            <label for="DropNickn">Address Nickname: </label>
+            <input type="text" name="DropNickn" maxlength='60'><br>
+            <label for="DropLinone">Address Line 1: </label>
+            <input type="text" name="DropLinone" maxlength='60'><br>
+            <label for="DropLintwo">Address Line 2: </label>
+            <input type="text" name="DropLintwo" maxlength='60'><br>
+            <label for="DropCit">Address City: </label>
+            <input type="text" name="DropCit" maxlength='60'><br>
+            <label for="DropStat">Address State: </label>
+            <input type="text" name="DropStat" maxlength='2'><br>
+            <label for="DropZip">Address Zip Code: </label>
+            <input type="text" name="DropZip" maxlength='10'><br>
+        </div>
+
+        <div>
+            <h5>Pick-up Time Information:</h5>
+            <label for="DeptYear">Appointment Depature - Year: </label>
+            <input type="number" name="DeptYear" maxlength='4'><br>
+            <label for="DeptMonth">Appointment Depature - Month (January = 1 & December = 12): </label>
+            <input type="number" name="DeptMonth" maxlength='2'><br>
+            <label for="DeptDay">Appointment Depature - Day: </label>
+            <input type="number" name="DeptDay" maxlength='2'><br>
+            <label for="DeptHour">Appointment Depature - Hour (12-hour based): </label>
+            <input type="number" name="DeptHour" maxlength='2'><br>
+            <label for="DeptMinute">Appointment Depature - Minute: </label>
+            <input type="number" name="DeptMinute" maxlength='2'><br>
+            <label for="DeptAMP">Appointment (AM / PM): </label>
+            <input type="text" name="DeptAMP" maxlength='2'><br>
+        </div>
+
+        <div>
+            <h5>Drop-off Time Information:</h5>
+            <label for="ArriHour">Appointment Expected Arrival - Hour (12-hour based): </label>
+            <input type="text" name="ArriHour" maxlength='2'><br>
+            <label for="ArriMinute">Appointment Expected Arrival - Minute: </label>
+            <input type="text" name="ArriMinute" maxlength='2'><br>
+            <label for="ArriAMP">Appointment (AM / PM): </label>
+            <input type="text" name="ArriAMP" maxlength='2'><br>
+        </div>
+
+        <button type="submit" name="ridereq" class="btn btn-sm btn-primary">Submit Request</button>
+    </form>
 <?php } ?>

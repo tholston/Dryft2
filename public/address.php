@@ -49,7 +49,7 @@
 ?>
 
 <!-- This table will print out the information for the client to view and possibly edit their location information. -->
-<?php if ($user->isClient()){ ?>
+<?php if ($user->isClient() || $user->isDriver()){ ?>
     <table class='table table-striped'>
         <thead>
             <tr>
