@@ -216,7 +216,7 @@ class User
 	{
 		if (!$this->homeAddress instanceof Address) {
 			try {
-				$this->homeAddress = Address::getAddressForId(intval($this->homeAddress));
+				$this->homeAddress = Address::getAddressById(intval($this->homeAddress));
 			} catch (Database\Exception $e) {
 				$this->homeAddress = new Address();
 			}
@@ -233,7 +233,7 @@ class User
 	{
 		if (!$this->mailingAddress instanceof Address) {
 			try {
-				$this->mailingAddress = Address::getAddressForId(intval($this->mailingAddress));
+				$this->mailingAddress = Address::getAddressById(intval($this->mailingAddress));
 			} catch (Database\Exception $e) {
 				$this->mailingAddress = new Address();
 			}
