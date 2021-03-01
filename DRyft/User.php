@@ -216,7 +216,7 @@ class User
 	{
 		if (!$this->homeAddress instanceof Address) {
 			try {
-				$this->homeAddress = Address::getAddressForId(intval($this->homeAddress));
+				$this->homeAddress = Address::getAddressById(intval($this->homeAddress));
 			} catch (Database\Exception $e) {
 				$this->homeAddress = new Address();
 			}
@@ -233,7 +233,7 @@ class User
 	{
 		if (!$this->mailingAddress instanceof Address) {
 			try {
-				$this->mailingAddress = Address::getAddressForId(intval($this->mailingAddress));
+				$this->mailingAddress = Address::getAddressById(intval($this->mailingAddress));
 			} catch (Database\Exception $e) {
 				$this->mailingAddress = new Address();
 			}
@@ -364,7 +364,7 @@ class User
 	{
 
 		// Create the appropriate subclass based on the user type
-		return new User(
+		$user = new User(
 			$data->username,
 			$data->name_last,
 			$data->name_first,
@@ -373,5 +373,11 @@ class User
 			$data->USER_ID,
 			$data->pw_hash
 		);
+
+		// temporarily set the instance variables for address objects to the location ids
+		$user->homeAddress = $data->home_address;
+		$user->mailingAddress = $data->mailing_address;
+
+		return $user;
 	}
 }
