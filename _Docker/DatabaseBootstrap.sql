@@ -36,7 +36,7 @@ CREATE TABLE `locations` (
   `longitude` decimal(9,6) DEFAULT NULL,
   `nickname` varchar(60) NOT NULL,
   `line1` varchar(60) NOT NULL,
-  `line2` varchar(60) NOT NULL,
+  `line2` varchar(60) DEFAULT NULL,
   `city` varchar(60) NOT NULL,
   `state` varchar(2) NOT NULL,
   `zip` varchar(10) NOT NULL,
