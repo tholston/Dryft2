@@ -25,6 +25,14 @@
         exit();
     }
 
+    if (isset($_GET['rejection'])){
+        $RejectID = $_GET['rejection'];
+        $delquery = "DELETE FROM rides WHERE RIDE_ID='$RejectID'";
+        mysqli_query($db, $delquery);
+        header('Location: /ride.php');
+        exit();
+    }
+
     /* User drive request form handler
         Takes in the form information, validates whether or not locations already exist, creating them if not, and compiling all the information for a formal ride request.
         This information will be pushed into the database for the coordinator to then handle. By this, assigning a driver and finishing the ride acceptance.

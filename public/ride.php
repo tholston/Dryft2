@@ -135,7 +135,8 @@ $searchuserid = $user->id();
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
-                echo "<td><a href='ride.php?assign=" . $row['RIDE_ID'] . "'>Select</a></td>";         
+                echo "<td><a href='ride.php?assign=" . $row['RIDE_ID'] . "'>Assign</a></td>";
+                echo "<td><a href='ridefunction.php?rejection=" . $row['RIDE_ID'] . "'>Reject</a></td>";     
                 echo "</tr>";
             }
         ?>
