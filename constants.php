@@ -40,10 +40,19 @@ const USER_TYPE_DRIVER      = 'Driver';
 
 // Common URL parameters
 const PARAM_ACTION  = 'action';
+const PARAM_ID      = 'id';
+const PARAM_USER    = 'user';
+const PARAM_TYPE    = 'type';
+
 const ACTION_NEW    = 'new';
 const ACTION_CREATE = 'create';
 const ACTION_EDIT   = 'edit';
 const ACTION_UPDATE = 'update';
 const ACTION_ERROR  = 'error';
-const PARAM_ID      = 'id';
-const PARAM_USER    = 'user';
+
+// Custom actions for the users controller
+const ACTION_NEW_ADDRESS = 'new-address';
+
+// User Address types
+const ADDRESS_TYPE_HOME    = 'home';
+const ADDRESS_TYPE_MAILING = 'mailing';

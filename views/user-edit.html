@@ -60,16 +60,24 @@
 						<div class="col-sm-5">
 							<label for="homeAddress" class="form-label">Home Address</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="homeAddress" placeholder="" value="<?= $selectedUser->homeAddress() ?>">
-								<a class="btn btn-secondary" href="address.php?id=<? $selectedUser->homeAddress()->id() ?>&action=edit">Edit</a>
+								<input type="text" class="form-control" id="homeAddress" disabled="" placeholder="" value="<?= $selectedUser->homeAddress() ?>">
+								<?php if ($selectedUser->homeAddress()->id()) { ?>
+								<a class="btn btn-secondary" target="Edit Address" href="address.php?edit=<? $selectedUser->homeAddress()->id() ?>">Edit</a>
+								<?php } else { ?>
+								<a class="btn btn-secondary" target="Edit Address" href="user.php?id=<?= $selectedUser->id() ?>&action=new-address&type=home">Set</a>
+								<?php } ?>
 							</div>
 						</div>
 						<div class="col-sm-5">
 							<label for="mailingAddress" class="form-label">Mailing Address</label>
 							<div class="input-group has-validation">
-								<input type="text" class="form-control" id="mailingAddress" placeholder="" value="<?= $selectedUser->mailingAddress() ?>">
-								<a class="btn btn-secondary" href="address.php?id=<? $selectedUser->mailingAddress()->id() ?>&action=edit">Edit</a>
-							</div>
+								<input type="text" class="form-control" id="mailingAddress" disabled="" placeholder="" value="<?= $selectedUser->mailingAddress() ?>">
+								<?php if ($selectedUser->mailingAddress()->id()) { ?>
+									<a class="btn btn-secondary" target="Edit Address" href="address.php?edit=<? $selectedUser->mailingAddress()->id() ?>">Edit</a>
+									<?php } else { ?>
+									<a class="btn btn-secondary" target="Edit Address" href="user.php?id=<?= $selectedUser->id() ?>&action=new-address&type=mailing">Set</a>
+									<?php } ?>
+								</div>
 						</div>
 					</div>
 					<hr class="my-4">
