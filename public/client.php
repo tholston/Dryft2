@@ -45,14 +45,14 @@ elseif(array_key_exists('info', $_REQUEST)){
 	?>
 	<form method="POST">  
 
-		<?php echo '<h2>Name: ' . $user->firstName . ' ' . $user->lastName;?>
+		<?php echo '<h3>Name: ' . $user->firstName . ' ' . $user->lastName;?>
         <input type="submit" name="nameEdit"
-                class="button" value="Edit"/></h2>
-		<?php echo '<h2>Username: ' . $user->username();?>
-		<?php echo '<h2>Home Address: ' . $user->homeAddress();?>
-		<h2>Password
+		class="btn btn-primary" value="Edit"/></h3>
+		<?php echo '<h3>Username: ' . $user->username();?>
+		<?php echo '<h3>Home Address: ' . $user->homeAddress();?>
+		<h3>Password
         <input type="submit" name="passwordEdit"
-                class="button" value="Edit"/></h2>
+                class="btn btn-primary" value="Edit"/></h3>
     </form> 
 
 <?php
@@ -158,13 +158,17 @@ else {
 	}
 	// Presents main client menu
 	?>
+	<br></br>
+	
 	<form method="POST"> 
         <input type="submit" name="request"
-                class="button" value="Request a Ride" formaction="ride.php"/> 
+		class="w-100 btn btn-primary btn-lg" value="Request a Ride" formaction="ride.php"/>
+		<br></br>
 		<input type="submit" name="info"
-                class="button" value="Personal Information"/> 
+		class="w-100 btn btn-primary btn-lg" value="Personal Information"/> 
+		<br></br>
 		<input type="submit" name="history"
-                class="button" value="Ride History"/> 
+		class="w-100 btn btn-primary btn-lg" value="Ride History"/> 
     </form> 
 
 <?php
