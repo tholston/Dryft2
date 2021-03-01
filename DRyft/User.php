@@ -364,7 +364,7 @@ class User
 	{
 
 		// Create the appropriate subclass based on the user type
-		return new User(
+		$user = new User(
 			$data->username,
 			$data->name_last,
 			$data->name_first,
@@ -373,5 +373,11 @@ class User
 			$data->USER_ID,
 			$data->pw_hash
 		);
+
+		// temporarily set the instance variables for address objects to the location ids
+		$user->homeAddress = $data->home_address;
+		$user->mailingAddress = $data->mailing_address;
+
+		return $user;
 	}
 }
