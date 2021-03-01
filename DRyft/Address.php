@@ -22,7 +22,7 @@ class Address
 	public function __toString()
 	{
 		// TODO: assemble the properties to the address
-		return '123 Main Street, City, ST 12345';
+		return 'No Address Set';
 	}
 
 	public function save()
