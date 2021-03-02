@@ -67,7 +67,7 @@ if ($action == Constants::ACTION_NEW_ADDRESS) {
 
 			$address->save();
 			// update the user to save this id to its record
-			$user->save();
+			$selectedUser->save();
 
 			// redirect the user to the edit page for the location
 			$location = $linker->urlPath() . 'address.php?edit=' . $address->id();
