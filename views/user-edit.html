@@ -16,13 +16,13 @@
 							<label for="username" class="form-label">Username</label>
 							<div class="input-group has-validation">
 								<span class="input-group-text">@</span>
-								<input type="text" class="form-control" id="username" placeholder="" value="<?= $selectedUser->username() ?>" required="" pattern="\w\w\w+">
+								<input type="text" class="form-control" id="username" name="username" placeholder="" value="<?= $selectedUser->username() ?>" required="" pattern="\w\w\w+">
 								<div class="invalid-feedback">Valid username is required. Please note only alphanumeric values are permitted.</div>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<label for="password" class="form-label">Password</label>
-							<input type="text" class="form-control" id="password" placeholder="" value="" pattern=".{8,}">
+							<input type="password" class="form-control" id="password" name="password" placeholder="" value="" pattern=".{8,}">
 							<div class="invalid-feedback">Password is not required, only provide if changing. Must be at least eight characters.</div>
 						</div>
 					</div>
@@ -30,16 +30,16 @@
 					<div class="row g-3">
 						<div class="col-sm-4">
 							<label for="firstName" class="form-label">First name</label>
-							<input type="text" class="form-control" id="firstName" placeholder="" value="<?= $selectedUser->firstName ?>" required="">
+							<input type="text" class="form-control" id="firstName" name="firstName" placeholder="" value="<?= $selectedUser->firstName ?>" required="">
 							<div class="invalid-feedback">First name is required.</div>
 						</div>
 						<div class="col-sm-4">
 							<label for="middleName" class="form-label">Middle name</label>
-							<input type="text" class="form-control" id="middleName" placeholder="" value="<?= $selectedUser->middleName ?>">
+							<input type="text" class="form-control" id="middleName" name="middleName" placeholder="" value="<?= $selectedUser->middleName ?>">
 						</div>
 						<div class="col-sm-4">
 							<label for="lastName" class="form-label">Last name</label>
-							<input type="text" class="form-control" id="lastName" placeholder="" value="<?= $selectedUser->lastName ?>" required="">
+							<input type="text" class="form-control" id="lastName" name="lastName" placeholder="" value="<?= $selectedUser->lastName ?>" required="">
 							<div class="invalid-feedback">Last name is required.</div>
 						</div>
 					</div>
@@ -47,12 +47,12 @@
 					<div class="row g-3">
 						<div class="col-sm-4">
 							<label for="email" class="form-label">Email</label>
-							<input type="text" class="form-control" id="email" placeholder="" value="<?= $selectedUser->email ?>" required="" pattern="\w+@\w+\.\w{2,3}">
+							<input type="text" class="form-control" id="email" name="email" placeholder="" value="<?= $selectedUser->email ?>" required="" pattern="\w+@\w+\.\w{2,3}">
 							<div class="invalid-feedback">Email address is required.</div>
 						</div>
 						<div class="col-sm-4">
 							<label for="phone" class="form-label">Phone</label>
-							<input type="text" class="form-control" id="phone" placeholder="123-456-7890" value="<?= $selectedUser->phone ?>" pattern="\d{3}-\d{3}-\d{4}">
+							<input type="text" class="form-control" id="phone" name="phone" placeholder="123-456-7890" value="<?= $selectedUser->phone ?>" pattern="\d{3}-\d{3}-\d{4}">
 						</div>
 					</div>
 					<hr class="my-4">
