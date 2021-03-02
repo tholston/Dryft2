@@ -318,7 +318,6 @@ class User
 				. '   ' . intval($this->homeAddress()->id())      . ','  . PHP_EOL
 				. '   ' . intval($this->mailingAddress()->id())          . PHP_EOL
 				. ');';
-			throw new Database\Exception('Unable to insert user: ' . $query);
 			if ($db->query($query) !== false) {
 				// try to read the user id back
 				$this->id = $db->insert_id;
