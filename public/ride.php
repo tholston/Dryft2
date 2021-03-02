@@ -52,6 +52,13 @@ if ($user->isClient()) {
         </tbody>
     </table>
     <br>
+
+    <?php
+        if(isset($_GET['Accepted']) == "RideRequest"){
+            echo "<h5>Ride Request has been submitted!</h5>";
+        }
+    ?>
+
 <?php } ?>
 <?php if ($user->isCoordinator()) { ?>
 
