@@ -28,7 +28,7 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     echo '<h1>Access Denied "You pillow" </h1>';
     //TODO some redirect to somewhere here.
 } elseif ($user->isCoordinator()) {
-    include '../header-coordinator.html';
+
     // Present a list of the users in the system
     echo '<h1>Coordinator Page.</h1>';
 
