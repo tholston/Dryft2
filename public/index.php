@@ -8,10 +8,15 @@
  * @author Errol Sayre
  */
 
+namespace DRyft;
+
 require_once('../bootstrap.php');
 
 // determine if we have a user
-$user = DRyft\Session::getSession()->getUser();
+$user = Session::getSession()->getUser();
+
+// setup a linker
+$linker = new Linker();
 
 // add HTML head
 include '../head.html';
