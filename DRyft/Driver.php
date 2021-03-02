@@ -110,9 +110,19 @@ class Driver extends User
     public static function getDrivers()
     {
         // collect them all
-        return self::loadDriversByQuery(
-            'SELECT * FROM `users`,`driver_attributes` WHERE USER_ID=DRIVER_ID AND `type`="Driver" ORDER BY name_last, name_first, name_middle, USER_ID;'
-        );
+        $select =
+            'SELECT *' . PHP_EOL
+            . 'FROM `users` AS u' . PHP_EOL
+            . 'INNER JOIN `driver_attributes` AS a' . PHP_EOL
+            . '   ON u.`USER_ID` = a.`DRIVER_ID`' . PHP_EOL
+            . '  AND u.`type` = "Driver"' . PHP_EOL
+            . 'ORDER BY' . PHP_EOL
+            . '  name_last,' . PHP_EOL
+            . '  name_first,' . PHP_EOL
+            . '  name_middle,' . PHP_EOL
+            . '  USER_ID' . PHP_EOL
+            . ';';
+        return self::loadDriversByQuery($select);
     }
 
     /**
@@ -125,7 +135,18 @@ class Driver extends User
     {
         // collect them all
         return self::loadDriversByQuery(
-            'SELECT * FROM `users`,`driver_attributes` WHERE USER_ID=DRIVER_ID AND `type`="Driver" AND is_available="Yes" ORDER BY name_last, name_first, name_middle, USER_ID;'
+            'SELECT *' . PHP_EOL
+                . 'FROM `users` AS u' . PHP_EOL
+                . 'INNER JOIN `driver_attributes` AS a' . PHP_EOL
+                . '   ON u.`USER_ID` = a.`DRIVER_ID`' . PHP_EOL
+                . '  AND u.`type` = "Driver"' . PHP_EOL
+                . '  AND a.is_available = "Yes"' . PHP_EOL
+                . 'ORDER BY' . PHP_EOL
+                . '  name_last,' . PHP_EOL
+                . '  name_first,' . PHP_EOL
+                . '  name_middle,' . PHP_EOL
+                . '  USER_ID' . PHP_EOL
+                . ';'
         );
     }
 
@@ -168,7 +189,13 @@ class Driver extends User
     {
         // secure the query by forcing an integer value
         $drivers = self::loadDriversByQuery(
-            'SELECT * FROM `users`,`driver_attributes` WHERE USER_ID=DRIVER_ID AND `type`="Driver" AND `USER_ID` = ' . intval($driverId) . ';'
+            'SELECT *' . PHP_EOL
+                . 'FROM `users` AS u' . PHP_EOL
+                . 'INNER JOIN `driver_attributes` AS a' . PHP_EOL
+                . '   ON u.`USER_ID` = a.`DRIVER_ID`' . PHP_EOL
+                . '  AND u.`type` = "Driver"' . PHP_EOL
+                . '  AND u.`USER_ID` = ' . intval($driverId) . PHP_EOL
+                . ';'
         );
         // confirm the result set size
         $count = count($drivers);
