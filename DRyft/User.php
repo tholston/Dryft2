@@ -324,7 +324,7 @@ class User
 				$this->id = $db->insert_id;
 				return true;
 			} else {
-				throw new Database\Exception('Unable to insert user: ' . $db->error);
+				throw new Database\Exception('Unable to insert user: ' . $db->error . PHP_EOL . '<pre>' . $query . '</pre>');
 			}
 		}
 		return false;
