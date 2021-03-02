@@ -87,8 +87,6 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
 
         ?>
 
-        <br />
-        <br />
         <h1>Available Drivers</h1>
         <table class="table table-striped">
             <thead>
@@ -120,9 +118,8 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
             </tbody>
         </table>
 
+        <p>&nbsp;</p>
 
-        <br />
-        <br />
         <h1>All Drivers</h1>
         <table class="table table-striped">
             <thead>
