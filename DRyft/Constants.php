@@ -41,10 +41,12 @@ class Constants
 	const USER_TYPE_DRIVER      = 'Driver';
 
 	// Common URL parameters
-	const PARAM_ACTION  = 'action';
-	const PARAM_ID      = 'id';
-	const PARAM_USER    = 'user';
-	const PARAM_TYPE    = 'type';
+	const PARAM_ACTION    = 'action';
+	const PARAM_ID        = 'id';
+	const PARAM_USER      = 'user';
+	const PARAM_TYPE      = 'type';
+	const PARAM_USER_TYPE = 'userType';
+	const PARAM_PASSWORD  = 'password';
 
 	const ACTION_NEW    = 'new';
 	const ACTION_CREATE = 'create';
