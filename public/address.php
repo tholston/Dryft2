@@ -120,6 +120,7 @@
     //function for external access by other sections of code.
     //Prints out the information of a location based on the passed location_id.
     function externalaccessPrint($id){
+        $db = Database\Connection::getConnection();
         $query = "SELECT * FROM locations WHERE LOCATION_ID='$id'";
         $results = mysqli_query($db, $query);
         echo "<table><thead><tr>";
