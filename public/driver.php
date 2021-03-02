@@ -26,7 +26,7 @@ include '../header.html';
 
 if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     // throw an error and exit
-    echo '<h1>Access Denied "You pillow" </h1>';
+    echo '<h1>Access Denied</h1>';
     //TODO some redirect to somewhere here.
 } elseif ($user->isCoordinator()) {
     // Present a list of the users in the system
