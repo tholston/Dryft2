@@ -1,5 +1,12 @@
 
 				<h1><?= $headerLabel ?></h1>
+<?php
+if ($message) {
+?>
+				<p><?= $message ?></p>
+<?php
+}
+?>
 				<form method="POST" action="user.php?id=<?= $selectedUser->id() ?>&action=<?= $selectedAction ?>" class="needs-validation" novalidate>
 					<div class="row g-3">
 						<div class="col-sm-4">
