@@ -23,7 +23,7 @@ $action = $_REQUEST[Constants::PARAM_ACTION];
 
 // Determine if a user has been specified
 $selectedUser = null;
-if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
+if (array_key_exists(Constants::PARAM_ID, $_REQUEST) && intval($_REQUEST[Constants::PARAM_ID])) {
 	try {
 		$selectedUser = User::getUserById(intval($_REQUEST[Constants::PARAM_ID]));
 	} catch (Database\Exception $e) {
@@ -67,7 +67,7 @@ if ($action == Constants::ACTION_NEW_ADDRESS) {
 
 			$address->save();
 			// update the user to save this id to its record
-			$user->save();
+			$selectedUser->save();
 
 			// redirect the user to the edit page for the location
 			$location = $linker->urlPath() . 'address.php?edit=' . $address->id();
@@ -102,20 +102,6 @@ if (!$user || !$user->isCoordinator()) {
 	// determine which action we're here to accomplish
 	$action = $_REQUEST[Constants::PARAM_ACTION];
 
-	// determine if a user has been provided
-	$selectedUser = null;
-	if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
-		try {
-			$selectedUser = User::getUserById(intval($_REQUEST[Constants::PARAM_ID]));
-		} catch (Database\Exception $e) {
-
-			// if no user was found display the error and drop out with a dummy action
-			echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[Constants::PARAM_ID]) . '</h1>';
-			echo '<p>' . $e->getMessage() . '</p>';
-			$action = Constants::ACTION_ERROR;
-		}
-	}
-
 	if ($action == Constants::ACTION_EDIT) {
 
 		// display the edit form for the selected user
@@ -128,11 +114,61 @@ if (!$user || !$user->isCoordinator()) {
 		// include the form snippet
 		include '../views/user-edit.html';
 	} elseif ($action == Constants::ACTION_UPDATE) {
+
+		// clear any change that's not allowed
+		// currently this is not necessary, but we will eventually allow users to edit their own records
+		if (!$user->isCoordinator()) {
+			// ensure the user can't change the user type
+			unset($_REQUEST[Constants::PARAM_USER_TYPE]);
+		}
 		// load updates for the user from the request
-		echo '<h1>WILL IT UPDATE?</h1>';
+		$selectedUser->updateFromRequest($_REQUEST);
+
+		// save the changes
+		$message = 'Unable to update user.';
+		try {
+			if ($selectedUser->save()) {
+				$message = 'User updated successfully.';
+			}
+		} catch (Database\Exception $e) {
+			$message = $e->getMessage();
+		}
+
+		// display the edit form once more
+		// setup the submit action
+		$selectedAction = Constants::ACTION_UPDATE;
+		// setup the header label
+		$headerLabel = 'Edit ' . $selectedUser->firstName . ' ' . $selectedUser->lastName . ' (' . $selectedUser->id() . ')';
+		// setup the submit label
+		$submitLabel = 'Update user';
+		// include the form snippet
+		include '../views/user-edit.html';
 	} elseif ($action == Constants::ACTION_CREATE) {
 		// load data to create a new user
-		echo '<h1>WILL IT CREATE?</h1>';
+		$selectedUser = new User();
+
+		// load updates for the user from the request
+		$selectedUser->updateFromRequest($_REQUEST);
+
+		// save the changes
+		$message = 'Unable to create user.';
+		try {
+			if ($selectedUser->save()) {
+				$message = 'User created successfully.';
+			}
+		} catch (Database\Exception $e) {
+			$message = $e->getMessage();
+		}
+
+		// display the edit form once more
+		// setup the submit action
+		$selectedAction = Constants::ACTION_UPDATE;
+		// setup the header label
+		$headerLabel = 'Edit ' . $selectedUser->firstName . ' ' . $selectedUser->lastName . ' (' . $selectedUser->id() . ')';
+		// setup the submit label
+		$submitLabel = 'Update user';
+		// include the form snippet
+		include '../views/user-edit.html';
 	} elseif ($action == Constants::ACTION_NEW) {
 
 		// display the edit form for an empty user
