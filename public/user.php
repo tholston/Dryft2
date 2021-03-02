@@ -19,19 +19,19 @@ require_once('../bootstrap.php');
 $user = Session::getSession()->getUser();
 
 // determine which action we're here to accomplish
-$action = $_REQUEST[PARAM_ACTION];
+$action = $_REQUEST[Constants::PARAM_ACTION];
 
 // Determine if a user has been specified
 $selectedUser = null;
-if (array_key_exists(PARAM_ID, $_REQUEST)) {
+if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
 	try {
-		$selectedUser = User::getUserById(intval($_REQUEST[PARAM_ID]));
+		$selectedUser = User::getUserById(intval($_REQUEST[Constants::PARAM_ID]));
 	} catch (Database\Exception $e) {
 
 		// if no user was found display the error and drop out with a dummy action
-		$headerLabel = 'Unable to locate user for id: ' . intval($_REQUEST[PARAM_ID]);
+		$headerLabel = 'Unable to locate user for id: ' . intval($_REQUEST[Constants::PARAM_ID]);
 		$error = $e->getMessage();
-		$action = ACTION_ERROR;
+		$action = Constants::ACTION_ERROR;
 	}
 }
 
@@ -39,26 +39,26 @@ if (array_key_exists(PARAM_ID, $_REQUEST)) {
 $linker = new Linker();
 
 // Handle actions that require redirection before output begins
-if ($action == ACTION_NEW_ADDRESS) {
+if ($action == Constants::ACTION_NEW_ADDRESS) {
 
 	// ensure we have a selected user
 	if (!$selectedUser instanceof User) {
 		$headerLabel = 'Address Create';
 		$error = 'No user selected. A valid user is required to create a new address.';
-		$action = ACTION_ERROR;
+		$action = Constants::ACTION_ERROR;
 	} else {
 		// default to home address
-		$type = ADDRESS_TYPE_HOME;
+		$type = Constants::ADDRESS_TYPE_HOME;
 		$address = $selectedUser->homeAddress();
-		if (array_key_exists(PARAM_TYPE, $_REQUEST)) {
-			$type = $_REQUEST[PARAM_TYPE];
-			if ($type == ADDRESS_TYPE_MAILING) {
+		if (array_key_exists(Constants::PARAM_TYPE, $_REQUEST)) {
+			$type = $_REQUEST[Constants::PARAM_TYPE];
+			if ($type == Constants::ADDRESS_TYPE_MAILING) {
 				$address = $selectedUser->mailingAddress();
 			}
 		}
 
 		// Regardless of the outcome, use the error view
-		$action = ACTION_ERROR;
+		$action = Constants::ACTION_ERROR;
 
 		// Specify a nickname for this address
 		$address->nickname = ucfirst($type);
@@ -89,17 +89,15 @@ include '../head.html';
 // Output a page title and any other specific head elements
 echo '		<title>Users | DRyft</title>' . PHP_EOL;
 
-// add page header based on the user's access level
+// add page header
+include '../header.html';
 
 // determine if the user has access to this "viewtroller"
 if (!$user || !$user->isCoordinator()) {
 
-	include '../header.html';
 	// throw an error and exit
 	echo '<h1>Access Denied</h1>';
 } else {
-
-	include '../header-coordinator.html';
 
 	// determine which action we're here to accomplish
 	$action = $_REQUEST[Constants::PARAM_ACTION];
@@ -148,7 +146,7 @@ if (!$user || !$user->isCoordinator()) {
 		$submitLabel = 'Create user';
 		// include the form snippet
 		include '../views/user-edit.html';
-	} elseif ($action == ACTION_ERROR) {
+	} elseif ($action == Constants::ACTION_ERROR) {
 
 		echo '<h1>', $headerLabel, '</h1>';
 		echo '<p class="error">', $error, '</p>';
