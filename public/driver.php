@@ -30,7 +30,6 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     //TODO some redirect to somewhere here.
 } elseif ($user->isCoordinator()) {
     // Present a list of the users in the system
-    echo '<h1>Coordinator Page.</h1>';
 
     $action = $_REQUEST[Constants::PARAM_ACTION];
     // determine if a user has been provided
