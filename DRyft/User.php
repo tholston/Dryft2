@@ -393,6 +393,10 @@ class User
 			$data->pw_hash
 		);
 
+		// load the contact fields separately
+		$user->email = $data->email;
+		$user->phone = $data->phone;
+
 		// temporarily set the instance variables for address objects to the location ids
 		$user->homeAddress = $data->home_address;
 		$user->mailingAddress = $data->mailing_address;
