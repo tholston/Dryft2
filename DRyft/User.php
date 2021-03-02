@@ -155,7 +155,7 @@ class User
 	 */
 	public function isDriver()
 	{
-		if ($this->type == USER_TYPE_DRIVER) {
+		if ($this->type == Constants::USER_TYPE_DRIVER) {
 			return true;
 		}
 
@@ -167,7 +167,7 @@ class User
 	 */
 	public function isClient()
 	{
-		if ($this->type == USER_TYPE_CLIENT) {
+		if ($this->type == Constants::USER_TYPE_CLIENT) {
 			return true;
 		}
 
@@ -179,7 +179,7 @@ class User
 	 */
 	public function isCoordinator()
 	{
-		if ($this->type == USER_TYPE_COORDINATOR) {
+		if ($this->type == Constants::USER_TYPE_COORDINATOR) {
 			return true;
 		}
 

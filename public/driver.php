@@ -32,18 +32,18 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     // Present a list of the users in the system
     echo '<h1>Coordinator Page.</h1>';
 
-    $action = $_REQUEST[PARAM_ACTION];
+    $action = $_REQUEST[Constants::PARAM_ACTION];
     // determine if a user has been provided
     $selectedUser = null;
-    if (array_key_exists(PARAM_ID, $_REQUEST)) {
+    if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
         try {
-            $selectedUser = User::getUserById(intval($_REQUEST[PARAM_ID]));
+            $selectedUser = User::getUserById(intval($_REQUEST[Constants::PARAM_ID]));
         } catch (Database\Exception $e) {
 
             // if no user was found display the error and drop out with a dummy action
-            echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[PARAM_ID]) . '</h1>';
+            echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[Constants::PARAM_ID]) . '</h1>';
             echo '<p>' . $e->getMessage() . '</p>';
-            $action = ACTION_ERROR;
+            $action = Constants::ACTION_ERROR;
         }
     }
 
@@ -51,14 +51,14 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
         //Display edit page, so coordinator can edit the driver-specific attributes about a Driver type user.
         //Currently only changes the rate.
         $driver = null;
-        if (array_key_exists(PARAM_ID, $_REQUEST)) {
+        if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
             try {
-                $driver = Driver::getDriverById(intval($_REQUEST[PARAM_ID]));
+                $driver = Driver::getDriverById(intval($_REQUEST[Constants::PARAM_ID]));
             } catch (Database\Exception $e) {
                 // if no user was found display the error and drop out with a dummy action
-                echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[PARAM_ID]) . '</h1>';
+                echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[Constants::PARAM_ID]) . '</h1>';
                 echo '<p>' . $e->getMessage() . '</p>';
-                $action = ACTION_ERROR;
+                $action = Constants::ACTION_ERROR;
             }
             echo "<h1> Edit Rate for {$driver->firstName()} {$driver->lastName()} (id={$driver->id()})</h1>"
 ?>
@@ -171,7 +171,7 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
 elseif ($user->isDriver()) {
     echo '<h1>Driver Page.</h1>';
     //Handle setting driver availability.
-    $action = $_REQUEST[PARAM_ACTION];
+    $action = $_REQUEST[Constants::PARAM_ACTION];
     // determine if a user has been provided
     $selectedUser = null;
 

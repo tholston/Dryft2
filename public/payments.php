@@ -19,7 +19,7 @@ $user = Session::getSession()->getUser();
 include '../head.html';
 include '../header.html';
 
-$action = $_REQUEST[PARAM_ACTION];
+$action = $_REQUEST[Constants::PARAM_ACTION];
 
 if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     // throw an error and exit
@@ -32,8 +32,8 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
 elseif ($action == "viewpaymentrides") {
     echo "<h1>All rides for specific Payment page.</h1>";
     if ($user->isCoordinator() || $user->isDriver()) {
-        if (array_key_exists(PARAM_ID, $_REQUEST)) {
-            $paymentID = intval($_REQUEST[PARAM_ID]);
+        if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
+            $paymentID = intval($_REQUEST[Constants::PARAM_ID]);
             $rides = Ride::getRidesForPayment($paymentID);
             $driverID = 0;
 
@@ -107,14 +107,14 @@ elseif ($user->isCoordinator()) {
     if ($action == "viewpayments") {
         // determine if a user has been provided
         $selectedUser = null;
-        if (array_key_exists(PARAM_ID, $_REQUEST)) {
+        if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
             try {
-                $selectedUser = User::getUserById(intval($_REQUEST[PARAM_ID]));
+                $selectedUser = User::getUserById(intval($_REQUEST[Constants::PARAM_ID]));
             } catch (Database\Exception $e) {
                 // if no user was found display the error and drop out with a dummy action
-                echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[PARAM_ID]) . '</h1>';
+                echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[Constants::PARAM_ID]) . '</h1>';
                 echo '<p>' . $e->getMessage() . '</p>';
-                $action = ACTION_ERROR;
+                $action = Constants::ACTION_ERROR;
             }
         }
         if ($selectedUser == null) {
