@@ -65,14 +65,7 @@ CREATE TABLE `rides` (
   `departure` datetime NOT NULL,
   `arrival` datetime NOT NULL,
   `mileage` decimal(8,3) unsigned NOT NULL,
-  PRIMARY KEY (`RIDE_ID`),
-  KEY `client` (`client`),
-  KEY `driver` (`driver`),
-  KEY `pickup` (`pickup`),
-  KEY `dropoff` (`dropoff`),
-  CONSTRAINT `rides_ibfk_1` FOREIGN KEY (`pickup`) REFERENCES `locations` (`LOCATION_ID`),
-  CONSTRAINT `rides_ibfk_2` FOREIGN KEY (`client`) REFERENCES `users` (`USER_ID`),
-  CONSTRAINT `rides_ibfk_3` FOREIGN KEY (`dropoff`) REFERENCES `locations` (`LOCATION_ID`)
+  PRIMARY KEY (`RIDE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 
