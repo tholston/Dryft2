@@ -2,7 +2,7 @@
 
 /**
  * Model driver-specific objects and provide storage/retrieval from the database.
- * 
+ *
  * @author Clay Bellou
  */
 
@@ -69,7 +69,7 @@ class Driver extends User
     /**
      * Set is_available for the given driver
      * @param int $DRIVER_ID (Same as $USER_ID)
-     * @param bool (Will auto convert to Yes/No format) 
+     * @param bool (Will auto convert to Yes/No format)
      */
     public static function setIsAvailable(int $DRIVER_ID, bool $isAvailable)
     {
@@ -128,7 +128,7 @@ class Driver extends User
     /**
      * Load all drivers from the database who have "is_available" set to 'Yes'
      * Aka they are availible to do rides.
-     * 
+     *
      * @return array of Driver objects
      */
     public static function getAvailableDrivers()
