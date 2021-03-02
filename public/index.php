@@ -28,7 +28,8 @@ echo '		<title>Welcome to DRyft</title>' . PHP_EOL;
 include '../header.html';
 
 if (!$user) {
-	echo '<h1>Nothing to see here</h1>';
+	echo '<h1>Welcome to DRyft</h1>';
+	echo '<p><a href="' . $linker->urlPath() . 'login.php">Please login to begin.</a></p>';
 } else {
 	echo '<h1>Welcome ' . $user->username() . '</h1>';
 }
