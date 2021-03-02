@@ -9,6 +9,7 @@
  */
 
 namespace DRyft;
+
 require_once("../bootstrap.php");
 $db = Database\Connection::getConnection();
 $user = Session::getSession()->getUser();
@@ -18,9 +19,9 @@ $searchuserid = $user->id();
 ?>
 
 
-<?php 
-    /* validates user client status to display ride creation form */
-    if($user->isClient()){
+<?php
+/* validates user client status to display ride creation form */
+if ($user->isClient()) {
     /*
         Displays all current unfinished rides for a user.
     */
@@ -36,10 +37,10 @@ $searchuserid = $user->id();
             </tr>
         </thead>
         <tbody>
-        <?php
+            <?php
             $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage='0.0'";
             $results = mysqli_query($db, $search);
-            while($row = mysqli_fetch_array($results)){
+            while ($row = mysqli_fetch_array($results)) {
                 echo "<tr>";
                 echo "<td>" . $row['pickup'] . "</td>";
                 echo "<td>" . $row['dropoff'] . "</td>";
@@ -47,77 +48,75 @@ $searchuserid = $user->id();
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "</tr>";
             }
-        ?>
+            ?>
         </tbody>
     </table>
     <br>
 <?php } ?>
-<?php if($user->isCoordinator()){ ?>
+<?php if ($user->isCoordinator()) { ?>
 
     <?php
-        $select_state_accept = false;
-        $select_state_finish = false;
+    $select_state_accept = false;
+    $select_state_finish = false;
 
-        /*
+    /*
             This method gets all the necessary information that a coordinator will need to assign a rider.
             dropoff and pickup values are certainly important to be specified so that no "rogue" entries are also altered.
         */
-        if (isset($_GET['assign'])){
-            $Aid = $_GET['assign'];
-            $select_state_accept = true;
-            $Aselect = "SELECT * FROM rides WHERE RIDE_ID='$Aid'";
-            $Arec = mysqli_query($db, $Aselect);
-            $Arecord = mysqli_fetch_array($Arec);
-            $Aclient = $Arecord['client'];
-            $Adriver = $Arecord['driver'];
-            $Apickup = $Arecord['pickup'];
-            $Adropoff = $Arecord['pickup'];
-            $Adeparture = $Arecord['departure'];
-            $Aarrival = $Arecord['arrival'];
-            $Amileage = $Arecord['mileage'];
-        }
-        else{
-            $select_state_accept = false;
-            $Aid = NULL;
-            $Aclient = NULL;
-            $Adriver = NULL;
-            $Apickup = NULL;
-            $Adropoff = NULL;
-            $Adeparture = NULL;
-            $Aarrival = NULL;
-            $Amileage = NULL;
-        }
+    if (isset($_GET['assign'])) {
+        $Aid = $_GET['assign'];
+        $select_state_accept = true;
+        $Aselect = "SELECT * FROM rides WHERE RIDE_ID='$Aid'";
+        $Arec = mysqli_query($db, $Aselect);
+        $Arecord = mysqli_fetch_array($Arec);
+        $Aclient = $Arecord['client'];
+        $Adriver = $Arecord['driver'];
+        $Apickup = $Arecord['pickup'];
+        $Adropoff = $Arecord['pickup'];
+        $Adeparture = $Arecord['departure'];
+        $Aarrival = $Arecord['arrival'];
+        $Amileage = $Arecord['mileage'];
+    } else {
+        $select_state_accept = false;
+        $Aid = NULL;
+        $Aclient = NULL;
+        $Adriver = NULL;
+        $Apickup = NULL;
+        $Adropoff = NULL;
+        $Adeparture = NULL;
+        $Aarrival = NULL;
+        $Amileage = NULL;
+    }
 
-        /*
+    /*
             This method gets all the necessary information that a coordinator will need to properly finish the ride.
             This method will then pass these values to a method for handling when the coordinator finishes.
             dropoff and pickup values are certainly important to be specified so that no "rogue" entries are also altered.
         */
-        if (isset($_GET['finish'])){
-            $Bid = $_GET['finish'];
-            $select_state_finish = true;
-            $Bselect = "SELECT * FROM rides WHERE RIDE_ID='$Bid'";
-            $Brec = mysqli_query($db, $Bselect);
-            $Brecord = mysqli_fetch_array($Brec);
-            $Bclient = $Brecord['client'];
-            $Bdriver = $Brecord['driver'];
-            $Bpickup = $Brecord['pickup'];
-            $Bdropoff = $Brecord['pickup'];
-            $Bdeparture = $Brecord['departure'];
-            $Barrival = $Brecord['arrival'];
-            $Bmileage = $Brecord['mileage'];
-        }
-        else{
-            $select_state_accept = false;
-            $Bid = NULL;
-            $Bclient = NULL;
-            $Bdriver = NULL;
-            $Bpickup = NULL;
-            $Bdropoff = NULL;
-            $Bdeparture = NULL;
-            $Barrival = NULL;
-            $Bmileage = NULL;
-        }
+    if (isset($_GET['finish'])) {
+        $Bid = $_GET['finish'];
+        $select_state_finish = true;
+        $Bselect = "SELECT * FROM rides WHERE RIDE_ID='$Bid'";
+        $Brec = mysqli_query($db, $Bselect);
+        $Brecord = mysqli_fetch_array($Brec);
+        $Bclient = $Brecord['client'];
+        $Bdriver = $Brecord['driver'];
+        $Bpickup = $Brecord['pickup'];
+        $Bdropoff = $Brecord['pickup'];
+        $Bdeparture = $Brecord['departure'];
+        $Barrival = $Brecord['arrival'];
+        $Bmileage = $Brecord['mileage'];
+    } else {
+        $select_state_accept = false;
+        $Bid = NULL;
+        $Bclient = NULL;
+        $Bdriver = NULL;
+        $Bpickup = NULL;
+        $Bdropoff = NULL;
+        $Bdeparture = NULL;
+        $Barrival = NULL;
+        $Bmileage = NULL;
+    }
     ?>
 
     <h3>Unaccepted Ride Requests</h3>
@@ -135,12 +134,12 @@ $searchuserid = $user->id();
             </tr>
         </thead>
         <tbody>
-        <?php
+            <?php
             $search = "SELECT * FROM rides WHERE driver='0'";
             $results = mysqli_query($db, $search);
-            while($row = mysqli_fetch_array($results)){
+            while ($row = mysqli_fetch_array($results)) {
                 echo "<tr>";
-                echo "<td>" . $row['client'] . "</td>";  
+                echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
                 echo "<td>" . $row['pickup'] . "</td>";
                 echo "<td>" . $row['dropoff'] . "</td>";
@@ -148,10 +147,10 @@ $searchuserid = $user->id();
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
                 echo "<td><a href='ride.php?assign=" . $row['RIDE_ID'] . "'>Assign</a></td>";
-                echo "<td><a href='ridefunction.php?rejection=" . $row['RIDE_ID'] . "'>Reject</a></td>";     
+                echo "<td><a href='ridefunction.php?rejection=" . $row['RIDE_ID'] . "'>Reject</a></td>";
                 echo "</tr>";
             }
-        ?>
+            ?>
         </tbody>
     </table>
 
@@ -163,7 +162,7 @@ $searchuserid = $user->id();
         <button type='submit' name='driverassignment' class="btn btn-sm btn-primary">Accept</button>
         <button type='submit' class="btn btn-sm btn-primary"><a href='ride.php?assign=<?php echo NULL ?>'>Deselect Entry</a></button>
     </form>
-    
+
     <br><br>
     <h3>Accepted - Unfinished</h3>
     <table class='table table-striped'>
@@ -180,7 +179,7 @@ $searchuserid = $user->id();
             </tr>
         </thead>
         <tbody>
-        <?php
+            <?php
             /*
                 Queries the database to retrieve all rides within the system which have a 0.0 mileage and 0 is not the ID for driver.
                 This means that the ride was accepted and a "valid" driver has been assigned to this ride.
@@ -189,7 +188,7 @@ $searchuserid = $user->id();
             */
             $search = "SELECT * FROM rides WHERE mileage='0.0' AND driver!='0'";
             $results = mysqli_query($db, $search);
-            while($row = mysqli_fetch_array($results)){
+            while ($row = mysqli_fetch_array($results)) {
                 echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
@@ -197,36 +196,35 @@ $searchuserid = $user->id();
                 echo "<td>" . $row['dropoff'] . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
-                if($select_state_finish == true && $Bid == $row['RIDE_ID']){
+                if ($select_state_finish == true && $Bid == $row['RIDE_ID']) {
                     echo "<td><form method='post' action='ridefunction.php'>";
                     echo "<input type='number' step='0.001' name='mileageassign'>";
                     echo "<input type='hidden' name='id' value='" . $row['RIDE_ID'] . "'>";
                     echo "<button type='submit' name='mileageassignment' class='btn btn-sm btn-primary'>Accept</button>";
                     echo "</form></td>";
-                }
-                else{
+                } else {
                     echo "<td>" . $row['mileage'] . "</td>";
                 }
                 echo "<td><a href='ride.php?finish=" . $row['RIDE_ID'] . "'>Select</a></td>";
-                if ($select_state_accept == true && $Aid == $row['RIDE_ID']){
+                if ($select_state_accept == true && $Aid == $row['RIDE_ID']) {
                     echo "<td><a href='ride.php?finish=" . NULL . "'>Deselect</a></td>";
-                } 
+                }
                 echo "</tr>";
             }
-        ?>
+            ?>
         </tbody>
     </table>
 <?php } ?>
 
 <?php
-    /*
+/*
         Input is taken from a coordinator or client which will then be used to create a ride request.
         In the coordinators case, this is due to the possible of alternate means of scheduling such as a phone call or email.
         As such, their ID (Coordinator) will be associated with the ride for possibility that the alternate communicator may not have an account within the system.
 
         In the clients case, this is how they will schedule rides for later or current use.
     */
-    if ($user->isCoordinator() || $user->isClient()){ 
+if ($user->isCoordinator() || $user->isClient()) {
 ?>
     <br><br>
     <h6>Create a Ride Request</h6>

@@ -101,30 +101,47 @@ if (!$user || !$user->isCoordinator()) {
 
 	include '../header-coordinator.html';
 
-	if ($action == ACTION_EDIT) {
+	// determine which action we're here to accomplish
+	$action = $_REQUEST[Constants::PARAM_ACTION];
+
+	// determine if a user has been provided
+	$selectedUser = null;
+	if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
+		try {
+			$selectedUser = User::getUserById(intval($_REQUEST[Constants::PARAM_ID]));
+		} catch (Database\Exception $e) {
+
+			// if no user was found display the error and drop out with a dummy action
+			echo '<h1>Unable to locate user for id: ' . intval($_REQUEST[Constants::PARAM_ID]) . '</h1>';
+			echo '<p>' . $e->getMessage() . '</p>';
+			$action = Constants::ACTION_ERROR;
+		}
+	}
+
+	if ($action == Constants::ACTION_EDIT) {
 
 		// display the edit form for the selected user
 		// setup the submit action
-		$selectedAction = ACTION_UPDATE;
+		$selectedAction = Constants::ACTION_UPDATE;
 		// setup the header label
 		$headerLabel = 'Edit ' . $selectedUser->firstName . ' ' . $selectedUser->lastName . ' (' . $selectedUser->id() . ')';
 		// setup the submit label
 		$submitLabel = 'Update user';
 		// include the form snippet
 		include '../views/user-edit.html';
-	} elseif ($action == ACTION_UPDATE) {
+	} elseif ($action == Constants::ACTION_UPDATE) {
 		// load updates for the user from the request
 		echo '<h1>WILL IT UPDATE?</h1>';
-	} elseif ($action == ACTION_CREATE) {
+	} elseif ($action == Constants::ACTION_CREATE) {
 		// load data to create a new user
 		echo '<h1>WILL IT CREATE?</h1>';
-	} elseif ($action == ACTION_NEW) {
+	} elseif ($action == Constants::ACTION_NEW) {
 
 		// display the edit form for an empty user
 		$selectedUser = new User();
 
 		// setup the submit action
-		$selectedAction = ACTION_CREATE;
+		$selectedAction = Constants::ACTION_CREATE;
 		// setup the header label
 		$headerLabel = 'Create new user';
 		// setup the submit label

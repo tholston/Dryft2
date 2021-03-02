@@ -1,40 +1,61 @@
-	</head>
+</head>
 
-	<!-- TODO replace links in this template with items that are appropriate for guests -->
-	<body class="bg-light">
-		<nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="index.php">DRyft</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-					aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+<body class="bg-light">
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="index.php">DRyft</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+				aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-				<div class="collapse navbar-collapse" id="navbarContent">
-					<ul class="navbar-nav me-auto mb-2 mb-sm-0">
-						<li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
-							<ul class="dropdown-menu" aria-labelledby="userDropdown">
-								<li><a class="dropdown-item" href="user.php">List</a></li>
-								<li><a class="dropdown-item" href="user.php?action=new">Create New</a></li>
-							</ul>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="testDropdown" data-bs-toggle="dropdown" aria-expanded="false">Tests</a>
-							<ul class="dropdown-menu" aria-labelledby="testDropdown">
-								<li><a class="dropdown-item" href="login.php?login&user=dryfter&password=T0ky0DRyft!">Login as DRyfter</a></li>
-								<li><a class="dropdown-item" href="user.php?action=create">Create Submit</a></li>
-								<li><a class="dropdown-item" href="user.php?id=1&action=edit">Edit User 1</a></li>
-								<li><a class="dropdown-item" href="user.php?id=2&action=update">Edit 2 Submit</a></li>
-							</ul>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="login.php?logout">Logout</a></li>
-					</ul>
-					<form><input class="form-control" type="text" placeholder="Search" aria-label="Search"></form>
-				</div>
+			<div class="collapse navbar-collapse" id="navbarContent">
+				<ul class="navbar-nav me-auto mb-2 mb-sm-0">
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php">Home</a></li>
+<?php
+// Obscure some menu items based on the user type
+if (!$user instanceof DRyft\User) {
+?>
+					<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+
+<?php
+} elseif ( $user->isCoordinator() ) {
+?>
+					<li class="nav-item"><a class="nav-link" href="client.php">Clients</a></li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
+						<ul class="dropdown-menu" aria-labelledby="userDropdown">
+							<li><a class="dropdown-item" href="user.php">List</a></li>
+							<li><a class="dropdown-item" href="user.php?action=new">Create New</a></li>
+						</ul>
+					</li>
+<?php
+}
+if (DRyft\Constants::isDevelopment()) {
+?>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="testDropdown" data-bs-toggle="dropdown" aria-expanded="false">Tests</a>
+						<ul class="dropdown-menu" aria-labelledby="testDropdown">
+							<li><a class="dropdown-item" href="login.php?login&user=dryfter&password=T0ky0DRyft!">Login as DRyfter</a></li>
+							<li><a class="dropdown-item" href="user.php?action=create">Create Submit</a></li>
+							<li><a class="dropdown-item" href="user.php?id=1&action=edit">Edit User 1</a></li>
+							<li><a class="dropdown-item" href="user.php?id=2&action=update">Edit 2 Submit</a></li>
+						</ul>
+					</li>
+<?php
+}
+
+// add a logout for users
+if ($user instanceof DRyft\User) {
+?>
+					<li class="nav-item"><a class="nav-link" href="login.php?logout">Logout</a></li>
+<?php
+}
+?>
+				</ul>
+				<form><input class="form-control" type="text" placeholder="Search" aria-label="Search"></form>
 			</div>
-		</nav>
-		<div class="container">
-			<main>
+		</div>
+	</nav>
+	<div class="container">
+		<main>

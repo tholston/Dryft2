@@ -51,6 +51,7 @@ $linker = new Linker;
 
 if (array_key_exists('logout', $_REQUEST)) {
 	Session::destroy();
+	$user = null;
 	$message = 'Logged out successfully.';
 } elseif ($user) {
 
@@ -76,25 +77,7 @@ echo '		<title>Please login | DRyft</title>' . PHP_EOL;
 include '../header.html';
 
 // Give the user the login form
-?>
-<h1><?= $message ?></h1>
-<?php
-if ($error) {
-	echo '<p class="error">' . $error . '</p>';
-}
-?>
-<form method="POST" action="<?php echo $linker->urlPath(); ?>login.php">
-	<fieldset>
-		<legend>Username</legend>
-		<input type="text" name="user">
-	</fieldset>
-	<fieldset>
-		<legend>Password</legend>
-		<input type="password" name="password">
-	</fieldset>
-	<input type="submit" name="login" value="Login">
-</form>
-<?php
+include '../views/login.html';
 
 // add page footer
 include '../footer.html';

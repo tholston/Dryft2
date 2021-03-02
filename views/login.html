@@ -1,0 +1,19 @@
+			<h1><?= $message ?></h1>
+<?php
+if ($error) {
+?>
+			<p class="error"><?= $error ?></p>
+<?php
+}
+?>
+			<form method="POST" action="<?= $linker->urlPath() ?>login.php">
+				<fieldset>
+					<legend>Username</legend>
+					<input type="text" name="user">
+				</fieldset>
+				<fieldset>
+					<legend>Password</legend>
+					<input type="password" name="password">
+				</fieldset>
+				<input type="submit" name="login" value="Login">
+			</form>
