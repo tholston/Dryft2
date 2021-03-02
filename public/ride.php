@@ -38,7 +38,7 @@ if ($user->isClient()) {
         </thead>
         <tbody>
             <?php
-            $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage='0.0'";
+            $search = "SELECT * FROM rides WHERE client='$searchuserid' AND driver!='0' AND mileage='0.0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
                 echo "<tr>";
