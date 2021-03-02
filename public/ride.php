@@ -60,12 +60,13 @@ if ($user->isClient()) {
     $select_state_finish = false;
 
     /*
-            This method gets all the necessary information that a coordinator will need to assign a rider.
-            dropoff and pickup values are certainly important to be specified so that no "rogue" entries are also altered.
-        */
+        This method gets all the necessary information that a coordinator will need to assign a rider.
+        dropoff and pickup values are certainly important to be specified so that no "rogue" entries are also altered.
+    */
     if (isset($_GET['assign'])) {
         $Aid = $_GET['assign'];
         $select_state_accept = true;
+        /*
         $Aselect = "SELECT * FROM rides WHERE RIDE_ID='$Aid'";
         $Arec = mysqli_query($db, $Aselect);
         $Arecord = mysqli_fetch_array($Arec);
@@ -76,9 +77,11 @@ if ($user->isClient()) {
         $Adeparture = $Arecord['departure'];
         $Aarrival = $Arecord['arrival'];
         $Amileage = $Arecord['mileage'];
+        */
     } else {
         $select_state_accept = false;
         $Aid = NULL;
+        /*
         $Aclient = NULL;
         $Adriver = NULL;
         $Apickup = NULL;
@@ -86,6 +89,7 @@ if ($user->isClient()) {
         $Adeparture = NULL;
         $Aarrival = NULL;
         $Amileage = NULL;
+        */
     }
 
     /*
@@ -96,6 +100,7 @@ if ($user->isClient()) {
     if (isset($_GET['finish'])) {
         $Bid = $_GET['finish'];
         $select_state_finish = true;
+        /*
         $Bselect = "SELECT * FROM rides WHERE RIDE_ID='$Bid'";
         $Brec = mysqli_query($db, $Bselect);
         $Brecord = mysqli_fetch_array($Brec);
@@ -106,9 +111,11 @@ if ($user->isClient()) {
         $Bdeparture = $Brecord['departure'];
         $Barrival = $Brecord['arrival'];
         $Bmileage = $Brecord['mileage'];
+        */
     } else {
         $select_state_accept = false;
         $Bid = NULL;
+        /*
         $Bclient = NULL;
         $Bdriver = NULL;
         $Bpickup = NULL;
@@ -116,6 +123,7 @@ if ($user->isClient()) {
         $Bdeparture = NULL;
         $Barrival = NULL;
         $Bmileage = NULL;
+        */
     }
     ?>
 
@@ -235,13 +243,11 @@ if ($user->isClient()) {
                     echo "<input type='hidden' name='id' value='" . $row['RIDE_ID'] . "'>";
                     echo "<button type='submit' name='mileageassignment' class='btn btn-sm btn-primary'>Accept</button>";
                     echo "</form></td>";
+                    echo "<td><a href='ride.php?finish=" . NULL . "'>Deselect</a></td>";
                 } else {
                     echo "<td>" . $row['mileage'] . "</td>";
                 }
                 echo "<td><a href='ride.php?finish=" . $row['RIDE_ID'] . "'>Select</a></td>";
-                if ($select_state_accept == true && $Aid == $row['RIDE_ID']) {
-                    echo "<td><a href='ride.php?finish=" . NULL . "'>Deselect</a></td>";
-                }
                 echo "</tr>";
             }
             ?>
