@@ -75,9 +75,9 @@ class Address
 	{
 		// TODO: assemble the properties to the address
 		if ($this->id) {
-			$address = $this->addressLine1;
+			$address = $this->addressLine1 . ', ';
 			if ($this->addressLine2) {
-				$address .= ', ' . $this->addressLine2;
+				$address .= $this->addressLine2 . ', ';
 			}
 			$address .= $this->city . ', ' . $this->state . ' ' . $this->zip;
 			return $address;
