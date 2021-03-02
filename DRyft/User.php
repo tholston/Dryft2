@@ -169,10 +169,13 @@ class User
 	/**
 	 * Ensure proper type is set
 	 *
+	 * I'm making this public to use it outside of this class, however it should now make use of
+	 * user authorizations to prevent non-coordinators from changing their user type.
+	 *
 	 * @param string $type
 	 * @return User
 	 */
-	protected function setType($type)
+	public function setType($type)
 	{
 		if ($type == Constants::USER_TYPE_CLIENT) {
 			$this->type = Constants::USER_TYPE_CLIENT;
