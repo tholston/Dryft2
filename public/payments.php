@@ -255,3 +255,6 @@ function displayPaidUnpaidTable($unpaidPayments, $paidPayments)
     </table>
 <?php
 }
+
+// add page footer
+include '../footer.html';
