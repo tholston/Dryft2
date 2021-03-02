@@ -69,9 +69,9 @@ if ($message) {
 							<div class="input-group">
 								<input type="text" class="form-control" id="homeAddress" disabled="" placeholder="" value="<?= $selectedUser->homeAddress() ?>">
 								<?php if ($selectedUser->homeAddress()->id()) { ?>
-								<a class="btn btn-secondary" target="Edit Address" href="address.php?edit=<? $selectedUser->homeAddress()->id() ?>">Edit</a>
+								<a class="btn btn-secondary" target="Edit Address" href="address.php?edit=<?= $selectedUser->homeAddress()->id() ?>">Edit</a>
 								<?php } else { ?>
-								<a class="btn btn-secondary" target="Edit Address" href="user.php?id=<?= $selectedUser->id() ?>&action=new-address&type=home">Set</a>
+								<a class="btn btn-secondary" target="Create Address" href="user.php?id=<?= $selectedUser->id() ?>&action=new-address&type=home">Set</a>
 								<?php } ?>
 							</div>
 						</div>
@@ -80,9 +80,9 @@ if ($message) {
 							<div class="input-group has-validation">
 								<input type="text" class="form-control" id="mailingAddress" disabled="" placeholder="" value="<?= $selectedUser->mailingAddress() ?>">
 								<?php if ($selectedUser->mailingAddress()->id()) { ?>
-									<a class="btn btn-secondary" target="Edit Address" href="address.php?edit=<? $selectedUser->mailingAddress()->id() ?>">Edit</a>
+									<a class="btn btn-secondary" target="Edit Address" href="address.php?edit=<?= $selectedUser->mailingAddress()->id() ?>">Edit</a>
 									<?php } else { ?>
-									<a class="btn btn-secondary" target="Edit Address" href="user.php?id=<?= $selectedUser->id() ?>&action=new-address&type=mailing">Set</a>
+									<a class="btn btn-secondary" target="Create Address" href="user.php?id=<?= $selectedUser->id() ?>&action=new-address&type=mailing">Set</a>
 									<?php } ?>
 								</div>
 						</div>
