@@ -128,8 +128,35 @@ if (!$user || !$user->isCoordinator()) {
 		// include the form snippet
 		include '../views/user-edit.html';
 	} elseif ($action == Constants::ACTION_UPDATE) {
+
+		// clear any change that's not allowed
+		// currently this is not necessary, but we will eventually allow users to edit their own records
+		if (!$user->isCoordinator()) {
+			// ensure the user can't change the user type
+			unset($_REQUEST[Constants::PARAM_USER_TYPE]);
+		}
 		// load updates for the user from the request
-		echo '<h1>WILL IT UPDATE?</h1>';
+		$selectedUser->updateFromRequest($_REQUEST);
+
+		// save the changes
+		$message = 'Unable to update user.';
+		try {
+			if ($selectedUser->save()) {
+				$message = 'User updated successfully.';
+			}
+		} catch (Database\Exception $e) {
+			$message = $e->getMessage();
+		}
+
+		// display the edit form once more
+		// setup the submit action
+		$selectedAction = Constants::ACTION_UPDATE;
+		// setup the header label
+		$headerLabel = 'Edit ' . $selectedUser->firstName . ' ' . $selectedUser->lastName . ' (' . $selectedUser->id() . ')';
+		// setup the submit label
+		$submitLabel = 'Update user';
+		// include the form snippet
+		include '../views/user-edit.html';
 	} elseif ($action == Constants::ACTION_CREATE) {
 		// load data to create a new user
 		echo '<h1>WILL IT CREATE?</h1>';
