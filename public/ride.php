@@ -49,10 +49,14 @@ if ($user->isClient()) {
                 else{
                     $DState = "Accepted";
                 }
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
                 echo "<td>" . $DState . "</td>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "</tr>";
@@ -156,11 +160,15 @@ if ($user->isClient()) {
             $search = "SELECT * FROM rides WHERE driver='0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
@@ -240,11 +248,15 @@ if ($user->isClient()) {
             $search = "SELECT * FROM rides WHERE mileage='0.0' AND driver!='0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 if ($select_state_finish == true && $Bid == $row['RIDE_ID']) {
@@ -364,9 +376,13 @@ if ($user->isCoordinator() || $user->isClient()) {
             $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage!='0.0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "</tr>";
@@ -398,11 +414,15 @@ if ($user->isCoordinator() || $user->isClient()) {
             $search = "SELECT * FROM rides WHERE mileage!='0.0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
