@@ -501,6 +501,7 @@ class User
 	public static function formInputPropertyMapping()
 	{
 		return [
+			'username'   => 'username',
 			'firstName'  => 'firstName',
 			'middleName' => 'middleName',
 			'lastName'   => 'lastName',
