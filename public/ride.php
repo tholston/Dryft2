@@ -21,6 +21,9 @@ $searchuserid = $user->id();
 <?php 
     /* validates user client status to display ride creation form */
     if($user->isClient()){
+    /*
+        Displays all current unfinished rides for a user.
+    */
 ?>
     <h3>Current Ride Requests for <?php echo $user->firstName . $user->lastName; ?></h3>
     <table class='table table-striped'>
@@ -55,6 +58,10 @@ $searchuserid = $user->id();
         $select_state_accept = false;
         $select_state_finish = false;
 
+        /*
+            This method gets all the necessary information that a coordinator will need to assign a rider.
+            dropoff and pickup values are certainly important to be specified so that no "rogue" entries are also altered.
+        */
         if (isset($_GET['assign'])){
             $Aid = $_GET['assign'];
             $select_state_accept = true;
@@ -81,6 +88,11 @@ $searchuserid = $user->id();
             $Amileage = NULL;
         }
 
+        /*
+            This method gets all the necessary information that a coordinator will need to properly finish the ride.
+            This method will then pass these values to a method for handling when the coordinator finishes.
+            dropoff and pickup values are certainly important to be specified so that no "rogue" entries are also altered.
+        */
         if (isset($_GET['finish'])){
             $Bid = $_GET['finish'];
             $select_state_finish = true;
@@ -143,7 +155,6 @@ $searchuserid = $user->id();
         </tbody>
     </table>
 
-    
     <form method='post' action='ridefunction.php'>
         <h6>Selected Ride: <?php echo $Aid ?> - Client: <?php echo $Aclient ?></h6>
         <label for='driveassign'>Assign a Driver: </label>
@@ -170,6 +181,12 @@ $searchuserid = $user->id();
         </thead>
         <tbody>
         <?php
+            /*
+                Queries the database to retrieve all rides within the system which have a 0.0 mileage and 0 is not the ID for driver.
+                This means that the ride was accepted and a "valid" driver has been assigned to this ride.
+                0.0 is used to denote that the ride has not been completed as you would not know how long the ride was until after completion.
+                All Rides which meet this criteria will be displayed to be finished by the coordinator.
+            */
             $search = "SELECT * FROM rides WHERE mileage='0.0' AND driver!='0'";
             $results = mysqli_query($db, $search);
             while($row = mysqli_fetch_array($results)){
@@ -201,7 +218,16 @@ $searchuserid = $user->id();
     </table>
 <?php } ?>
 
-<?php if ($user->isCoordinator() || $user->isClient()){ ?>
+<?php
+    /*
+        Input is taken from a coordinator or client which will then be used to create a ride request.
+        In the coordinators case, this is due to the possible of alternate means of scheduling such as a phone call or email.
+        As such, their ID (Coordinator) will be associated with the ride for possibility that the alternate communicator may not have an account within the system.
+
+        In the clients case, this is how they will schedule rides for later or current use.
+    */
+    if ($user->isCoordinator() || $user->isClient()){ 
+?>
     <br><br>
     <h6>Create a Ride Request</h6>
     <form method='post' action='ridefunction.php'>

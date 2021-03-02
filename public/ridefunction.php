@@ -3,6 +3,10 @@
     require_once("../bootstrap.php");
     $db = Database\Connection::getConnection();
 
+    /*
+        Updates the database ride with a user thus accepting the ride
+        Navigates back to the ride.php page after completion.
+    */
     if (isset($_POST['driverassignment'])){
         $PID = $_POST['id'];
         $PDriver = $_POST['driveassign'];
@@ -13,6 +17,11 @@
         exit();
     }
 
+    /*
+        Updates the database ride with a mileage completing the ride
+        Navigates back to the ride.php page after completion.
+
+    */
     if (isset($_POST['mileageassignment'])){
         //PID for pass ID
         $PID = $_POST['id'];
@@ -25,6 +34,10 @@
         exit();
     }
 
+    /*
+        Queries the database by receiving a $_GET id from ride.php which will then use it to delete the entry.
+        Navigates back to the ride.php page after completion.
+    */
     if (isset($_GET['rejection'])){
         $RejectID = $_GET['rejection'];
         $delquery = "DELETE FROM rides WHERE RIDE_ID='$RejectID'";
@@ -75,7 +88,7 @@
             header('Location: /ride.php?Error="Invalid_Year_Entry"');
             exit();
         }
-        elseif($DeptMonth < 0 || $DeptMonth > 12 || $DeptMonth < date('m')){
+        elseif($DeptMonth < 0 || $DeptMonth > 12 || ($DeptMonth < date('m') && $DeptYear <= date('Y'))){
             header('Location: /ride.php?Error="Invalid_Month_Number_Entry"');
             exit();
         }

@@ -3,6 +3,9 @@
     require_once("../bootstrap.php");
     $db = Database\Connection::getConnection();
 
+    /*
+        Adds an address location into the database based on input from the coordinator.
+    */
     if (isset($_POST['addLoc'])){
         $PLati = $_POST['Lati'];
         $PLongi = $_POST['Longi'];
@@ -19,6 +22,10 @@
         exit();
     }
 
+    /*
+        Updates the address location in the database with new values if any changes are input. 
+        Also note that line2 is not a required field in the associated form so it may simply be empty.
+    */
     if (isset($_POST['alter'])){
         $PID = $_POST['id'];
         $PLati = $_POST['Lati'];
@@ -36,6 +43,10 @@
         exit();
     }
 
+    /*
+        Deletes an address from the database so long as it is not in current use by a user within the database as a home or mailing address.
+        Furthermore, if the address is NOT in use, all rides which contain this value will then have that pickup/dropoff id set to 0 so that the deletion of that address may continue.
+    */
     if (isset($_GET['delete'])){
         $DeleteID = $_GET['delete'];
         $safetycheck = "SELECT * FROM users WHERE home_address='$DeleteID' OR mailing_address='$DeleteID'";
