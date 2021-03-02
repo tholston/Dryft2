@@ -23,12 +23,12 @@ $user = Session::getSession()->getUser();
 include '../head.html';
 include '../header.html';
 
+
 if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     // throw an error and exit
     echo '<h1>Access Denied "You pillow" </h1>';
     //TODO some redirect to somewhere here.
 } elseif ($user->isCoordinator()) {
-
     // Present a list of the users in the system
     echo '<h1>Coordinator Page.</h1>';
 
@@ -114,7 +114,7 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
                             <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=toggleavailable"><button type="submit" class="btn btn-sm btn-primary">Toggle Available</button></form>
                         </td>
                         <td>
-                            <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
+                            <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit Rate</button></form>
                         </td>
                     </tr>
                 <?php } ?>
@@ -213,9 +213,45 @@ elseif ($user->isDriver()) {
     <?php
     }
 
+    $driversRides = Ride::getRidesByDriver($user->id());
+    //Show all unfinished rides assigned to this driver
     ?>
-
-
+    <br />
+    <br />
+    <h1>Assigned but Unfinished Rides.</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client ID</th>
+                <th>Client Name</th>
+                <th>Pickup ID</th>
+                <th>Dropoff ID</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($driversRides as $item) {
+                $clientUser = User::getUserById($item->clientID());
+                $clientName = "{$clientUser->firstName()} {$clientUser->lastName()}";
+                //Skip any finished rides (Unfinished rides indicated by 0 milage.)
+                if (floatval($item->mileage()) != 0) {
+                    continue;
+                }
+            ?>
+                <tr>
+                    <td><?= $item->id() ?></td>
+                    <td><?= $item->clientID() ?></td>
+                    <td><?= $clientName ?></td>
+                    <td><?= $item->pickupLocationID() ?></td>
+                    <td><?= $item->dropoffLocationID() ?></td>
+                    <td><?= $item->departureTime() ?></td>
+                    <td><?= $item->arrivalTime() ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
 
     <?php
     //Show all currently unassigned rides
@@ -259,7 +295,6 @@ elseif ($user->isDriver()) {
     <?php
 
     //Display full ride history of the Driver viewing the page.
-    $driversRides = Ride::getRidesByDriver($user->id());
     ?>
     <br />
     <br />
@@ -281,6 +316,10 @@ elseif ($user->isDriver()) {
             <?php foreach ($driversRides as $item) {
                 $clientUser = User::getUserById($item->clientID());
                 $clientName = "{$clientUser->firstName()} {$clientUser->lastName()}";
+                //Skip any unfinished rides (Unfinished rides indicated by 0 milage.)
+                if (floatval($item->mileage()) == 0) {
+                    continue;
+                }
             ?>
                 <tr>
                     <td><?= $item->id() ?></td>

@@ -11,15 +11,14 @@
 namespace DRyft;
 
 require_once('../bootstrap.php');
-$linker = new Linker;
 
-const CURRENCY = "$";
 
 $user = Session::getSession()->getUser();
 include '../head.html';
 include '../header.html';
 
 $action = $_REQUEST[Constants::PARAM_ACTION];
+$linker = new Linker;
 
 if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     // throw an error and exit

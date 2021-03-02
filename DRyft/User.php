@@ -150,6 +150,21 @@ class User
 	{
 		return $this->username;
 	}
+	/**
+	 * @return string
+	 */
+	public function firstName()
+	{
+		return $this->firstName;
+	}
+	/**
+	 * @return string
+	 */
+	public function lastName()
+	{
+		return $this->lastName;
+	}
+
 
 	/**
 	 * Ensure proper type is set

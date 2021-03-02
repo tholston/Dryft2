@@ -29,6 +29,14 @@ if (!$user instanceof DRyft\User) {
 							<li><a class="dropdown-item" href="user.php?action=new">Create New</a></li>
 						</ul>
 					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="driverDropdown" data-bs-toggle="dropdown" aria-expanded="false">Drivers</a>
+						<ul class="dropdown-menu" aria-labelledby="driverDropdown">
+							<li><a class="dropdown-item" href="driver.php">Driver List</a></li>
+							<li><a class="dropdown-item" href="payments.php">Driver Payments</a></li>
+						</ul>
+					</li>
+
 <?php
 }
 if (DRyft\Constants::isDevelopment()) {
@@ -50,6 +58,17 @@ if ($user instanceof DRyft\User) {
 ?>
 					<li class="nav-item"><a class="nav-link" href="login.php?logout">Logout</a></li>
 <?php
+	if($user->isDriver()){
+		?>
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="driverDropdown" data-bs-toggle="dropdown" aria-expanded="false">Drivers</a>
+			<ul class="dropdown-menu" aria-labelledby="driverDropdown">
+				<li><a class="dropdown-item" href="driver.php">Driver Main Page</a></li>
+				<li><a class="dropdown-item" href="payments.php">Payments Page</a></li>
+			</ul>
+		</li>
+		<?php
+	}
 }
 ?>
 				</ul>
