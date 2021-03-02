@@ -299,10 +299,5 @@ elseif ($user->isDriver()) {
 
 }
 
-
-include '../testing_links.html';
-
-
-
 // add page footer
 include '../footer.html';
