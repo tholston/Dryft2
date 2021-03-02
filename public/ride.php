@@ -10,8 +10,8 @@
 
 namespace DRyft;
 require_once("../bootstrap.php");
-$db = \Database\Connection::getConnection();
-$user = DRyft\Session::getSession()->getUser();
+$db = Database\Connection::getConnection();
+$user = Session::getSession()->getUser();
 $searchuserid = $user->id();
 ?>
 
