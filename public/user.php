@@ -145,7 +145,30 @@ if (!$user || !$user->isCoordinator()) {
 		include '../views/user-edit.html';
 	} elseif ($action == Constants::ACTION_CREATE) {
 		// load data to create a new user
-		echo '<h1>WILL IT CREATE?</h1>';
+		$selectedUser = new User();
+
+		// load updates for the user from the request
+		$selectedUser->updateFromRequest($_REQUEST);
+
+		// save the changes
+		$message = 'Unable to create user.';
+		try {
+			if ($selectedUser->save()) {
+				$message = 'User created successfully.';
+			}
+		} catch (Database\Exception $e) {
+			$message = $e->getMessage();
+		}
+
+		// display the edit form once more
+		// setup the submit action
+		$selectedAction = Constants::ACTION_UPDATE;
+		// setup the header label
+		$headerLabel = 'Edit ' . $selectedUser->firstName . ' ' . $selectedUser->lastName . ' (' . $selectedUser->id() . ')';
+		// setup the submit label
+		$submitLabel = 'Update user';
+		// include the form snippet
+		include '../views/user-edit.html';
 	} elseif ($action == Constants::ACTION_NEW) {
 
 		// display the edit form for an empty user
