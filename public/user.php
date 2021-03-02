@@ -23,7 +23,7 @@ $action = $_REQUEST[Constants::PARAM_ACTION];
 
 // Determine if a user has been specified
 $selectedUser = null;
-if (array_key_exists(Constants::PARAM_ID, $_REQUEST)) {
+if (array_key_exists(Constants::PARAM_ID, $_REQUEST) && intval($_REQUEST[Constants::PARAM_ID])) {
 	try {
 		$selectedUser = User::getUserById(intval($_REQUEST[Constants::PARAM_ID]));
 	} catch (Database\Exception $e) {
