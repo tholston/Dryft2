@@ -269,7 +269,96 @@ class User
 	 */
 	public function save()
 	{
+		// insert/update the record in the database
+		// get a reference to the database
+		$db = Database\Connection::getConnection();
+
+		// determine if this is an insert or update
+		if ($this->id) {
+			$query = 'UPDATE `users`' . PHP_EOL
+				. 'SET ' . PHP_EOL
+				. '  `username` = "'        . $db->escape_string($this->username)     . '",' . PHP_EOL
+				. '  `type` = "'            . $db->escape_string($this->type)         . '",' . PHP_EOL
+				. '  `pw_hash` = "'         . $db->escape_string($this->passwordHash) . '",' . PHP_EOL
+				. '  `name_last` = "'       . $db->escape_string($this->lastName)     . '",' . PHP_EOL
+				. '  `name_first` = "'      . $db->escape_string($this->firstName)    . '",' . PHP_EOL
+				. '  `name_middle` = "'     . $db->escape_string($this->middleName)   . '",' . PHP_EOL
+				. '  `email` = "'           . $db->escape_string($this->email)        . '",' . PHP_EOL
+				. '  `phone` = "'           . $db->escape_string($this->phone)        . '",' . PHP_EOL
+				. '  `home_address` = '     . intval($this->homeAddress()->id())      . ','  . PHP_EOL
+				. '  `mailing_address` = '  . intval($this->mailingAddress()->id())          . PHP_EOL
+				. 'WHERE `USER_ID` = '    . intval($this->id) . ';';
+			if ($db->query($query) !== false) {
+				return true;
+			} else {
+				throw new Database\Exception('Unable to save user: ' . $db->error . PHP_EOL . '<pre>' . $query . '</pre>');
+			}
+		} else {
+			// TODO: build this out
+			$query = 'INSERT INTO `users` (' . PHP_EOL
+				. '  `username`,' . PHP_EOL
+				. '  `type`,' . PHP_EOL
+				. '  `pw_hash`,' . PHP_EOL
+				. '  `name_last`,' . PHP_EOL
+				. '  `name_first`,' . PHP_EOL
+				. '  `name_middle`,' . PHP_EOL
+				. '  `email`,' . PHP_EOL
+				. '  `phone`,' . PHP_EOL
+				. '  `home_address`,' . PHP_EOL
+				. '  `mailing_address`' . PHP_EOL
+				. ') VALUES (' . PHP_EOL
+				. '  "' . $db->escape_string($this->username)     . '",' . PHP_EOL
+				. '  "' . $db->escape_string($this->type)         . '",' . PHP_EOL
+				. '  "' . $db->escape_string($this->passwordHash) . '",' . PHP_EOL
+				. '  "' . $db->escape_string($this->lastName)     . '",' . PHP_EOL
+				. '  "' . $db->escape_string($this->firstName)    . '",' . PHP_EOL
+				. '  "' . $db->escape_string($this->middleName)   . '",' . PHP_EOL
+				. '  "' . $db->escape_string($this->email)        . '",' . PHP_EOL
+				. '  "' . $db->escape_string($this->phone)        . '",' . PHP_EOL
+				. '   ' . intval($this->homeAddress()->id())      . ','  . PHP_EOL
+				. '   ' . intval($this->mailingAddress()->id())          . PHP_EOL
+				. ');';
+			throw new Database\Exception('Unable to insert user: ' . $query);
+			if ($db->query($query) !== false) {
+				// try to read the user id back
+				$this->id = $db->insert_id;
+				return true;
+			} else {
+				throw new Database\Exception('Unable to insert user: ' . $db->error);
+			}
+		}
 		return false;
+	}
+
+	/**
+	 * Load changes from a request object
+	 *
+	 * @return boolean
+	 */
+	public function updateFromRequest($data)
+	{
+		// first look for the easy to update items
+		foreach ($this->formInputPropertyMapping() as $property => $formKey) {
+			if (array_key_exists($formKey, $data)) {
+				$this->$property = $data[$formKey];
+			}
+		}
+
+		// assume if we're getting a password reset the system has already confirmed the user has
+		// permissions to modify this
+		if (array_key_exists(Constants::PARAM_PASSWORD, $data) && strlen($data[Constants::PARAM_PASSWORD]) > 7) {
+			$this->setPassword($data[Constants::PARAM_PASSWORD]);
+		}
+
+		// user type can only be changed by a coordinator
+		// trust that this field has been removed by the viewtroller
+		if (array_key_exists(Constants::PARAM_USER_TYPE, $data)) {
+			$this->setType($data[Constants::PARAM_USER_TYPE]);
+		}
+
+		// address ids should never be changed once created...
+
+		return true;
 	}
 
 
@@ -402,5 +491,21 @@ class User
 		$user->mailingAddress = $data->mailing_address;
 
 		return $user;
+	}
+
+	/**
+	 * Provide a mapping of form fields to properties
+	 *
+	 * @return array
+	 */
+	public static function formInputPropertyMapping()
+	{
+		return [
+			'firstName'  => 'firstName',
+			'middleName' => 'middleName',
+			'lastName'   => 'lastName',
+			'email'      => 'email',
+			'phone'      => 'phone',
+		];
 	}
 }
