@@ -30,6 +30,7 @@ if ($user->isClient()) {
     <table class='table table-striped'>
         <thead>
             <tr>
+                <th>Request State:</th>
                 <th>Pick-up Location</th>
                 <th>Drop-off Location</th>
                 <th>Departure Time</th>
@@ -41,7 +42,15 @@ if ($user->isClient()) {
             $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage='0.0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $DState = "";
+                if ($row['driver'] == 0){
+                    $DState = "Unaccepted";
+                }
+                else{
+                    $DState = "Accepted";
+                }
                 echo "<tr>";
+                echo "<td>" . $DState . "</td>";
                 echo "<td>" . $row['pickup'] . "</td>";
                 echo "<td>" . $row['dropoff'] . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
@@ -52,6 +61,7 @@ if ($user->isClient()) {
         </tbody>
     </table>
     <br>
+
 <?php } ?>
 <?php if ($user->isCoordinator()) { ?>
 
@@ -60,12 +70,13 @@ if ($user->isClient()) {
     $select_state_finish = false;
 
     /*
-            This method gets all the necessary information that a coordinator will need to assign a rider.
-            dropoff and pickup values are certainly important to be specified so that no "rogue" entries are also altered.
-        */
+        This method gets all the necessary information that a coordinator will need to assign a rider.
+        dropoff and pickup values are certainly important to be specified so that no "rogue" entries are also altered.
+    */
     if (isset($_GET['assign'])) {
         $Aid = $_GET['assign'];
         $select_state_accept = true;
+        /*
         $Aselect = "SELECT * FROM rides WHERE RIDE_ID='$Aid'";
         $Arec = mysqli_query($db, $Aselect);
         $Arecord = mysqli_fetch_array($Arec);
@@ -76,9 +87,11 @@ if ($user->isClient()) {
         $Adeparture = $Arecord['departure'];
         $Aarrival = $Arecord['arrival'];
         $Amileage = $Arecord['mileage'];
+        */
     } else {
         $select_state_accept = false;
         $Aid = NULL;
+        /*
         $Aclient = NULL;
         $Adriver = NULL;
         $Apickup = NULL;
@@ -86,6 +99,7 @@ if ($user->isClient()) {
         $Adeparture = NULL;
         $Aarrival = NULL;
         $Amileage = NULL;
+        */
     }
 
     /*
@@ -96,6 +110,7 @@ if ($user->isClient()) {
     if (isset($_GET['finish'])) {
         $Bid = $_GET['finish'];
         $select_state_finish = true;
+        /*
         $Bselect = "SELECT * FROM rides WHERE RIDE_ID='$Bid'";
         $Brec = mysqli_query($db, $Bselect);
         $Brecord = mysqli_fetch_array($Brec);
@@ -106,9 +121,11 @@ if ($user->isClient()) {
         $Bdeparture = $Brecord['departure'];
         $Barrival = $Brecord['arrival'];
         $Bmileage = $Brecord['mileage'];
+        */
     } else {
         $select_state_accept = false;
         $Bid = NULL;
+        /*
         $Bclient = NULL;
         $Bdriver = NULL;
         $Bpickup = NULL;
@@ -116,6 +133,7 @@ if ($user->isClient()) {
         $Bdeparture = NULL;
         $Barrival = NULL;
         $Bmileage = NULL;
+        */
     }
     ?>
 
@@ -163,6 +181,39 @@ if ($user->isClient()) {
         <button type='submit' class="btn btn-sm btn-primary"><a href='ride.php?assign=<?php echo NULL ?>'>Deselect Entry</a></button>
     </form>
 
+    <?php
+        /*
+            Prints out all drivers in the system so that the coordinator may choose a valid driver when accepting a ride.
+        */
+    ?>
+    <br>
+    <h6>Valid Drivers:</h6>
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th>Driver ID</th>
+                <th>Name</th>
+                <th>Pay Rate</th>
+                <th>Currently Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $search = "SELECT * FROM driver_attributes";
+                $results = mysqli_query($db, $search);
+                while ($row = mysqli_fetch_array($results)){
+                    $driver = Driver::getDriverById($row['DRIVER_ID']);
+                    echo "<tr>";
+                    echo "<td>" . $row['DRIVER_ID'] . "</td>";
+                    echo "<td>" . $driver->firstName . " " . $driver->lastName . "</td>";
+                    echo "<td>" . $driver->rate() . "</td>";
+                    echo "<td>" . $driver->isAvailable() . "</td>";
+                    echo "</tr>";
+                }
+            ?>
+        </tbody>
+    </table>
+
     <br><br>
     <h3>Accepted - Unfinished</h3>
     <table class='table table-striped'>
@@ -202,13 +253,11 @@ if ($user->isClient()) {
                     echo "<input type='hidden' name='id' value='" . $row['RIDE_ID'] . "'>";
                     echo "<button type='submit' name='mileageassignment' class='btn btn-sm btn-primary'>Accept</button>";
                     echo "</form></td>";
+                    echo "<td><a href='ride.php?finish=" . NULL . "'>Deselect</a></td>";
                 } else {
                     echo "<td>" . $row['mileage'] . "</td>";
                 }
                 echo "<td><a href='ride.php?finish=" . $row['RIDE_ID'] . "'>Select</a></td>";
-                if ($select_state_accept == true && $Aid == $row['RIDE_ID']) {
-                    echo "<td><a href='ride.php?finish=" . NULL . "'>Deselect</a></td>";
-                }
                 echo "</tr>";
             }
             ?>
@@ -291,4 +340,76 @@ if ($user->isCoordinator() || $user->isClient()) {
 
         <button type="submit" name="ridereq" class="btn btn-sm btn-primary">Submit Request</button>
     </form>
+<?php } ?>
+
+<?php
+    /*
+        This section allows for clients to see their prior rides and coordinators all previous rides.
+    */
+    if ($user->isClient()) {
+?>
+    <br>
+    <h3>Previous Ride Requests for <?php echo $user->firstName . $user->lastName; ?></h3>
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th>Pick-up Location</th>
+                <th>Drop-off Location</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage!='0.0'";
+            $results = mysqli_query($db, $search);
+            while ($row = mysqli_fetch_array($results)) {
+                echo "<tr>";
+                echo "<td>" . $row['pickup'] . "</td>";
+                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $row['departure'] . "</td>";
+                echo "<td>" . $row['arrival'] . "</td>";
+                echo "</tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+
+<?php
+    }
+    if ($user->isCoordinator()) {
+?>
+    <br>
+    <h3>All Finished Ride Requests:</h3>
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Driver</th>
+                <th>Pick-up</th>
+                <th>Drop-off</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+                <th>Mileage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $search = "SELECT * FROM rides WHERE mileage!='0.0'";
+            $results = mysqli_query($db, $search);
+            while ($row = mysqli_fetch_array($results)) {
+                echo "<tr>";
+                echo "<td>" . $row['client'] . "</td>";
+                echo "<td>" . $row['driver'] . "</td>";
+                echo "<td>" . $row['pickup'] . "</td>";
+                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $row['departure'] . "</td>";
+                echo "<td>" . $row['arrival'] . "</td>";
+                echo "<td>" . $row['mileage'] . "</td>";
+                echo "</tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+
 <?php } ?>
