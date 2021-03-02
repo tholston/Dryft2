@@ -331,3 +331,75 @@ if ($user->isCoordinator() || $user->isClient()) {
         <button type="submit" name="ridereq" class="btn btn-sm btn-primary">Submit Request</button>
     </form>
 <?php } ?>
+
+<?php
+    /*
+        This section allows for clients to see their prior rides and coordinators all previous rides.
+    */
+    if ($user->isClient()) {
+?>
+    <br>
+    <h3>Previous Ride Requests for <?php echo $user->firstName . $user->lastName; ?></h3>
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th>Pick-up Location</th>
+                <th>Drop-off Location</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage!='0.0'";
+            $results = mysqli_query($db, $search);
+            while ($row = mysqli_fetch_array($results)) {
+                echo "<tr>";
+                echo "<td>" . $row['pickup'] . "</td>";
+                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $row['departure'] . "</td>";
+                echo "<td>" . $row['arrival'] . "</td>";
+                echo "</tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+
+<?php
+    }
+    if ($user->isCoordinator()) {
+?>
+    <br>
+    <h3>All Finished Ride Requests:</h3>
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Driver</th>
+                <th>Pick-up</th>
+                <th>Drop-off</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+                <th>Mileage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $search = "SELECT * FROM rides WHERE mileage!='0.0'";
+            $results = mysqli_query($db, $search);
+            while ($row = mysqli_fetch_array($results)) {
+                echo "<tr>";
+                echo "<td>" . $row['client'] . "</td>";
+                echo "<td>" . $row['driver'] . "</td>";
+                echo "<td>" . $row['pickup'] . "</td>";
+                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $row['departure'] . "</td>";
+                echo "<td>" . $row['arrival'] . "</td>";
+                echo "<td>" . $row['mileage'] . "</td>";
+                echo "</tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+
+<?php } ?>
