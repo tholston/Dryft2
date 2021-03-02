@@ -175,7 +175,7 @@
             exit();
         }
 
-        header('Location: /ride.php?Accepted="RideRequest"');
+        header('Location: /ride.php');
         exit();
     }
 ?>
