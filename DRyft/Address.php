@@ -23,17 +23,61 @@ class Address
 	public $state = '';
 	public $zip = '';
 
+	public function __construct(
+		int $locaid = 0,
+		string $nickn = '',
+		string $linone = '',
+		string $lintwo = '',
+		string $cit = '',
+		string $stat = '',
+		string $zipc = ''
+	) {
+		$this->id           = $locaid;
+		$this->nick     	= $nickn;
+		$this->line1        = $linone;
+		$this->line2     	= $lintwo;
+		$this->city		    = $cit;
+		$this->state 	    = $stat;
+		$this->zip 			= $zipc;
+	}
+
+	/* Simple getter methods for the construct of an Address location */
 	public function id()
 	{
 		return $this->id;
 	}
+	public function nick()
+	{
+		return $this->nick;
+	}
+	public function line1()
+	{
+		return $this->line1;
+	}
+	public function line2()
+	{
+		return $this->line2;
+	}
+	public function city()
+	{
+		return $this->city;
+	}
+	public function state()
+	{
+		return $this->state;
+	}
+	public function zip()
+	{
+		return $this->zip;
+	}
+
 	public function __toString()
 	{
 		// TODO: assemble the properties to the address
 		if ($this->id) {
-			$address = $this->addressLine1;
+			$address = $this->addressLine1 . ', ';
 			if ($this->addressLine2) {
-				$address .= ', ' . $this->addressLine2;
+				$address .= $this->addressLine2 . ', ';
 			}
 			$address .= $this->city . ', ' . $this->state . ' ' . $this->zip;
 			return $address;

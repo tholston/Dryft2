@@ -8,12 +8,15 @@
  * @author Errol Sayre
  */
 
+namespace DRyft;
+
 require_once('../bootstrap.php');
 
 // determine if we have a user
-$user = DRyft\Session::getSession()->getUser();
-$linker = new DRyft\Linker;
+$user = Session::getSession()->getUser();
 
+// setup a linker
+$linker = new Linker();
 
 // add HTML head
 if (!$user) {
@@ -34,6 +37,12 @@ echo '		<title>Welcome to DRyft</title>' . PHP_EOL;
 // add page header
 include '../header.html';
 
+if (!$user) {
+	echo '<h1>Welcome to DRyft</h1>';
+	echo '<p><a href="' . $linker->urlPath() . 'login.php">Please login to begin.</a></p>';
+} else {
+	echo '<h1>Welcome ' . $user->username() . '</h1>';
+}
 
 // add page footer
 include '../footer.html';
