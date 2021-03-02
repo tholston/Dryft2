@@ -174,6 +174,11 @@ if (!$user || !$user->isCoordinator()) {
 		// display the edit form for an empty user
 		$selectedUser = new User();
 
+		// determine if a request was made to make a new driver
+		if (array_key_exists(Constants::PARAM_USER_TYPE, $_REQUEST)) {
+			$selectedUser->setType(Constants::USER_TYPE_DRIVER);
+		}
+
 		// setup the submit action
 		$selectedAction = Constants::ACTION_CREATE;
 		// setup the header label

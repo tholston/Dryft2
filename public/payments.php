@@ -101,7 +101,7 @@ elseif ($action == "viewpaymentrides") {
 /////////////////////////////  BEGIN COORDINATOR VIEW   ///////////////////////////////////////////
 /////////////////////////////                           ///////////////////////////////////////////
 elseif ($user->isCoordinator()) {
-    echo '<h1>Coordinator Payment View Page.</h1>';
+    echo '<h1>Coordinator Payment View</h1>';
     //viewpayments action means Coordinator is looking at 1 specific driver's payments.
     if ($action == "viewpayments") {
         // determine if a user has been provided

@@ -26,11 +26,10 @@ include '../header.html';
 
 if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     // throw an error and exit
-    echo '<h1>Access Denied "You pillow" </h1>';
+    echo '<h1>Access Denied</h1>';
     //TODO some redirect to somewhere here.
 } elseif ($user->isCoordinator()) {
     // Present a list of the users in the system
-    echo '<h1>Coordinator Page.</h1>';
 
     $action = $_REQUEST[Constants::PARAM_ACTION];
     // determine if a user has been provided
@@ -88,8 +87,6 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
 
         ?>
 
-        <br />
-        <br />
         <h1>Available Drivers</h1>
         <table class="table table-striped">
             <thead>
@@ -121,9 +118,8 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
             </tbody>
         </table>
 
+        <p>&nbsp;</p>
 
-        <br />
-        <br />
         <h1>All Drivers</h1>
         <table class="table table-striped">
             <thead>
