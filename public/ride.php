@@ -30,6 +30,7 @@ if ($user->isClient()) {
     <table class='table table-striped'>
         <thead>
             <tr>
+                <th>Request State:</th>
                 <th>Pick-up Location</th>
                 <th>Drop-off Location</th>
                 <th>Departure Time</th>
@@ -38,10 +39,18 @@ if ($user->isClient()) {
         </thead>
         <tbody>
             <?php
-            $search = "SELECT * FROM rides WHERE client='$searchuserid' AND driver!='0' AND mileage='0.0'";
+            $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage='0.0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $DState = "";
+                if ($row['driver'] == 0){
+                    $DState = "Unaccepted";
+                }
+                else{
+                    $DState = "Accepted";
+                }
                 echo "<tr>";
+                echo "<td>" . $DState . "</td>";
                 echo "<td>" . $row['pickup'] . "</td>";
                 echo "<td>" . $row['dropoff'] . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
