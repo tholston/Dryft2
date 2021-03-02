@@ -163,6 +163,39 @@ if ($user->isClient()) {
         <button type='submit' class="btn btn-sm btn-primary"><a href='ride.php?assign=<?php echo NULL ?>'>Deselect Entry</a></button>
     </form>
 
+    <?php
+        /*
+            Prints out all drivers in the system so that the coordinator may choose a valid driver when accepting a ride.
+        */
+    ?>
+    <br>
+    <h6>Valid Drivers:</h6>
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th>Driver ID</th>
+                <th>Name</th>
+                <th>Pay Rate</th>
+                <th>Currently Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $search = "SELECT * FROM driver_attributes";
+                $results = mysqli_query($db, $search);
+                while ($row = mysqli_fetch_array($results)){
+                    $driver = Driver::getDriverById($row['DRIVER_ID']);
+                    echo "<tr>";
+                    echo "<td>" . $row['DRIVER_ID'] . "</td>";
+                    echo "<td>" . $driver->firstName . " " . $driver->lastName . "</td>";
+                    echo "<td>" . $driver->rate() . "</td>";
+                    echo "<td>" . $driver->isAvailable() . "</td>";
+                    echo "</tr>";
+                }
+            ?>
+        </tbody>
+    </table>
+
     <br><br>
     <h3>Accepted - Unfinished</h3>
     <table class='table table-striped'>
