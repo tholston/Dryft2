@@ -124,11 +124,12 @@ class User
 	) {
 		$this->id           = $userId;
 		$this->username     = $userName;
-		$this->type         = $type;
 		$this->lastName     = $lastName;
 		$this->firstName    = $firstName;
 		$this->middleName   = $middleName;
 		$this->passwordHash = $passwordHash;
+
+		$this->setType($type);
 	}
 
 
@@ -148,6 +149,24 @@ class User
 	public function username()
 	{
 		return $this->username;
+	}
+
+	/**
+	 * Ensure proper type is set
+	 *
+	 * @param string $type
+	 * @return User
+	 */
+	protected function setType($type)
+	{
+		if ($type == Constants::USER_TYPE_CLIENT) {
+			$this->type = Constants::USER_TYPE_CLIENT;
+		} elseif ($type == Constants::USER_TYPE_DRIVER) {
+			$this->type = Constants::USER_TYPE_DRIVER;
+		} elseif ($type == Constants::USER_TYPE_COORDINATOR) {
+			$this->type = Constants::USER_TYPE_COORDINATOR;
+		}
+		return $this;
 	}
 
 	/**
