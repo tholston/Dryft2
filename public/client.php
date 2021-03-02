@@ -21,8 +21,10 @@ $linker = new DRyft\Linker;
 
 
 
+
 // Require a client user session
 $user = DRyft\Session::getSession()->getUser();
+$db = DRyft\Database\Connection::getConnection();
 
 // add HTML head
 include '../head.html';
@@ -71,8 +73,8 @@ elseif(array_key_exists('history', $_REQUEST)){
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Pickup ID</th>
-                <th>Dropoff ID</th>
+                <th>Pickup Location</th>
+                <th>Dropoff Location</th>
                 <th>Departure</th>
                 <th>Arrival</th>
                 <th>Miles</th>
@@ -80,13 +82,25 @@ elseif(array_key_exists('history', $_REQUEST)){
         </thead>
         <tbody>
             <?php foreach ($clientRides as $item) {
-                $clientUser = User::getUserById($item->clientID());
-                $clientName = "{$clientUser->firstName()} {$clientUser->lastName()}";
+                $clientUser = $user->getUserById($item->clientID());
+                $clientName = "{$clientUser->firstName} {$clientUser->lastName}";
+				$temp = $item->pickupLocationID();
+				$search = "SELECT line1 FROM locations WHERE LOCATION_ID='$temp'";
+            	$results = mysqli_query($db, $search);
+				$row = mysqli_fetch_array($results);
+				$pick = $row['line1'];
+
+				$temp = $item->dropoffLocationID();
+				$search = "SELECT line1 FROM locations WHERE LOCATION_ID='$temp'";
+            	$results = mysqli_query($db, $search);
+				$row = mysqli_fetch_array($results);
+				$drop = $row['line1'];
+				
             ?>
                 <tr>
                     <td><?= $item->id() ?></td>
-                    <td><?= $item->pickupLocationID() ?></td>
-                    <td><?= $item->dropoffLocationID() ?></td>
+                    <td><?= $pick ?></td>
+                    <td><?= $drop ?></td>
                     <td><?= $item->departureTime() ?></td>
                     <td><?= $item->arrivalTime() ?></td>
                     <td><?= $item->mileage() ?></td>
