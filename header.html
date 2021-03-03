@@ -43,20 +43,21 @@ if (!$user instanceof DRyft\User) {
 
 // add a logout for users
 if ($user instanceof DRyft\User) {
+
+	if($user->isDriver()){
+?>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="driverDropdown" data-bs-toggle="dropdown" aria-expanded="false">Drivers</a>
+						<ul class="dropdown-menu" aria-labelledby="driverDropdown">
+							<li><a class="dropdown-item" href="driver.php">Driver Main Page</a></li>
+							<li><a class="dropdown-item" href="payments.php">Payments Page</a></li>
+						</ul>
+					</li>
+<?php
+	}
 ?>
 					<li class="nav-item"><a class="nav-link" href="login.php?logout">Logout</a></li>
 <?php
-	if($user->isDriver()){
-		?>
-		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="driverDropdown" data-bs-toggle="dropdown" aria-expanded="false">Drivers</a>
-			<ul class="dropdown-menu" aria-labelledby="driverDropdown">
-				<li><a class="dropdown-item" href="driver.php">Driver Main Page</a></li>
-				<li><a class="dropdown-item" href="payments.php">Payments Page</a></li>
-			</ul>
-		</li>
-		<?php
-	}
 }
 ?>
 				</ul>
