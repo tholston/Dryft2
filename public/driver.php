@@ -165,7 +165,7 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
 ////////////////////////////// BEGIN DRIVER VIEW ///////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 elseif ($user->isDriver()) {
-    echo '<h1>Driver Page.</h1>';
+    echo '<h1>Welcome ' . $user->username() . '</h1>';
     //Handle setting driver availability.
     $action = $_REQUEST[Constants::PARAM_ACTION];
     // determine if a user has been provided
