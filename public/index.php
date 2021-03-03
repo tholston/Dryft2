@@ -50,7 +50,7 @@ if (!$user) {
 		<ul>
 			<li><a href="driver.php">Drives</a></li>
 			<li><a href="payments.php">Payments</a></li>
-	</ul>
+		</ul>
 <?php
 	} elseif ($user->isClient()) {
 ?>
