@@ -151,6 +151,14 @@ class User
 		return $this->username;
 	}
 	/**
+	 * Get the user type
+	 * @return string
+	 */
+	public function type()
+	{
+		return $this->type;
+	}
+	/**
 	 * @return string
 	 */
 	public function firstName()

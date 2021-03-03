@@ -51,8 +51,8 @@ elseif ($action == "viewpaymentrides") {
                         <th>ID</th>
                         <th>Client ID</th>
                         <th>Client Name</th>
-                        <th>Pickup ID</th>
-                        <th>Dropoff ID</th>
+                        <th>Pickup</th>
+                        <th>Dropoff</th>
                         <th>Departure</th>
                         <th>Arrival</th>
                         <th>Miles</th>
@@ -66,13 +66,24 @@ elseif ($action == "viewpaymentrides") {
                         }
                         $clientUser = User::getUserById($item->clientID());
                         $clientName = "{$clientUser->firstName()} {$clientUser->lastName()}";
+                        $Pickup = 0;
+                        $Dropoff = 0;
+                        try {
+                            $Pickup = Address::getAddressbyId($item->pickupLocationID());
+                            $Pickup = $Pickup->__toString();
+                            $Dropoff = Address::getAddressbyId($item->dropoffLocationID());
+                            $Dropoff = $Dropoff->__toString();
+                        } catch (Database\Exception $e) {
+                            $Pickup = "Invalid Location";
+                            $Dropoff = "Invalid Location";
+                        }
                     ?>
                         <tr>
                             <td><?= $item->id() ?></td>
                             <td><?= $item->clientID() ?></td>
                             <td><?= $clientName ?></td>
-                            <td><?= $item->pickupLocationID() ?></td>
-                            <td><?= $item->dropoffLocationID() ?></td>
+                            <td><?= $Pickup ?></td>
+                            <td><?= $Dropoff ?></td>
                             <td><?= $item->departureTime() ?></td>
                             <td><?= $item->arrivalTime() ?></td>
                             <td><?= $item->mileage() ?></td>
