@@ -39,12 +39,30 @@ if (!$user) {
 ?>
 		<p>Welcome <?= $user->firstName ?>. As a coordinator you can manage all aspects of the DRyft application. Please make use of the links below or the navigation above.</p>
 		<ul>
-			<li><a href="payments.php">Manage driver payments</a></li>
-			<li><a href="user.php">List all users</a></li>
-			<li><a href="driver.php">List all drivers</a></li>
-			<li><a href="address.php">Manage addresses</a></li>
+			<li><a href="ride.php">Ride requests</a></li>
+			<li><a href="payments.php">Driver payments</a></li>
+			<li><a href="driver.php">Driver attributes</a></li>
+			<li><a href="user.php">Users</a></li>
+			<li><a href="address.php">Manage Addresses</a></li>
 		</ul>
 <?php
+	} elseif ($user->isDriver()) {
+?>
+		<p>Welcome <?= $user->firstName ?>. View your assigned drives or upcoming payments.</p>
+		<ul>
+			<li><a href="driver.php">Drives</a></li>
+			<li><a href="payments.php">Payments</a></li>
+	</ul>
+<?php
+	} elseif ($user->isClient()) {
+?>
+		<p>Welcome <?= $user->firstName ?>. You may request a ride or view your history or manage your common destinations.</p>
+		<ul>
+			<li><a href="ride.php">Ride Requests</a></li>
+			<li><a href="address.php">Addresses</a></li>
+		</ul>
+<?php
+
 	}
 }
 
