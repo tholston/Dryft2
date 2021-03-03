@@ -432,4 +432,8 @@ if ($user->isCoordinator() || $user->isClient()) {
         </tbody>
     </table>
 
-<?php } ?>
+<?php
+}
+
+// add page footer
+include '../footer.html';
