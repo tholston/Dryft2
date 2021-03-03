@@ -18,10 +18,6 @@ if (!$user instanceof DRyft\User) {
 ?>
 					<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
 <?php
-} elseif ( $user->isCoordinator() || $user->isClient() ) {
-?>
-					<li class="nav-item"><a class="nav-link" href="ride.php">Ride Requests</a></li>			
-<?php
 } else {
 	if ($user->isCoordinator()) {
 ?>
