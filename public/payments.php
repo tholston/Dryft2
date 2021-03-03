@@ -177,7 +177,7 @@ elseif ($user->isCoordinator()) {
 ////////////////////////////// BEGIN DRIVER VIEW ///////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 elseif ($user->isDriver()) {
-    echo '<h1>Past and Upcoming Payments.</h1>';
+    echo '<h1>Past and Upcoming Payments</h1>';
     $unpaidPayments = Payment::getUnpaidPaymentsByDriver($user->id());
     $paidPayments = Payment::getPaidPaymentsByDriver($user->id());
     displayPaidUnpaidTable($unpaidPayments, $paidPayments);
