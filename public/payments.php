@@ -11,15 +11,14 @@
 namespace DRyft;
 
 require_once('../bootstrap.php');
-$linker = new Linker;
 
-const CURRENCY = "$";
 
 $user = Session::getSession()->getUser();
 include '../head.html';
 include '../header.html';
 
 $action = $_REQUEST[Constants::PARAM_ACTION];
+$linker = new Linker;
 
 if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
     // throw an error and exit
@@ -102,7 +101,7 @@ elseif ($action == "viewpaymentrides") {
 /////////////////////////////  BEGIN COORDINATOR VIEW   ///////////////////////////////////////////
 /////////////////////////////                           ///////////////////////////////////////////
 elseif ($user->isCoordinator()) {
-    echo '<h1>Coordinator Payment View Page.</h1>';
+    echo '<h1>Coordinator Payment View</h1>';
     //viewpayments action means Coordinator is looking at 1 specific driver's payments.
     if ($action == "viewpayments") {
         // determine if a user has been provided
@@ -178,7 +177,7 @@ elseif ($user->isCoordinator()) {
 ////////////////////////////// BEGIN DRIVER VIEW ///////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 elseif ($user->isDriver()) {
-    echo '<h1>Past and Upcoming Payments.</h1>';
+    echo '<h1>Past and Upcoming Payments</h1>';
     $unpaidPayments = Payment::getUnpaidPaymentsByDriver($user->id());
     $paidPayments = Payment::getPaidPaymentsByDriver($user->id());
     displayPaidUnpaidTable($unpaidPayments, $paidPayments);
@@ -256,3 +255,6 @@ function displayPaidUnpaidTable($unpaidPayments, $paidPayments)
     </table>
 <?php
 }
+
+// add page footer
+include '../footer.html';

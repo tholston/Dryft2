@@ -30,6 +30,7 @@ if ($user->isClient()) {
     <table class='table table-striped'>
         <thead>
             <tr>
+                <th>Request State:</th>
                 <th>Pick-up Location</th>
                 <th>Drop-off Location</th>
                 <th>Departure Time</th>
@@ -41,9 +42,21 @@ if ($user->isClient()) {
             $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage='0.0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $DState = "";
+                if ($row['driver'] == 0){
+                    $DState = "Unaccepted";
+                }
+                else{
+                    $DState = "Accepted";
+                }
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $DState . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "</tr>";
@@ -52,6 +65,7 @@ if ($user->isClient()) {
         </tbody>
     </table>
     <br>
+
 <?php } ?>
 <?php if ($user->isCoordinator()) { ?>
 
@@ -146,11 +160,15 @@ if ($user->isClient()) {
             $search = "SELECT * FROM rides WHERE driver='0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
@@ -168,7 +186,7 @@ if ($user->isClient()) {
         <input type='number' name='driveassign'><br>
         <input type='hidden' name='id' value='<?php echo $Aid ?>'>
         <button type='submit' name='driverassignment' class="btn btn-sm btn-primary">Accept</button>
-        <button type='submit' class="btn btn-sm btn-primary"><a href='ride.php?assign=<?php echo NULL ?>'>Deselect Entry</a></button>
+        <a class="btn btn-sm btn-secondary" href='ride.php'>Deselect Entry</a>
     </form>
 
     <?php
@@ -230,11 +248,15 @@ if ($user->isClient()) {
             $search = "SELECT * FROM rides WHERE mileage='0.0' AND driver!='0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 if ($select_state_finish == true && $Bid == $row['RIDE_ID']) {
@@ -354,9 +376,13 @@ if ($user->isCoordinator() || $user->isClient()) {
             $search = "SELECT * FROM rides WHERE client='$searchuserid' AND mileage!='0.0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "</tr>";
@@ -388,11 +414,15 @@ if ($user->isCoordinator() || $user->isClient()) {
             $search = "SELECT * FROM rides WHERE mileage!='0.0'";
             $results = mysqli_query($db, $search);
             while ($row = mysqli_fetch_array($results)) {
+                $Pickup = Address::getAddressbyId($row['pickup']);
+                $Pickup = $Pickup->__toString();
+                $Dropoff = Address::getAddressbyId($row['dropoff']);
+                $Dropoff = $Dropoff->__toString();
                 echo "<tr>";
                 echo "<td>" . $row['client'] . "</td>";
                 echo "<td>" . $row['driver'] . "</td>";
-                echo "<td>" . $row['pickup'] . "</td>";
-                echo "<td>" . $row['dropoff'] . "</td>";
+                echo "<td>" . $Pickup . "</td>";
+                echo "<td>" . $Dropoff . "</td>";
                 echo "<td>" . $row['departure'] . "</td>";
                 echo "<td>" . $row['arrival'] . "</td>";
                 echo "<td>" . $row['mileage'] . "</td>";
@@ -402,4 +432,8 @@ if ($user->isCoordinator() || $user->isClient()) {
         </tbody>
     </table>
 
-<?php } ?>
+<?php
+}
+
+// add page footer
+include '../footer.html';

@@ -11,7 +11,7 @@ if ($message) {
 					<div class="row g-3">
 						<div class="col-sm-4">
 							<label for="userType" class="form-label">User Type</label>
-							<select class="form-select" id="userType" required="true">
+							<select class="form-select" id="userType" name="userType" required="true">
 								<option value="">Choose...</option>
 								<option <?= $selectedUser->isCoordinator() ? "selected" : "" ?>>Coordinator</option>
 								<option <?= $selectedUser->isDriver() ? " selected" : "" ?>>Driver</option>

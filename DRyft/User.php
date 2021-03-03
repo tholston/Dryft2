@@ -150,14 +150,32 @@ class User
 	{
 		return $this->username;
 	}
+	/**
+	 * @return string
+	 */
+	public function firstName()
+	{
+		return $this->firstName;
+	}
+	/**
+	 * @return string
+	 */
+	public function lastName()
+	{
+		return $this->lastName;
+	}
+
 
 	/**
 	 * Ensure proper type is set
 	 *
+	 * I'm making this public to use it outside of this class, however it should now make use of
+	 * user authorizations to prevent non-coordinators from changing their user type.
+	 *
 	 * @param string $type
 	 * @return User
 	 */
-	protected function setType($type)
+	public function setType($type)
 	{
 		if ($type == Constants::USER_TYPE_CLIENT) {
 			$this->type = Constants::USER_TYPE_CLIENT;
@@ -288,9 +306,7 @@ class User
 				. '  `home_address` = '     . intval($this->homeAddress()->id())      . ','  . PHP_EOL
 				. '  `mailing_address` = '  . intval($this->mailingAddress()->id())          . PHP_EOL
 				. 'WHERE `USER_ID` = '    . intval($this->id) . ';';
-			if ($db->query($query) !== false) {
-				return true;
-			} else {
+			if ($db->query($query) === false) {
 				throw new Database\Exception('Unable to save user: ' . $db->error . PHP_EOL . '<pre>' . $query . '</pre>');
 			}
 		} else {
@@ -321,12 +337,20 @@ class User
 			if ($db->query($query) !== false) {
 				// try to read the user id back
 				$this->id = $db->insert_id;
-				return true;
 			} else {
 				throw new Database\Exception('Unable to insert user: ' . $db->error . PHP_EOL . '<pre>' . $query . '</pre>');
 			}
 		}
-		return false;
+
+		// Determine if we must create a user attributes entry
+		if ($this->type == Constants::USER_TYPE_DRIVER) {
+			// We don't care about updates... so just blindly throw an insert to make sure a value is there
+			$db->query('INSERT INTO `driver_attributes` ( `DRIVER_ID` ) VALUES (' . intval($this->id) . ');');
+		} else {
+			$db->query('DELETE FROM `driver_attributes` WHERE `DRIVER_ID` = ' . intval($this->id) . ';');
+		}
+
+		return true;
 	}
 
 	/**
