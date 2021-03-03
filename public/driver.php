@@ -214,7 +214,7 @@ elseif ($user->isDriver()) {
     ?>
     <br />
     <br />
-    <h1>Assigned but Unfinished Rides.</h1>
+    <h1>Assigned but Unfinished Rides</h1>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -256,7 +256,7 @@ elseif ($user->isDriver()) {
     ?>
     <br />
     <br />
-    <h1>Unassigned rides.</h1>
+    <h1>Unassigned rides</h1>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -294,7 +294,7 @@ elseif ($user->isDriver()) {
     ?>
     <br />
     <br />
-    <h1>Drive History.</h1>
+    <h1>Drive History</h1>
     <table class="table table-striped">
         <thead>
             <tr>
