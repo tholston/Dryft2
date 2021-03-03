@@ -25,6 +25,15 @@ $linker = new DRyft\Linker;
 // Require a client user session
 $user = DRyft\Session::getSession()->getUser();
 $db = DRyft\Database\Connection::getConnection();
+if(array_key_exists('addressEdit', $_REQUEST)){
+	//displays past rides a client has taken TODO>+++++++++++++++
+	header('Location: ' . $linker->urlPath() . 'address.php');
+	die();
+}
+elseif(array_key_exists('request', $_REQUEST)){
+	header('Location: ' . $linker->urlPath() . 'ride.php');
+	die();
+}
 
 // add HTML head
 include '../head.html';
@@ -52,6 +61,8 @@ elseif(array_key_exists('info', $_REQUEST)){
 		class="btn btn-primary" value="Edit"/></h3>
 		<?php echo '<h3>Username: ' . $user->username();?>
 		<?php echo '<h3>Home Address: ' . $user->homeAddress();?>
+		<input type="submit" name="addressEdit"
+		class="btn btn-primary" value="Edit"/></h3>
 		<h3>Password
         <input type="submit" name="passwordEdit"
                 class="btn btn-primary" value="Edit"/></h3>
@@ -122,9 +133,6 @@ elseif(array_key_exists('nameEdit', $_REQUEST)){
 	</form>';
 	
 }
-elseif(array_key_exists('addressEdit', $_REQUEST)){
-	//displays past rides a client has taken TODO>+++++++++++++++
-}
 elseif(array_key_exists('passwordEdit', $_REQUEST)){
 	//displays form to change password
 	echo '<form method="POST">
@@ -137,10 +145,6 @@ elseif(array_key_exists('passwordEdit', $_REQUEST)){
 		<input type="submit" value="Change">
 	</form>';
 
-}
-elseif(array_key_exists('request', $_REQUEST)){
-	header('Location: ' . $linker->urlPath() . 'ride.php');
-	die();
 }
 
 else {
