@@ -17,10 +17,14 @@
 if (!$user instanceof DRyft\User) {
 ?>
 					<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
-
+<?php
+} elseif ( $user->isCoordinator() || $user->isClient() ) {
+?>
+					<li class="nav-item"><a class="nav-link" href="ride.php">Ride Requests</a></li>			
 <?php
 } elseif ( $user->isCoordinator() ) {
 ?>
+					<li class="nav-item"><a class="nav-link" href="address.php">Addresses</a></li>
 					<li class="nav-item"><a class="nav-link" href="client.php">Clients</a></li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
@@ -32,9 +36,8 @@ if (!$user instanceof DRyft\User) {
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="driverDropdown" data-bs-toggle="dropdown" aria-expanded="false">Drivers</a>
 						<ul class="dropdown-menu" aria-labelledby="driverDropdown">
-							<li><a class="dropdown-item" href="driver.php">List</a></li>
-							<li><a class="dropdown-item" href="payments.php">Payments</a></li>
-							<li><a class="dropdown-item" href="user.php?action=new&userType=Driver">Create New</a></li>
+							<li><a class="dropdown-item" href="driver.php">Driver List</a></li>
+							<li><a class="dropdown-item" href="payments.php">Driver Payments</a></li>
 						</ul>
 					</li>
 
