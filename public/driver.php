@@ -165,7 +165,7 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
 ////////////////////////////// BEGIN DRIVER VIEW ///////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 elseif ($user->isDriver()) {
-    echo '<h1>Driver Page.</h1>';
+    echo '<h1>Welcome ' . $user->username() . '</h1>';
     //Handle setting driver availability.
     $action = $_REQUEST[Constants::PARAM_ACTION];
     // determine if a user has been provided
@@ -214,7 +214,7 @@ elseif ($user->isDriver()) {
     ?>
     <br />
     <br />
-    <h1>Assigned but Unfinished Rides.</h1>
+    <h1>Assigned but Unfinished Rides</h1>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -256,7 +256,7 @@ elseif ($user->isDriver()) {
     ?>
     <br />
     <br />
-    <h1>Unassigned rides.</h1>
+    <h1>Unassigned rides</h1>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -294,7 +294,7 @@ elseif ($user->isDriver()) {
     ?>
     <br />
     <br />
-    <h1>Drive History.</h1>
+    <h1>Drive History</h1>
     <table class="table table-striped">
         <thead>
             <tr>

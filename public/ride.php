@@ -186,7 +186,7 @@ if ($user->isClient()) {
         <input type='number' name='driveassign'><br>
         <input type='hidden' name='id' value='<?php echo $Aid ?>'>
         <button type='submit' name='driverassignment' class="btn btn-sm btn-primary">Accept</button>
-        <button type='submit' class="btn btn-sm btn-primary"><a href='ride.php?assign=<?php echo NULL ?>'>Deselect Entry</a></button>
+        <a class="btn btn-sm btn-secondary" href='ride.php'>Deselect Entry</a>
     </form>
 
     <?php
@@ -432,4 +432,8 @@ if ($user->isCoordinator() || $user->isClient()) {
         </tbody>
     </table>
 
-<?php } ?>
+<?php
+}
+
+// add page footer
+include '../footer.html';

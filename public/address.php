@@ -123,9 +123,9 @@
             <input type="text" id="Stat" name="Stat" maxlength='2' value="<?php echo $Stat; ?>" required><br>
             <label for="Zipc">Zipcode: </label>
             <input type="text" id="Zipc" name="Zipc" maxlength='10' value="<?php echo $Zipc; ?>" required><br>
-            <?php if ($edit_state == true): ?>
-                <button type="submit" name="alter" class="btn">Update Entry</button>
-                <button name="unselect" class="btn"><a href="address.php?edit=<?php echo NULL ?>">Unselect</a></button>
+            <?php if ($edit_state == true) : ?>
+                <button type="submit" name="alter" class="btn btn-primary">Update Entry</button>
+                <a class="btn btn-secondary" href="address.php">Unselect</a>
             <?php endif ?>
         </form>
     </div>
@@ -191,11 +191,11 @@
             <input type="text" id="Stat" name="Stat" maxlength='2' value="<?php echo $Stat; ?>" required><br>
             <label for="Zipc">Zipcode: </label>
             <input type="text" id="Zipc" name="Zipc" maxlength='10' value="<?php echo $Zipc; ?>" required><br>
-            <?php if ($edit_state == false): ?>
-                <button type="submit" name="addLoc" class="btn">Add Entry</button>
-            <?php else: ?>
-                <button type="submit" name="alter" class="btn">Update Entry</button>
-                <button name="unselect" class="btn"><a href="address.php?edit=<?php echo NULL ?>">Unselect</a></button>
+            <?php if ($edit_state == false) : ?>
+                <button type="submit" name="addLoc" class="btn btn-primary">Add Entry</button>
+            <?php else : ?>
+                <button type="submit" name="alter" class="btn btn-primary">Update Entry</button>
+                <a class="btn btn-secondary" href="address.php">Unselect</a>
             <?php endif ?>
         </form>
     </div>
