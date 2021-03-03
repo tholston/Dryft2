@@ -18,16 +18,15 @@ $user = Session::getSession()->getUser();
 // setup a linker
 $linker = new Linker();
 
-// add HTML head
-if (!$user) {
-	echo '<h1>Nothing to see here</h1>';
-} else {
-	if($user-> isClient()){
+// Redirect clients directly to their front-page
+if ($user instanceof User) {
+	if ($user->isClient()) {
 		header('Location: ' . $linker->urlPath() . 'client.php');
 		die();
 	}
 }
 
+// add HTML head
 include '../head.html';
 
 
@@ -78,4 +77,3 @@ if (!$user) {
 
 // add page footer
 include '../footer.html';
-?>
