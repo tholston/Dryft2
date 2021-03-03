@@ -151,7 +151,7 @@ if (!$user || (!($user->isCoordinator()) && !($user->isDriver()))) {
                             <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=toggleavailable"><button type="submit" class="btn btn-sm btn-primary">Toggle Available</button></form>
                         </td>
                         <td>
-                            <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit</button></form>
+                            <form method="POST" action="driver.php?id=<?= $item->id() ?>&action=edit"><button type="submit" class="btn btn-sm btn-primary">Edit Rate</button></form>
                         </td>
                     </tr>
                 <?php } ?>
