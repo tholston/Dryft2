@@ -19,7 +19,17 @@ $user = Session::getSession()->getUser();
 $linker = new Linker();
 
 // add HTML head
+if (!$user) {
+	echo '<h1>Nothing to see here</h1>';
+} else {
+	if($user-> isClient()){
+		header('Location: ' . $linker->urlPath() . 'client.php');
+		die();
+	}
+}
+
 include '../head.html';
+
 
 // Output a page title and any other specific head elements
 echo '		<title>Welcome to DRyft</title>' . PHP_EOL;
@@ -68,3 +78,4 @@ if (!$user) {
 
 // add page footer
 include '../footer.html';
+?>

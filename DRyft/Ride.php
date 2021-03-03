@@ -158,6 +158,15 @@ class Ride
         );
     }
 
+    public static function getRidesByClient($clientID)
+    {
+        // SELECT * FROM `rides` WHERE ORDER BY RIDE_ID DESC;
+        $clientIDInt = intval($clientID);
+        return self::loadRidesByQuery(
+            "SELECT * FROM `rides` WHERE client='$clientIDInt' ORDER BY RIDE_ID DESC;"
+        );
+    }
+
     /**
      * Get's all rides for specified PaymentID
      *
