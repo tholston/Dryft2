@@ -21,8 +21,10 @@ $linker = new DRyft\Linker;
 
 
 
+
 // Require a client user session
 $user = DRyft\Session::getSession()->getUser();
+$db = DRyft\Database\Connection::getConnection();
 
 // add HTML head
 include '../head.html';
@@ -45,16 +47,14 @@ elseif(array_key_exists('info', $_REQUEST)){
 	?>
 	<form method="POST">  
 
-		<?php echo '<h2>Name: ' . $user->firstName . ' ' . $user->lastName;?>
+		<?php echo '<h3>Name: ' . $user->firstName . ' ' . $user->lastName;?>
         <input type="submit" name="nameEdit"
-                class="button" value="Edit"/></h2>
-		<?php echo '<h2>Username: ' . $user->username();?>
-		<?php echo '<h2>Home Address: ' . $user->homeAddress();?>
-		<input type="submit" name="addressEdit"
-                class="button" value="Edit"/></h2>
-		<h2>Password
+		class="btn btn-primary" value="Edit"/></h3>
+		<?php echo '<h3>Username: ' . $user->username();?>
+		<?php echo '<h3>Home Address: ' . $user->homeAddress();?>
+		<h3>Password
         <input type="submit" name="passwordEdit"
-                class="button" value="Edit"/></h2>
+                class="btn btn-primary" value="Edit"/></h3>
     </form> 
 
 <?php
@@ -62,26 +62,53 @@ elseif(array_key_exists('info', $_REQUEST)){
 }
 elseif(array_key_exists('history', $_REQUEST)){
 	//displays past rides a client has taken TODO>+++++++++++++++
-	echo '
-	<table style="width:100%" >
-	<tr>
-		<th>Pickup</th>
-		<th>Dropoff</th> 
-		<th>Departure</th>
-		<th>Arrival</th>
-		<th>Driver</th>
-	</tr>
-	<tr>
-		<td>Jill</td>
-		<td>Smith</td> 
-		<td>50</td>
-	</tr>
-	<tr>
-		<td>Eve</td>
-		<td>Jackson</td> 
-		<td>94</td>
-	</tr>
-</table>';
+
+	$clientRides = DRyft\Ride::getRidesByClient($user->id());
+
+	?>
+    <br />
+    <br />
+    <h1>Ride History</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Pickup Location</th>
+                <th>Dropoff Location</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Miles</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($clientRides as $item) {
+                $clientUser = $user->getUserById($item->clientID());
+                $clientName = "{$clientUser->firstName} {$clientUser->lastName}";
+				$temp = $item->pickupLocationID();
+				$search = "SELECT line1 FROM locations WHERE LOCATION_ID='$temp'";
+            	$results = mysqli_query($db, $search);
+				$row = mysqli_fetch_array($results);
+				$pick = $row['line1'];
+
+				$temp = $item->dropoffLocationID();
+				$search = "SELECT line1 FROM locations WHERE LOCATION_ID='$temp'";
+            	$results = mysqli_query($db, $search);
+				$row = mysqli_fetch_array($results);
+				$drop = $row['line1'];
+				
+            ?>
+                <tr>
+                    <td><?= $item->id() ?></td>
+                    <td><?= $pick ?></td>
+                    <td><?= $drop ?></td>
+                    <td><?= $item->departureTime() ?></td>
+                    <td><?= $item->arrivalTime() ?></td>
+                    <td><?= $item->mileage() ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+<?php
 }
 elseif(array_key_exists('nameEdit', $_REQUEST)){
 	//displays form to update name and goes back to information page
@@ -145,13 +172,17 @@ else {
 	}
 	// Presents main client menu
 	?>
+	<br></br>
+	
 	<form method="POST"> 
         <input type="submit" name="request"
-                class="button" value="Request a Ride" formaction="ride.php"/> 
+		class="w-100 btn btn-primary btn-lg" value="Request a Ride" formaction="ride.php"/>
+		<br></br>
 		<input type="submit" name="info"
-                class="button" value="Personal Information"/> 
+		class="w-100 btn btn-primary btn-lg" value="Personal Information"/> 
+		<br></br>
 		<input type="submit" name="history"
-                class="button" value="Ride History"/> 
+		class="w-100 btn btn-primary btn-lg" value="Ride History"/> 
     </form> 
 
 <?php
