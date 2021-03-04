@@ -18,7 +18,7 @@
 
         $query = "INSERT INTO locations(LOCATION_ID, latitude, longitude, nickname, line1, line2, city, state, zip) VALUES(DEFAULT, '$PLati', '$PLongi', '$PNick', '$PLinone', '$PLintwo', '$PCit', '$PStat', '$PZipc')";
         mysqli_query($db, $query);
-        header('Location: /address.php');
+        header('Location: address.php');
         exit();
     }
 
@@ -39,7 +39,7 @@
 
         $query = "UPDATE locations SET latitude='$PLati', longitude='$PLongi', nickname='$PNick', line1='$PLinone', line2='$PLintwo', city='$PCit', state='$PStat', zip='$PZipc' WHERE LOCATION_ID='$PID'";
         mysqli_query($db, $query);
-        header('Location: /address.php');
+        header('Location: address.php');
         exit();
     }
 
@@ -52,7 +52,7 @@
         $safetycheck = "SELECT * FROM users WHERE home_address='$DeleteID' OR mailing_address='$DeleteID'";
         $safetyresult = mysqli_query($db, $safetycheck);
         if(mysqli_num_rows($safetyresult) > 0){
-            header('Location: /address.php?error="ThisIsAUsersAddress_CannotModify');
+            header('Location: address.php?error="ThisIsAUsersAddress_CannotModify');
             exit();
         }
 
@@ -62,20 +62,20 @@
             if($row['pickup'] == $DeleteID){
                 $safetyupdate = "UPDATE rides SET pickup='0' WHERE RIDE_ID='$DeleteID'";
                 mysqli_query($db, $safetyupdate);
-                header('Location: /address.php');
+                header('Location: address.php');
                 exit();
             }
             if($row['dropoff'] == $DeleteID){
                 $safetyupdate = "UPDATE rides SET dropoff='0' WHERE RIDE_ID='$DeleteID'";
                 mysqli_query($db, $safetyupdate);
-                header('Location: /address.php');
+                header('Location: address.php');
                 exit();
             }
         }
 
         $delquery = "DELETE FROM locations WHERE LOCATION_ID='$DeleteID'";
         mysqli_query($db, $delquery);
-        header('Location: /address.php');
+        header('Location: address.php');
         exit();
     }
 ?>

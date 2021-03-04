@@ -215,7 +215,13 @@ if ($user->isClient()) {
                     echo "<td>" . $row['DRIVER_ID'] . "</td>";
                     echo "<td>" . $driver->firstName . " " . $driver->lastName . "</td>";
                     echo "<td>" . $driver->rate() . "</td>";
-                    echo "<td>" . $driver->isAvailable() . "</td>";
+                    if ($driver->isAvailable()){
+                        echo "<td>Available!</td>";
+                    }
+                    else{
+                        echo "<td>Not-Available!</td>";
+                    }
+                    
                     echo "</tr>";
                 }
             ?>

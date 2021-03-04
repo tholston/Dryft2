@@ -13,7 +13,7 @@
 
         $query = "UPDATE rides SET driver='$PDriver' WHERE RIDE_ID='$PID'";
         mysqli_query($db, $query);
-        header('Location: /ride.php');
+        header('Location: ride.php');
         exit();
     }
 
@@ -30,7 +30,7 @@
         $query = "UPDATE rides SET mileage='$PMileage' WHERE RIDE_ID='$PID'";
         mysqli_query($db, $query);
         Payment::addFinishedRideToPayment($PID);
-        header('Location: /ride.php');
+        header('Location: ride.php');
         exit();
     }
 
@@ -42,7 +42,7 @@
         $RejectID = $_GET['rejection'];
         $delquery = "DELETE FROM rides WHERE RIDE_ID='$RejectID'";
         mysqli_query($db, $delquery);
-        header('Location: /ride.php');
+        header('Location: ride.php');
         exit();
     }
 
@@ -85,7 +85,7 @@
         Validating user time-based input to ensure entries are capable of being used to create a datetime object. Testing includes but is not limited to: it is not a date prior to current date information, invalid dates were not input, correct AM/PM differntiation, etc.
         */
         if($DeptYear < date('Y')){
-            header('Location: /ride.php?Error="Invalid_Year_Entry"');
+            header('Location: ride.php?Error="Invalid_Year_Entry"');
             exit();
         }
         elseif($DeptMonth < 0 || $DeptMonth > 12 || ($DeptMonth < date('m') && $DeptYear <= date('Y'))){
@@ -93,7 +93,7 @@
             exit();
         }
         elseif($DeptDay > 31 || $DeptDay < 0 || ($DeptDay < date('d') && $DeptMonth == date('m'))){
-            header('Location: /ride.php?Error="Invalid_Day_Entry"');
+            header('Location: ride.php?Error="Invalid_Day_Entry"');
             exit();
         }
         elseif($DeptHour > 12 || $DeptHour < 1 || $ArriHour > 12 || $ArriHour < 1){
@@ -101,11 +101,11 @@
             exit();
         }
         elseif($DeptMinute > 59 || $DeptMinute < 0 || $ArriMinute > 59 || $ArriMinute < 0){
-            header('Location: /ride.php?Error="Invalid_Out_of_Bounds_Minute_Entry"');
+            header('Location: ride.php?Error="Invalid_Out_of_Bounds_Minute_Entry"');
             exit();
         }
         elseif($DeptAMP != 'AM' && $DeptAmp != 'am' && $DeptAMP != 'PM' && $DeptAmp != 'pm' && $ArriAMP != 'AM' && $ArriAMP != 'am' && $ArriAMP != 'PM' && $ArriAMP != 'pm'){
-            header('Location: /ride.php?Error="Invalid_AM_PM_Differentiator_Entry"');
+            header('Location: ride.php?Error="Invalid_AM_PM_Differentiator_Entry"');
             exit();
         }
 
@@ -128,11 +128,11 @@
         }
 
         if($ArriHour < $DeptHour){
-            header('Location: /ride.php?Error="Invalid_Arrival_Hour_Time_Entry"');
+            header('Location: ride.php?Error="Invalid_Arrival_Hour_Time_Entry"');
             exit();
         }
         elseif($ArriHour == $DeptHour && $ArriMinute < $DeptMinute){
-            header('Location: /ride.php?Error="Invalid_Arrival_Minute_Time_Entry"');
+            header('Location: ride.php?Error="Invalid_Arrival_Minute_Time_Entry"');
             exit();
         }
 
@@ -171,11 +171,11 @@
         $createrequest = "INSERT INTO rides(RIDE_ID, client, driver, pickup, dropoff, departure, arrival, mileage) VALUES(DEFAULT, '$CID', '0', '$PLID', '$DLID', '$DeptDT', '$ArriDT', '0.0')";
         $finaltest = mysqli_query($db, $createrequest);
         if($finaltest === false){
-            header('Location: /ride.php?Error="' . $db->error . '"');
+            header('Location: ride.php?Error="CreateRequestIssue"');
             exit();
         }
 
-        header('Location: /ride.php');
+        header('Location: ride.php');
         exit();
     }
 ?>
